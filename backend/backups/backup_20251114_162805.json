@@ -1,0 +1,4191 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-10-23T18:58:52.713Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "17",
+    "object_repr": "bill (Livreur)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-10-23T19:01:38.607Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "17",
+    "object_repr": "bill (Vendeur)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\", \"R\\u00f4le\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2025-11-11T18:03:22.945Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "23",
+    "object_repr": "Suzee (Livreur)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2025-11-11T18:04:55.379Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "23",
+    "object_repr": "Suzee (Livreur)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2025-11-11T18:08:10.286Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "24",
+    "object_repr": "Billy (Gestionnaire Stock)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2025-11-11T18:08:36.347Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "24",
+    "object_repr": "Billy (Gestionnaire Stock)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2025-11-14T20:03:59.996Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "28",
+    "object_repr": "Cesaar (Vendeur)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2025-11-14T20:04:22.078Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "28",
+    "object_repr": "Cesaar (Vendeur)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2025-11-14T20:46:43.816Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "28",
+    "object_repr": "Cesaar (Vendeur)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2025-11-14T20:46:43.825Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "24",
+    "object_repr": "Billy (Gestionnaire Stock)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2025-11-14T20:49:57.937Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "29",
+    "object_repr": "Hams (Vendeur)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2025-11-14T20:50:31.762Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "29",
+    "object_repr": "Hams (Vendeur)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Email\"]}}]"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 1,
+  "fields": {
+    "user": null,
+    "jti": "3e6376e8494b4ed88c6a1a13640cd7a5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1NTkwNSwiaWF0IjoxNzYyNDUxMTA1LCJqdGkiOiIzZTYzNzZlODQ5NGI0ZWQ4OGM2YTFhMTM2NDBjZDdhNSIsInVzZXJfaWQiOjIxfQ.IHHDOpAGFFThJn2AEw0SoGLuoMV2D-p7U9m3kDkGf5Q",
+    "created_at": null,
+    "expires_at": "2025-11-13T17:45:05Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 2,
+  "fields": {
+    "user": 21,
+    "jti": "b94ff11f25404e5aac19cf51995beeff",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1NjE2NywiaWF0IjoxNzYyNDUxMzY3LCJqdGkiOiJiOTRmZjExZjI1NDA0ZTVhYWMxOWNmNTE5OTViZWVmZiIsInVzZXJfaWQiOjIxfQ.4j6d9qxoyoEywSiXtcqfJfwhZYKuAc5Y0sIYzj5_SCs",
+    "created_at": "2025-11-06T17:49:27.136Z",
+    "expires_at": "2025-11-13T17:49:27Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 3,
+  "fields": {
+    "user": 21,
+    "jti": "d1aeb25fe8a0439c99fd6288bfde6789",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1Njc0NiwiaWF0IjoxNzYyNDUxOTQ2LCJqdGkiOiJkMWFlYjI1ZmU4YTA0MzljOTlmZDYyODhiZmRlNjc4OSIsInVzZXJfaWQiOjIxfQ.7ZjWxFmDTZuuF-fqv4BOIxNYxfE0-4ITiNmIovCvzSE",
+    "created_at": "2025-11-06T17:59:06.795Z",
+    "expires_at": "2025-11-13T17:59:06Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 4,
+  "fields": {
+    "user": 21,
+    "jti": "433308caf3a54987a0339b0d52ac8c8a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1Njc3NywiaWF0IjoxNzYyNDUxOTc3LCJqdGkiOiI0MzMzMDhjYWYzYTU0OTg3YTAzMzliMGQ1MmFjOGM4YSIsInVzZXJfaWQiOjIxfQ.cPdkI_ZtoWQLrDWk9Xi2jnD-qHVuDEutIQOnJ-vd49A",
+    "created_at": "2025-11-06T17:59:37.503Z",
+    "expires_at": "2025-11-13T17:59:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 5,
+  "fields": {
+    "user": 21,
+    "jti": "26885f3e70ed49a59f9409386dda8bf8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2MDM5OSwiaWF0IjoxNzYyNDU1NTk5LCJqdGkiOiIyNjg4NWYzZTcwZWQ0OWE1OWY5NDA5Mzg2ZGRhOGJmOCIsInVzZXJfaWQiOjIxfQ.TXWaAQ-9Q1eDgibe9pbTWttuIa3n8Pc2nl610g_HqlA",
+    "created_at": "2025-11-06T18:59:59.322Z",
+    "expires_at": "2025-11-13T18:59:59Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 6,
+  "fields": {
+    "user": 21,
+    "jti": "ccca54b37f8f46cca138fb5dc2f78dc9",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2NDI3NiwiaWF0IjoxNzYyNDU5NDc2LCJqdGkiOiJjY2NhNTRiMzdmOGY0NmNjYTEzOGZiNWRjMmY3OGRjOSIsInVzZXJfaWQiOjIxfQ.nbPuhyIFlGfyUfzghEsYJBTN6y60XkJ1aNUhKaBC45s",
+    "created_at": "2025-11-06T20:04:36.054Z",
+    "expires_at": "2025-11-13T20:04:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 7,
+  "fields": {
+    "user": 21,
+    "jti": "d0b3d581b3804db3a171371a5f89707d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2NDUzNSwiaWF0IjoxNzYyNDU5NzM1LCJqdGkiOiJkMGIzZDU4MWIzODA0ZGIzYTE3MTM3MWE1Zjg5NzA3ZCIsInVzZXJfaWQiOjIxfQ.YqqoVWGq3VPH21ZWniYdea0uLSz4i06HFvOZaTsBYcQ",
+    "created_at": "2025-11-06T20:08:55.404Z",
+    "expires_at": "2025-11-13T20:08:55Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 8,
+  "fields": {
+    "user": 21,
+    "jti": "db93cdad2439403a908b5ed42bc7a4f6",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2NDc0OSwiaWF0IjoxNzYyNDU5OTQ5LCJqdGkiOiJkYjkzY2RhZDI0Mzk0MDNhOTA4YjVlZDQyYmM3YTRmNiIsInVzZXJfaWQiOjIxfQ.OhgLtdaF7UwiqGRF0591J6_o3DmrYSDerdDFdVpqtvU",
+    "created_at": "2025-11-06T20:12:29.855Z",
+    "expires_at": "2025-11-13T20:12:29Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 9,
+  "fields": {
+    "user": 21,
+    "jti": "4c8194cdd35047c9865605dbdfc901b1",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2ODE5NywiaWF0IjoxNzYyNDYzMzk3LCJqdGkiOiI0YzgxOTRjZGQzNTA0N2M5ODY1NjA1ZGJkZmM5MDFiMSIsInVzZXJfaWQiOjIxfQ.QNzWxVklFW6NC1h0fl7mu4maYOizfmV6nVWgCtWjKSA",
+    "created_at": "2025-11-06T21:09:57.253Z",
+    "expires_at": "2025-11-13T21:09:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 10,
+  "fields": {
+    "user": 21,
+    "jti": "fbb3689e7f26402b8f62a5841e5a3f1d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzQ4MzQ4NSwiaWF0IjoxNzYyODc4Njg1LCJqdGkiOiJmYmIzNjg5ZTdmMjY0MDJiOGY2MmE1ODQxZTVhM2YxZCIsInVzZXJfaWQiOjIxfQ.ukJynf7foe287sfSWdX8hsfjYdskEF0eZjIPidZWoLo",
+    "created_at": "2025-11-11T16:31:25.378Z",
+    "expires_at": "2025-11-18T16:31:25Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 11,
+  "fields": {
+    "user": 21,
+    "jti": "7c58331c3d604be48d443dd90a26db87",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzQ4NDM2NywiaWF0IjoxNzYyODc5NTY3LCJqdGkiOiI3YzU4MzMxYzNkNjA0YmU0OGQ0NDNkZDkwYTI2ZGI4NyIsInVzZXJfaWQiOjIxfQ.PwJL6QGxpcQZi037_xnAIpEl8NSt-8PmEdkuKJkFSbk",
+    "created_at": "2025-11-11T16:46:07.020Z",
+    "expires_at": "2025-11-18T16:46:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 12,
+  "fields": {
+    "user": 21,
+    "jti": "4ec24eba97fa47cf95583fa04287006d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzQ4NDQ2OCwiaWF0IjoxNzYyODc5NjY4LCJqdGkiOiI0ZWMyNGViYTk3ZmE0N2NmOTU1ODNmYTA0Mjg3MDA2ZCIsInVzZXJfaWQiOjIxfQ.NKXWUDvwFE1UZZb1mmPBQYFAt9OSW4R-d_oGDgvYizU",
+    "created_at": "2025-11-11T16:47:48.904Z",
+    "expires_at": "2025-11-18T16:47:48Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 13,
+  "fields": {
+    "user": 21,
+    "jti": "e7f0d24c1c744660b7721ba855a4af68",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzQ4ODA5NiwiaWF0IjoxNzYyODgzMjk2LCJqdGkiOiJlN2YwZDI0YzFjNzQ0NjYwYjc3MjFiYTg1NWE0YWY2OCIsInVzZXJfaWQiOjIxfQ.NobMrKnhe__oJyl6xOntzUoc3VJPEmgEjd4Mwdk9fcc",
+    "created_at": "2025-11-11T17:48:16.529Z",
+    "expires_at": "2025-11-18T17:48:16Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 14,
+  "fields": {
+    "user": 23,
+    "jti": "91ddcb1852cf4d44923bfef193165475",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzQ4OTExMiwiaWF0IjoxNzYyODg0MzEyLCJqdGkiOiI5MWRkY2IxODUyY2Y0ZDQ0OTIzYmZlZjE5MzE2NTQ3NSIsInVzZXJfaWQiOjIzfQ.lRdY9nXOrofTtFwt0u28RxEvDhLRY7AOXSHp_rTJ9mc",
+    "created_at": "2025-11-11T18:05:12.305Z",
+    "expires_at": "2025-11-18T18:05:12Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 15,
+  "fields": {
+    "user": null,
+    "jti": "3ad3d53b83a34064aa48a6e137d09252",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzQ4OTM0NiwiaWF0IjoxNzYyODg0NTQ2LCJqdGkiOiIzYWQzZDUzYjgzYTM0MDY0YWE0OGE2ZTEzN2QwOTI1MiIsInVzZXJfaWQiOjI0fQ.ftPpO-ggbpMoJBOX_NoD46s8NT43dsvjXC5yoxQ-8Bs",
+    "created_at": "2025-11-11T18:09:06.166Z",
+    "expires_at": "2025-11-18T18:09:06Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 16,
+  "fields": {
+    "user": 21,
+    "jti": "c2c59f3aeb104882ab6f64a08c8bbaf7",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzYxOTc4MCwiaWF0IjoxNzYzMDE0OTgwLCJqdGkiOiJjMmM1OWYzYWViMTA0ODgyYWI2ZjY0YTA4YzhiYmFmNyIsInVzZXJfaWQiOjIxfQ.RpcZv8AX7ROaXWVPrcXPGYNs6puv3E1Vq9Q_mCsPgBg",
+    "created_at": "2025-11-13T06:23:00.323Z",
+    "expires_at": "2025-11-20T06:23:00Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 17,
+  "fields": {
+    "user": 21,
+    "jti": "8e3a758e121e47a193649e0e7a1cc451",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzYyMTgwNiwiaWF0IjoxNzYzMDE3MDA2LCJqdGkiOiI4ZTNhNzU4ZTEyMWU0N2ExOTM2NDllMGU3YTFjYzQ1MSIsInVzZXJfaWQiOjIxfQ.VABpjAz29I63VBSW4bqDsIBCGRyNQSMstsA7066tj5E",
+    "created_at": "2025-11-13T06:56:46.819Z",
+    "expires_at": "2025-11-20T06:56:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 18,
+  "fields": {
+    "user": 21,
+    "jti": "d557a11940a44e0cb4f734b20de36923",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzY1MTg1MSwiaWF0IjoxNzYzMDQ3MDUxLCJqdGkiOiJkNTU3YTExOTQwYTQ0ZTBjYjRmNzM0YjIwZGUzNjkyMyIsInVzZXJfaWQiOjIxfQ.wQm-Ho-KPJdyMAKOFm-QBnDphf7pS_Gc_Q2-DqaAn4E",
+    "created_at": "2025-11-13T15:17:31.569Z",
+    "expires_at": "2025-11-20T15:17:31Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 19,
+  "fields": {
+    "user": 21,
+    "jti": "30338a0562d7478488315a51acd60d15",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzY1OTU4OSwiaWF0IjoxNzYzMDU0Nzg5LCJqdGkiOiIzMDMzOGEwNTYyZDc0Nzg0ODgzMTVhNTFhY2Q2MGQxNSIsInVzZXJfaWQiOjIxfQ.2OvxhSto7Y3FvNpuPDiZbiZFjCxLH1cZg4UWMP8BiUM",
+    "created_at": "2025-11-13T17:26:29.145Z",
+    "expires_at": "2025-11-20T17:26:29Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 20,
+  "fields": {
+    "user": 21,
+    "jti": "eff14d7463934f4e9d4d71412f2f5e8c",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc0Njc1OCwiaWF0IjoxNzYzMTQxOTU4LCJqdGkiOiJlZmYxNGQ3NDYzOTM0ZjRlOWQ0ZDcxNDEyZjJmNWU4YyIsInVzZXJfaWQiOjIxfQ.fdZTyU5bvW2WGc4cCKvoT5Vyqf0OS33uMhI0_UhJOAw",
+    "created_at": "2025-11-14T17:39:18.448Z",
+    "expires_at": "2025-11-21T17:39:18Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 21,
+  "fields": {
+    "user": 21,
+    "jti": "23df50f975a440d3860135080ba481da",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc0OTk0OCwiaWF0IjoxNzYzMTQ1MTQ4LCJqdGkiOiIyM2RmNTBmOTc1YTQ0MGQzODYwMTM1MDgwYmE0ODFkYSIsInVzZXJfaWQiOjIxfQ.rGSJtVeqHGsOXeSTrvSrqc7aEYDAiBmOJxM8SXBToE0",
+    "created_at": "2025-11-14T18:32:28.651Z",
+    "expires_at": "2025-11-21T18:32:28Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 22,
+  "fields": {
+    "user": 21,
+    "jti": "26a69732d5a3483498d1aaee9217a54d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1NDUyNSwiaWF0IjoxNzYzMTQ5NzI1LCJqdGkiOiIyNmE2OTczMmQ1YTM0ODM0OThkMWFhZWU5MjE3YTU0ZCIsInVzZXJfaWQiOjIxfQ.st84rjRlMXXkUEU1PEd6s5UzRv1RyvFJ7dUG_S7DI2c",
+    "created_at": "2025-11-14T19:48:45.015Z",
+    "expires_at": "2025-11-21T19:48:45Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 23,
+  "fields": {
+    "user": 21,
+    "jti": "c7fd5847dbd34fcf9bc79746f4445bd8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1NDUyNywiaWF0IjoxNzYzMTQ5NzI3LCJqdGkiOiJjN2ZkNTg0N2RiZDM0ZmNmOWJjNzk3NDZmNDQ0NWJkOCIsInVzZXJfaWQiOjIxfQ.AtLboSzd_X44ZBzGZSwnDnSyJqeKAloNfXnRSuh-I8M",
+    "created_at": "2025-11-14T19:48:47.810Z",
+    "expires_at": "2025-11-21T19:48:47Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 24,
+  "fields": {
+    "user": null,
+    "jti": "fe5218b686544e2d83c5e54dd7bac8eb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1NTg0NiwiaWF0IjoxNzYzMTUxMDQ2LCJqdGkiOiJmZTUyMThiNjg2NTQ0ZTJkODNjNWU1NGRkN2JhYzhlYiIsInVzZXJfaWQiOjI4fQ.cAcjYa5QEkS5z2u5p0vk2LCqcz0Ubg02VOf1rZlzl5s",
+    "created_at": "2025-11-14T20:10:46.825Z",
+    "expires_at": "2025-11-21T20:10:46Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 25,
+  "fields": {
+    "user": null,
+    "jti": "1f46bb111f6b40bd80bb16f7cce7b3d0",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1NjIzNCwiaWF0IjoxNzYzMTUxNDM0LCJqdGkiOiIxZjQ2YmIxMTFmNmI0MGJkODBiYjE2ZjdjY2U3YjNkMCIsInVzZXJfaWQiOjI4fQ.RQwmtKZziLsmJ5T9trkLGIZo6EgA13vzh9dtiYdhNYU",
+    "created_at": "2025-11-14T20:17:14.833Z",
+    "expires_at": "2025-11-21T20:17:14Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 26,
+  "fields": {
+    "user": null,
+    "jti": "35fc900d9db04d0286c4c9a896239197",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1NzkzMCwiaWF0IjoxNzYzMTUzMTMwLCJqdGkiOiIzNWZjOTAwZDlkYjA0ZDAyODZjNGM5YTg5NjIzOTE5NyIsInVzZXJfaWQiOjI4fQ.aGkSCSXoejcKRlZERfbH71o_At-nds0WQuPvwPJtynE",
+    "created_at": "2025-11-14T20:45:30.699Z",
+    "expires_at": "2025-11-21T20:45:30Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 27,
+  "fields": {
+    "user": 29,
+    "jti": "1b0d91304a7d42b4b782d283f1a3df0e",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1ODI2NywiaWF0IjoxNzYzMTUzNDY3LCJqdGkiOiIxYjBkOTEzMDRhN2Q0MmI0Yjc4MmQyODNmMWEzZGYwZSIsInVzZXJfaWQiOjI5fQ.hoR7QsO3GganUonxMflMUngRNss81lQJc_dlkstHqBQ",
+    "created_at": "2025-11-14T20:51:07.053Z",
+    "expires_at": "2025-11-21T20:51:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 28,
+  "fields": {
+    "user": 29,
+    "jti": "f7d6f3a1868544d8bc4dbc32cce0b029",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1ODM4NywiaWF0IjoxNzYzMTUzNTg3LCJqdGkiOiJmN2Q2ZjNhMTg2ODU0NGQ4YmM0ZGJjMzJjY2UwYjAyOSIsInVzZXJfaWQiOjI5fQ.3UiKBFBaobTlIDMSyJNw3WSjx1f39Q4bm0TQv92fPpI",
+    "created_at": "2025-11-14T20:53:07.182Z",
+    "expires_at": "2025-11-21T20:53:07Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 29,
+  "fields": {
+    "user": 29,
+    "jti": "8b4f1b8649304a8c83699d9ec95cffcb",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1ODUwMiwiaWF0IjoxNzYzMTUzNzAyLCJqdGkiOiI4YjRmMWI4NjQ5MzA0YThjODM2OTlkOWVjOTVjZmZjYiIsInVzZXJfaWQiOjI5fQ.Me6RX3s1ewm8xF-7EUT_Qwf5X7bryShUDhklUhuujYw",
+    "created_at": "2025-11-14T20:55:02.175Z",
+    "expires_at": "2025-11-21T20:55:02Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 30,
+  "fields": {
+    "user": 29,
+    "jti": "267c3b5b92ba4337adcfb663a3dc88ec",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1ODU1NywiaWF0IjoxNzYzMTUzNzU3LCJqdGkiOiIyNjdjM2I1YjkyYmE0MzM3YWRjZmI2NjNhM2RjODhlYyIsInVzZXJfaWQiOjI5fQ.gAOO5umbOmQH4dws9dbY9OgsvV-YTMaLlaPVrKvJayA",
+    "created_at": "2025-11-14T20:55:57.421Z",
+    "expires_at": "2025-11-21T20:55:57Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 31,
+  "fields": {
+    "user": 21,
+    "jti": "d1f89d1b721e4a2c9184e9f1614c31ec",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2Mzc1ODY0OCwiaWF0IjoxNzYzMTUzODQ4LCJqdGkiOiJkMWY4OWQxYjcyMWU0YTJjOTE4NGU5ZjE2MTRjMzFlYyIsInVzZXJfaWQiOjIxfQ.jBDSHQ7y-ziDv2CMqysOiVuZldEqKlxGTBMCQpgrOP4",
+    "created_at": "2025-11-14T20:57:28.342Z",
+    "expires_at": "2025-11-21T20:57:28Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 1,
+  "fields": {
+    "token": 1,
+    "blacklisted_at": "2025-11-06T17:49:21.327Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 2,
+  "fields": {
+    "token": 2,
+    "blacklisted_at": "2025-11-06T17:58:57.154Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 3,
+  "fields": {
+    "token": 3,
+    "blacklisted_at": "2025-11-06T17:59:30.358Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 4,
+  "fields": {
+    "token": 10,
+    "blacklisted_at": "2025-11-11T16:34:46.348Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 5,
+  "fields": {
+    "token": 11,
+    "blacklisted_at": "2025-11-11T16:46:15.042Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 6,
+  "fields": {
+    "token": 13,
+    "blacklisted_at": "2025-11-11T18:05:01.412Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 7,
+  "fields": {
+    "token": 14,
+    "blacklisted_at": "2025-11-11T18:08:41.191Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 8,
+  "fields": {
+    "token": 15,
+    "blacklisted_at": "2025-11-11T18:49:04.848Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 9,
+  "fields": {
+    "token": 20,
+    "blacklisted_at": "2025-11-14T18:32:17.989Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 10,
+  "fields": {
+    "token": 24,
+    "blacklisted_at": "2025-11-14T20:45:04.883Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 11,
+  "fields": {
+    "token": 27,
+    "blacklisted_at": "2025-11-14T20:52:20.677Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 12,
+  "fields": {
+    "token": 28,
+    "blacklisted_at": "2025-11-14T20:54:36.783Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 13,
+  "fields": {
+    "token": 29,
+    "blacklisted_at": "2025-11-14T20:55:23.333Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 14,
+  "fields": {
+    "token": 30,
+    "blacklisted_at": "2025-11-14T20:57:20.525Z"
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$hc4D8p93KLPBiye9HgRjmt$Uoq92+KI370+lfN3LISotGrCAO0YXZuav5xkF0wpJUA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendeur",
+    "first_name": "Jean",
+    "last_name": "Vendeur",
+    "is_staff": false,
+    "date_joined": "2025-10-14T17:16:31.845Z",
+    "email": "vendeur@sygla-h2o.com",
+    "must_change_password": false,
+    "role": "vendeur",
+    "telephone": "+509 2222 2222",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-10-14T17:16:32.104Z",
+    "date_modification": "2025-11-02T01:49:24.044Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$v9aBf1dTBYruIwLgdlrfce$VayaTHHVbskTsTEbM6Sg/G2dqkfABULRazecXTQ7RUs=",
+    "last_login": "2025-11-11T16:41:14.007Z",
+    "is_superuser": true,
+    "username": "Rooby",
+    "first_name": "Rooby",
+    "last_name": "Jean Charles",
+    "is_staff": true,
+    "date_joined": "2025-10-14T17:30:16Z",
+    "email": "roobyjeancharles7@gmail.com",
+    "must_change_password": false,
+    "role": "admin",
+    "telephone": "+50934599265",
+    "adresse": "",
+    "date_creation": "2025-10-14T17:30:16.548Z",
+    "date_modification": "2025-11-11T16:40:35.550Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$bllJTopjirqlhdVDTUVcRX$ymnkX1hvJ3avg1kcjCoU48w8rmVIkHqtT1BXT/MxvcU=",
+    "last_login": "2025-10-21T14:13:29.354Z",
+    "is_superuser": true,
+    "username": "Phara",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2025-10-21T14:11:38.571Z",
+    "email": "noelphara52@gmail.com",
+    "must_change_password": false,
+    "role": "vendeur",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-10-21T14:11:38.850Z",
+    "date_modification": "2025-10-21T14:11:38.850Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 17,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$NhhxAXhfTaf17AEk0qAy9Z$2KiZ/uRas3BDzYFhvgpEH+tnHnnoeIULMhhif74Ky7M=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "bill",
+    "first_name": "Bill",
+    "last_name": "Amboise",
+    "is_staff": false,
+    "date_joined": "2025-10-23T18:58:52Z",
+    "email": "bill@gmail.com",
+    "must_change_password": false,
+    "role": "vendeur",
+    "telephone": "+50949051464",
+    "adresse": "eryruiii",
+    "date_creation": "2025-10-23T18:58:52.709Z",
+    "date_modification": "2025-10-23T19:01:38.602Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 18,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$fXTHEL9kn4VeI1rrGWhupP$M6zZIRgSdRjBznW0xUm62JxXtoUnxRz86J1UhU2S0EA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "test",
+    "first_name": "Test",
+    "last_name": "User",
+    "is_staff": false,
+    "date_joined": "2025-10-24T22:35:10.266Z",
+    "email": "test@sygla-h2o.com",
+    "must_change_password": false,
+    "role": "vendeur",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-10-24T22:35:10.995Z",
+    "date_modification": "2025-10-24T22:35:10.995Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 19,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$8wxb25TRBJ0poSDClogBw1$ZOUOTvE1FIuHoznJYXb760AmDonwkUstViLdD9wF7b4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "livreur_test",
+    "first_name": "Pierre",
+    "last_name": "Livreur",
+    "is_staff": false,
+    "date_joined": "2025-10-24T22:44:09.700Z",
+    "email": "livreur@sygla-h2o.com",
+    "must_change_password": false,
+    "role": "livreur",
+    "telephone": "+509 4444 4444",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-10-24T22:44:10.209Z",
+    "date_modification": "2025-11-02T01:49:24.916Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 20,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$1oJxXGogR87GWPjggWMMEA$Q5qalyfTgTFsPDM2EpxIqaJ7FGi4gWR3Vk1Cm1lquas=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "",
+    "first_name": "Test",
+    "last_name": "User",
+    "is_staff": false,
+    "date_joined": "2025-10-26T11:46:45.315Z",
+    "email": "test@test.com",
+    "must_change_password": false,
+    "role": "admin",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-10-26T11:46:45.315Z",
+    "date_modification": "2025-10-26T11:46:45.676Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 21,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$lOyJ9QJpMThbwBMGZHxHW8$fcDvIPogQ134lmzo1kJr6P6sX+awqAo+Iah5ns2CqRw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "Admin",
+    "last_name": "Principal",
+    "is_staff": false,
+    "date_joined": "2025-11-02T01:14:40.763Z",
+    "email": "admin@sygla-h2o.com",
+    "must_change_password": false,
+    "role": "admin",
+    "telephone": "+509 1111 1111",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-11-02T01:14:40.765Z",
+    "date_modification": "2025-11-06T17:38:01.794Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 22,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$k4k1kA6qHq2Entdpokbl7T$vC6yzxE56kRNPENF/reM0COFjaVTwwpDH9Ix0lujR1o=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "stock",
+    "first_name": "Marie",
+    "last_name": "Stock",
+    "is_staff": false,
+    "date_joined": "2025-11-02T01:49:24.051Z",
+    "email": "stock@sygla-h2o.com",
+    "must_change_password": false,
+    "role": "stock",
+    "telephone": "+509 3333 3333",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-11-02T01:49:24.449Z",
+    "date_modification": "2025-11-02T01:49:24.449Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 23,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$ikhDL4yAKWMGzVO5HA2goz$ATRy2YS7Gg2EyHd8m9l9USuzGdj/hh5FLrgZzb+A6aU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Suzee",
+    "first_name": "Suze Phara",
+    "last_name": "Laguerre",
+    "is_staff": false,
+    "date_joined": "2025-11-11T18:03:22Z",
+    "email": "suzeee@gmail.com",
+    "must_change_password": false,
+    "role": "livreur",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-11-11T18:03:22.934Z",
+    "date_modification": "2025-11-11T18:04:55.374Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 25,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$eqAKiWg8cCEkh77TWlQ8m1$0TMUd1vFiI7ldh9rQczVPDEts08MIFaYFe7aYup02lE=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "test_vendeur",
+    "first_name": "Test",
+    "last_name": "Vendeur",
+    "is_staff": false,
+    "date_joined": "2025-11-14T19:48:49.908Z",
+    "email": "test.vendeur@sygla-h2o.com",
+    "must_change_password": true,
+    "role": "vendeur",
+    "telephone": "+50912345678",
+    "adresse": "",
+    "date_creation": "2025-11-14T19:48:49.910Z",
+    "date_modification": "2025-11-14T19:48:50.186Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 29,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$sKsz4Um0Ki6Vt6ZCIfgokv$NDODDmTm+DmFWdUYtHZBvaSzY/UVUs2qqbymWqOs/Tw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Hams",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "date_joined": "2025-11-14T20:49:57Z",
+    "email": "hams@gmail.com",
+    "must_change_password": false,
+    "role": "vendeur",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-11-14T20:49:57.923Z",
+    "date_modification": "2025-11-14T20:51:50.593Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.businesshoursconfig",
+  "pk": 1,
+  "fields": {
+    "role": "vendeur",
+    "enabled": false,
+    "start_hour": 8,
+    "start_minute": 0,
+    "end_hour": 18,
+    "end_minute": 0,
+    "allowed_days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "created_at": "2025-11-06T18:32:59.939Z",
+    "updated_at": "2025-11-14T20:09:46.250Z"
+  }
+},
+{
+  "model": "authentication.businesshoursconfig",
+  "pk": 2,
+  "fields": {
+    "role": "stock",
+    "enabled": true,
+    "start_hour": 6,
+    "start_minute": 0,
+    "end_hour": 20,
+    "end_minute": 0,
+    "allowed_days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "created_at": "2025-11-06T18:32:59.952Z",
+    "updated_at": "2025-11-06T18:32:59.952Z"
+  }
+},
+{
+  "model": "authentication.businesshoursconfig",
+  "pk": 3,
+  "fields": {
+    "role": "livreur",
+    "enabled": true,
+    "start_hour": 5,
+    "start_minute": 0,
+    "end_hour": 21,
+    "end_minute": 0,
+    "allowed_days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "created_at": "2025-11-06T18:32:59.960Z",
+    "updated_at": "2025-11-06T18:32:59.960Z"
+  }
+},
+{
+  "model": "authentication.securitysettings",
+  "pk": 1,
+  "fields": {
+    "session_timeout": 30,
+    "max_login_attempts": 5,
+    "lockout_duration": 15,
+    "password_min_length": 8,
+    "require_uppercase": true,
+    "require_lowercase": true,
+    "require_numbers": true,
+    "require_special_chars": false,
+    "jwt_access_token_lifetime": 60,
+    "jwt_refresh_token_lifetime": 1440,
+    "enable_two_factor": false,
+    "force_password_change": 0,
+    "updated_at": "2025-11-06T19:11:43.005Z",
+    "updated_by": null
+  }
+},
+{
+  "model": "authentication.notificationpreferences",
+  "pk": 1,
+  "fields": {
+    "user": 21,
+    "notify_client_created": true,
+    "notify_order_created": true,
+    "notify_order_validated": true,
+    "notify_delivery_assigned": true,
+    "notify_delivery_completed": true,
+    "notify_stock_low": true,
+    "notify_stock_updated": false,
+    "notify_system_errors": true,
+    "notify_security_alerts": true,
+    "notify_daily_report": false,
+    "notify_weekly_report": false,
+    "notify_monthly_report": false,
+    "enable_email_notifications": true,
+    "enable_browser_notifications": true,
+    "created_at": "2025-11-06T19:28:38.439Z",
+    "updated_at": "2025-11-06T19:28:38.440Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 1,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée #CMD-001",
+    "details": "Commande de 50 bidons d'eau pour Client A",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "145ms",
+    "metadata": {
+      "orderId": "CMD-001",
+      "clientId": 1,
+      "clientName": "Client A",
+      "totalAmount": 2500,
+      "itemsCount": 50,
+      "productName": "Eau Potable 20L"
+    },
+    "timestamp": "2025-11-02T02:38:53.085Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 2,
+  "fields": {
+    "type": "info",
+    "message": "Connexion utilisateur réussie",
+    "details": "Connexion depuis 192.168.1.100",
+    "user": 13,
+    "module": "authentication",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "89ms",
+    "metadata": {
+      "sessionId": "sess_abc123",
+      "role": "vendeur",
+      "lastLogin": "2025-10-31T21:38:53.085179"
+    },
+    "timestamp": "2025-11-02T02:38:53.090Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 3,
+  "fields": {
+    "type": "warning",
+    "message": "Stock faible détecté pour Eau Potable 20L",
+    "details": "Quantité restante: 5 unités",
+    "user": null,
+    "module": "stock",
+    "ip_address": "system",
+    "user_agent": "System Alert",
+    "request_method": "SYSTEM",
+    "endpoint": "/internal/stock/check",
+    "status_code": 200,
+    "response_time": "12ms",
+    "metadata": {
+      "productId": 1,
+      "productName": "Eau Potable 20L",
+      "currentStock": 5,
+      "minimumStock": 10,
+      "alertLevel": "warning"
+    },
+    "timestamp": "2025-11-02T02:38:53.095Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 4,
+  "fields": {
+    "type": "success",
+    "message": "Client modifié: Entreprise ABC",
+    "details": "Mise à jour des informations de contact",
+    "user": 13,
+    "module": "clients",
+    "ip_address": "192.168.1.105",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "PUT",
+    "endpoint": "/api/clients/3/",
+    "status_code": 200,
+    "response_time": "234ms",
+    "metadata": {
+      "clientId": 3,
+      "clientName": "Entreprise ABC",
+      "fieldsUpdated": [
+        "telephone",
+        "email",
+        "adresse"
+      ],
+      "previousPhone": "+509 1234 5678",
+      "newPhone": "+509 8765 4321"
+    },
+    "timestamp": "2025-11-02T02:38:53.100Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 5,
+  "fields": {
+    "type": "error",
+    "message": "Échec de validation de commande #CMD-002",
+    "details": "Stock insuffisant pour le produit demandé",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/orders/2/validate/",
+    "status_code": 400,
+    "response_time": "98ms",
+    "metadata": {
+      "orderId": "CMD-002",
+      "productId": 2,
+      "productName": "Glace 10kg",
+      "requestedQuantity": 100,
+      "availableQuantity": 50,
+      "errorCode": "INSUFFICIENT_STOCK"
+    },
+    "timestamp": "2025-11-02T02:38:53.105Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 6,
+  "fields": {
+    "type": "success",
+    "message": "Livraison complétée #LIV-001",
+    "details": "Livraison effectuée à Port-au-Prince",
+    "user": 19,
+    "module": "deliveries",
+    "ip_address": "192.168.1.110",
+    "user_agent": "Mozilla/5.0 (Android 11; Mobile) AppleWebKit/537.36",
+    "request_method": "PATCH",
+    "endpoint": "/api/deliveries/1/complete/",
+    "status_code": 200,
+    "response_time": "167ms",
+    "metadata": {
+      "deliveryId": "LIV-001",
+      "orderId": "CMD-001",
+      "deliveryAddress": "123 Rue de la Paix, Port-au-Prince",
+      "deliveryTime": "2025-11-01T20:08:53.085210",
+      "signature": "received",
+      "gpsCoordinates": "18.5944, -72.3074"
+    },
+    "timestamp": "2025-11-02T02:38:53.111Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 7,
+  "fields": {
+    "type": "info",
+    "message": "Nouveau produit ajouté: Glace 5kg",
+    "details": "Prix: 150 HTG, Stock initial: 100",
+    "user": 22,
+    "module": "products",
+    "ip_address": "192.168.1.108",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/products/",
+    "status_code": 201,
+    "response_time": "203ms",
+    "metadata": {
+      "productId": 10,
+      "productName": "Glace 5kg",
+      "category": "Glace",
+      "price": 150,
+      "initialStock": 100,
+      "unit": "kg"
+    },
+    "timestamp": "2025-11-02T02:38:53.116Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 8,
+  "fields": {
+    "type": "success",
+    "message": "Rapport généré et exporté en PDF",
+    "details": "Rapport mensuel des ventes",
+    "user": 21,
+    "module": "reports",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "GET",
+    "endpoint": "/api/reports/export-pdf/",
+    "status_code": 200,
+    "response_time": "2.3s",
+    "metadata": {
+      "reportType": "monthly_sales",
+      "period": "October 2025",
+      "totalOrders": 45,
+      "totalRevenue": 125000,
+      "fileSize": "234 KB",
+      "format": "PDF"
+    },
+    "timestamp": "2025-11-02T02:38:53.122Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 9,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté avec succès",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin"
+    },
+    "timestamp": "2025-11-06T17:38:23.345Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 10,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté avec succès",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin"
+    },
+    "timestamp": "2025-11-06T17:41:14.139Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 11,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:45:05",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:45:05.733574+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:45:05"
+    },
+    "timestamp": "2025-11-06T17:45:05.741Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 12,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:49:27",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:49:27.144409+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:49:27"
+    },
+    "timestamp": "2025-11-06T17:49:27.167Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 13,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:59:06",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:59:06.810155+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:59:06"
+    },
+    "timestamp": "2025-11-06T17:59:06.820Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 14,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:59:37",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:59:37.510402+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:59:37"
+    },
+    "timestamp": "2025-11-06T17:59:37.512Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 15,
+  "fields": {
+    "type": "success",
+    "message": "Nouveau client créé: Bigo",
+    "details": "Client Bigo ajouté avec succès",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/clients/",
+    "status_code": 201,
+    "response_time": "18ms",
+    "metadata": {
+      "clientId": 9,
+      "clientName": "Bigo",
+      "telephone": "+509458796521",
+      "email": "bigo@gmail.com"
+    },
+    "timestamp": "2025-11-06T18:00:40.717Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 16,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 18:59:59",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T18:59:59.337640+00:00",
+      "loginTimeFormatted": "06/11/2025 à 18:59:59"
+    },
+    "timestamp": "2025-11-06T18:59:59.340Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 17,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 20:04:36",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T20:04:36.349206+00:00",
+      "loginTimeFormatted": "06/11/2025 à 20:04:36"
+    },
+    "timestamp": "2025-11-06T20:04:36.383Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 18,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 20:08:55",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T20:08:55.418166+00:00",
+      "loginTimeFormatted": "06/11/2025 à 20:08:55"
+    },
+    "timestamp": "2025-11-06T20:08:55.426Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 19,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 20:12:29",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T20:12:29.876239+00:00",
+      "loginTimeFormatted": "06/11/2025 à 20:12:29"
+    },
+    "timestamp": "2025-11-06T20:12:29.882Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 20,
+  "fields": {
+    "type": "success",
+    "message": "Sauvegarde de la base de données créée",
+    "details": "Fichier: backup_20251106_151955.json (0.04 MB)",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "backup_filename": "backup_20251106_151955.json",
+      "backup_size_mb": 0.04,
+      "timestamp": "20251106_151955"
+    },
+    "timestamp": "2025-11-06T20:19:55.445Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 21,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Client' object has no attribute 'nom_entreprise'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Client' object has no attribute 'nom_entreprise'"
+    },
+    "timestamp": "2025-11-06T20:35:03.774Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 22,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Client' object has no attribute 'nom_entreprise'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Client' object has no attribute 'nom_entreprise'"
+    },
+    "timestamp": "2025-11-06T20:35:14.477Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 23,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Client' object has no attribute 'nom_entreprise'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Client' object has no attribute 'nom_entreprise'"
+    },
+    "timestamp": "2025-11-06T20:42:23.928Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 24,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Produit' object has no attribute 'stock_minimum'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Produit' object has no attribute 'stock_minimum'"
+    },
+    "timestamp": "2025-11-06T20:43:34.901Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 25,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "Invalid field name(s) given in select_related: 'created_by'. Choices are: client, vendeur",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "Invalid field name(s) given in select_related: 'created_by'. Choices are: client, vendeur"
+    },
+    "timestamp": "2025-11-06T20:45:03.351Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 26,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Commande' object has no attribute 'date_commande'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Commande' object has no attribute 'date_commande'"
+    },
+    "timestamp": "2025-11-06T20:47:53.259Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 27,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Commande' object has no attribute 'montant_total_ht'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Commande' object has no attribute 'montant_total_ht'"
+    },
+    "timestamp": "2025-11-06T20:48:50.857Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 28,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "Invalid field name(s) given in select_related: 'user'. Choices are: produit, utilisateur",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "Invalid field name(s) given in select_related: 'user'. Choices are: produit, utilisateur"
+    },
+    "timestamp": "2025-11-06T20:49:48.714Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 29,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'MouvementStock' object has no attribute 'date_mouvement'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'MouvementStock' object has no attribute 'date_mouvement'"
+    },
+    "timestamp": "2025-11-06T20:50:44.385Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 30,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "Cannot resolve keyword 'created_at' into field. Choices are: details, endpoint, id, ip_address, message, metadata, module, request_method, response_time, status_code, timestamp, type, user, user_agent, user_id",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "Cannot resolve keyword 'created_at' into field. Choices are: details, endpoint, id, ip_address, message, metadata, module, request_method, response_time, status_code, timestamp, type, user, user_agent, user_id"
+    },
+    "timestamp": "2025-11-06T20:51:29.813Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 31,
+  "fields": {
+    "type": "success",
+    "message": "Sauvegarde de la base de données créée (JSON + Excel)",
+    "details": "JSON: backup_20251106_155250.json (0.05 MB), Excel: backup_20251106_155250.xlsx (0.01 MB)",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "json_filename": "backup_20251106_155250.json",
+      "excel_filename": "backup_20251106_155250.xlsx",
+      "json_size_mb": 0.05,
+      "excel_size_mb": 0.01,
+      "timestamp": "20251106_155250"
+    },
+    "timestamp": "2025-11-06T20:52:51.132Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 32,
+  "fields": {
+    "type": "info",
+    "message": "Téléchargement de sauvegarde: backup_20251106_155250.xlsx",
+    "details": "Utilisateur: admin@sygla-h2o.com",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "GET",
+    "endpoint": "/api/auth/database/download/backup_20251106_155250.xlsx/",
+    "status_code": 200,
+    "response_time": "0",
+    "metadata": {
+      "filename": "backup_20251106_155250.xlsx"
+    },
+    "timestamp": "2025-11-06T20:54:10.006Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 33,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 21:09:57",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T21:09:57.400683+00:00",
+      "loginTimeFormatted": "06/11/2025 à 21:09:57"
+    },
+    "timestamp": "2025-11-06T21:09:57.681Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 34,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 11/11/2025 à 16:31:25",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-11T16:31:25.387840+00:00",
+      "loginTimeFormatted": "11/11/2025 à 16:31:25"
+    },
+    "timestamp": "2025-11-11T16:31:25.413Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 35,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 11/11/2025 à 16:46:07",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-11T16:46:07.025508+00:00",
+      "loginTimeFormatted": "11/11/2025 à 16:46:07"
+    },
+    "timestamp": "2025-11-11T16:46:07.027Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 36,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 11/11/2025 à 16:47:48",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-11T16:47:48.919462+00:00",
+      "loginTimeFormatted": "11/11/2025 à 16:47:48"
+    },
+    "timestamp": "2025-11-11T16:47:48.921Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 37,
+  "fields": {
+    "type": "success",
+    "message": "Client modifié: Bigooo",
+    "details": "Mise à jour des informations du client Bigo",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/clients/9/",
+    "status_code": 200,
+    "response_time": "6ms",
+    "metadata": {
+      "clientId": 9,
+      "clientName": "Bigooo",
+      "previousName": "Bigo"
+    },
+    "timestamp": "2025-11-11T16:58:01.807Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 38,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Bigooo",
+    "details": "Le client Bigooo a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/9/",
+    "status_code": 204,
+    "response_time": "6ms",
+    "metadata": {
+      "clientId": 9,
+      "clientName": "Bigooo"
+    },
+    "timestamp": "2025-11-11T16:58:11.097Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 39,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:09:42.968Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 40,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:12:57.474Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 41,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:13:13.381Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 42,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:17:21.295Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 43,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:17:45.530Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 44,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:18:23.142Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 45,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:18:29.940Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 46,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:21:55.899Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 47,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création d'une commande",
+    "details": "'Client' object has no attribute 'nom'",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {},
+    "timestamp": "2025-11-11T17:25:38.628Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 48,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée: CMD202511110002",
+    "details": "Commande CMD202511110002 pour Laguerre Eau",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 68,
+      "orderNumber": "CMD202511110002",
+      "clientName": "Laguerre Eau",
+      "itemsCount": 1,
+      "totalAmount": 4025.0,
+      "deliveryType": "livraison_domicile",
+      "status": "en_attente"
+    },
+    "timestamp": "2025-11-11T17:40:55.706Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 49,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée: CMD202511110001",
+    "details": "Commande CMD202511110001 pour Laguerre Eau",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 69,
+      "orderNumber": "CMD202511110001",
+      "clientName": "Laguerre Eau",
+      "itemsCount": 1,
+      "totalAmount": 57.5,
+      "deliveryType": "livraison_domicile",
+      "status": "en_attente"
+    },
+    "timestamp": "2025-11-11T17:41:35.661Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 50,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511110001",
+    "details": "Commande CMD202511110001 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/69/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 69,
+      "orderNumber": "CMD202511110001",
+      "previousStatus": "en_attente",
+      "newStatus": "validee",
+      "previousTotal": 57.5,
+      "newTotal": 57.5,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-11T17:42:17.774Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 51,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511110001",
+    "details": "Commande CMD202511110001 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/69/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 69,
+      "orderNumber": "CMD202511110001",
+      "previousStatus": "validee",
+      "newStatus": "en_preparation",
+      "previousTotal": 57.5,
+      "newTotal": 57.5,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-11T17:46:08.619Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 52,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511110001",
+    "details": "Commande CMD202511110001 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/69/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 69,
+      "orderNumber": "CMD202511110001",
+      "previousStatus": "en_preparation",
+      "newStatus": "en_livraison",
+      "previousTotal": 57.5,
+      "newTotal": 57.5,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-11T17:46:12.260Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 53,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511110001",
+    "details": "Commande CMD202511110001 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/69/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 69,
+      "orderNumber": "CMD202511110001",
+      "previousStatus": "en_livraison",
+      "newStatus": "livree",
+      "previousTotal": 57.5,
+      "newTotal": 57.5,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-11T17:46:17.468Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 54,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 11/11/2025 à 17:48:16",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-11T17:48:16.535291+00:00",
+      "loginTimeFormatted": "11/11/2025 à 17:48:16"
+    },
+    "timestamp": "2025-11-11T17:48:16.536Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 55,
+  "fields": {
+    "type": "success",
+    "message": "Sauvegarde de la base de données créée (JSON + Excel)",
+    "details": "JSON: backup_20251111_125815.json (0.06 MB), Excel: backup_20251111_125815.xlsx (0.01 MB)",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "json_filename": "backup_20251111_125815.json",
+      "excel_filename": "backup_20251111_125815.xlsx",
+      "json_size_mb": 0.06,
+      "excel_size_mb": 0.01,
+      "timestamp": "20251111_125815"
+    },
+    "timestamp": "2025-11-11T17:58:16.169Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 56,
+  "fields": {
+    "type": "info",
+    "message": "Téléchargement de sauvegarde: backup_20251106_155250.xlsx",
+    "details": "Utilisateur: admin@sygla-h2o.com",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "GET",
+    "endpoint": "/api/auth/database/download/backup_20251106_155250.xlsx/",
+    "status_code": 200,
+    "response_time": "0",
+    "metadata": {
+      "filename": "backup_20251106_155250.xlsx"
+    },
+    "timestamp": "2025-11-11T17:58:55.288Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 57,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Suze Phara Laguerre",
+    "details": "Utilisateur connecté le 11/11/2025 à 18:05:12",
+    "user": 23,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 23,
+      "email": "suzeee@gmail.com",
+      "role": "livreur",
+      "loginTime": "2025-11-11T18:05:12.319863+00:00",
+      "loginTimeFormatted": "11/11/2025 à 18:05:12"
+    },
+    "timestamp": "2025-11-11T18:05:12.321Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 58,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Billy Amboise",
+    "details": "Utilisateur connecté le 11/11/2025 à 18:09:06",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 24,
+      "email": "billy@gmail.com",
+      "role": "stock",
+      "loginTime": "2025-11-11T18:09:06.181327+00:00",
+      "loginTimeFormatted": "11/11/2025 à 18:09:06"
+    },
+    "timestamp": "2025-11-11T18:09:06.182Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 59,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202510250002",
+    "details": "Commande CMD202510250002 mise à jour",
+    "user": null,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/46/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 46,
+      "orderNumber": "CMD202510250002",
+      "previousStatus": "en_livraison",
+      "newStatus": "livree",
+      "previousTotal": 50.0,
+      "newTotal": 50.0,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-11T18:10:31.623Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 60,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 13/11/2025 à 06:23:01",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-13T06:23:01.208802+00:00",
+      "loginTimeFormatted": "13/11/2025 à 06:23:01"
+    },
+    "timestamp": "2025-11-13T06:23:01.229Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 61,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Glace en Bloc 10kg",
+    "details": "Le produit Glace en Bloc 10kg a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/11/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 11,
+      "productName": "Glace en Bloc 10kg",
+      "price": 75.0
+    },
+    "timestamp": "2025-11-13T06:26:30.031Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 62,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Glace en Cubes 5kg",
+    "details": "Le produit Glace en Cubes 5kg a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/12/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 12,
+      "productName": "Glace en Cubes 5kg",
+      "price": 60.0
+    },
+    "timestamp": "2025-11-13T06:26:37.178Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 63,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Bidon",
+    "details": "Le produit Bidon a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/15/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 15,
+      "productName": "Bidon",
+      "price": 50.0
+    },
+    "timestamp": "2025-11-13T06:26:52.892Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 64,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Chato dlo 50",
+    "details": "Le produit Chato dlo 50 a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/17/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 17,
+      "productName": "Chato dlo 50",
+      "price": 3500.0
+    },
+    "timestamp": "2025-11-13T06:26:57.470Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 65,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Eau Potable Premium",
+    "details": "Le produit Eau Potable Premium a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/16/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 16,
+      "productName": "Eau Potable Premium",
+      "price": 25.0
+    },
+    "timestamp": "2025-11-13T06:27:00.752Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 66,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée: CMD202511130001",
+    "details": "Commande CMD202511130001 pour Billy",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 70,
+      "orderNumber": "CMD202511130001",
+      "clientName": "Billy",
+      "itemsCount": 1,
+      "totalAmount": 287.5,
+      "deliveryType": "livraison_domicile",
+      "status": "en_attente"
+    },
+    "timestamp": "2025-11-13T06:28:04.810Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 67,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130001",
+    "details": "Commande CMD202511130001 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/70/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 70,
+      "orderNumber": "CMD202511130001",
+      "previousStatus": "en_attente",
+      "newStatus": "validee",
+      "previousTotal": 287.5,
+      "newTotal": 287.5,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T06:28:22.889Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 68,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée: CMD202511130002",
+    "details": "Commande CMD202511130002 pour Tech Ayitiiiiiiii",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 71,
+      "orderNumber": "CMD202511130002",
+      "clientName": "Tech Ayitiiiiiiii",
+      "itemsCount": 1,
+      "totalAmount": 175.0,
+      "deliveryType": "retrait_magasin",
+      "status": "en_attente"
+    },
+    "timestamp": "2025-11-13T06:29:03.127Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 69,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Diri",
+    "details": "Le produit Diri a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/18/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 18,
+      "productName": "Diri",
+      "price": 1000.0
+    },
+    "timestamp": "2025-11-13T06:29:30.855Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 70,
+  "fields": {
+    "type": "success",
+    "message": "Nouveau produit créé: ro",
+    "details": "Produit ro ajouté au catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/products/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 20,
+      "productName": "ro",
+      "price": 23.0,
+      "stockQuantity": 23,
+      "type": "glace"
+    },
+    "timestamp": "2025-11-13T06:34:17.410Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 71,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Glace Premium Test",
+    "details": "Le produit Glace Premium Test a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/6/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 6,
+      "productName": "Glace Premium Test",
+      "price": 85.0
+    },
+    "timestamp": "2025-11-13T06:34:24.619Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 72,
+  "fields": {
+    "type": "success",
+    "message": "Nouveau client créé: jjjjj",
+    "details": "Client jjjjj ajouté avec succès",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/clients/",
+    "status_code": 201,
+    "response_time": "21ms",
+    "metadata": {
+      "clientId": 10,
+      "clientName": "jjjjj",
+      "telephone": "+509364412565",
+      "email": "jjjjj@gmail.com"
+    },
+    "timestamp": "2025-11-13T06:35:17.887Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 73,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 13/11/2025 à 06:56:47",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-13T06:56:47.039743+00:00",
+      "loginTimeFormatted": "13/11/2025 à 06:56:47"
+    },
+    "timestamp": "2025-11-13T06:56:47.060Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 74,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 13/11/2025 à 15:17:31",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-13T15:17:31.578361+00:00",
+      "loginTimeFormatted": "13/11/2025 à 15:17:31"
+    },
+    "timestamp": "2025-11-13T15:17:31.590Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 75,
+  "fields": {
+    "type": "success",
+    "message": "Nouveau client créé: qqqqq",
+    "details": "Client qqqqq ajouté avec succès",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/clients/",
+    "status_code": 201,
+    "response_time": "17ms",
+    "metadata": {
+      "clientId": 11,
+      "clientName": "qqqqq",
+      "telephone": "+50945123658",
+      "email": "qqqqq@gmail.com"
+    },
+    "timestamp": "2025-11-13T15:19:58.721Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 76,
+  "fields": {
+    "type": "success",
+    "message": "Nouveau produit créé: Dlo",
+    "details": "Produit Dlo ajouté au catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/products/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 21,
+      "productName": "Dlo",
+      "price": 100.0,
+      "stockQuantity": 100,
+      "type": "bokit"
+    },
+    "timestamp": "2025-11-13T15:21:04.528Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 77,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée: CMD202511130003",
+    "details": "Commande CMD202511130003 pour qqqqq",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 72,
+      "orderNumber": "CMD202511130003",
+      "clientName": "qqqqq",
+      "itemsCount": 1,
+      "totalAmount": 287.5,
+      "deliveryType": "livraison_domicile",
+      "status": "en_attente"
+    },
+    "timestamp": "2025-11-13T15:22:43.601Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 78,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130003",
+    "details": "Commande CMD202511130003 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/72/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 72,
+      "orderNumber": "CMD202511130003",
+      "previousStatus": "en_attente",
+      "newStatus": "validee",
+      "previousTotal": 287.5,
+      "newTotal": 287.5,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T15:23:13.048Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 79,
+  "fields": {
+    "type": "success",
+    "message": "Sauvegarde de la base de données créée (JSON + Excel)",
+    "details": "JSON: backup_20251113_102456.json (0.09 MB), Excel: backup_20251113_102456.xlsx (0.01 MB)",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "json_filename": "backup_20251113_102456.json",
+      "excel_filename": "backup_20251113_102456.xlsx",
+      "json_size_mb": 0.09,
+      "excel_size_mb": 0.01,
+      "timestamp": "20251113_102456"
+    },
+    "timestamp": "2025-11-13T15:24:56.790Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 80,
+  "fields": {
+    "type": "info",
+    "message": "Téléchargement de sauvegarde: backup_20251113_102456.xlsx",
+    "details": "Utilisateur: admin@sygla-h2o.com",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "GET",
+    "endpoint": "/api/auth/database/download/backup_20251113_102456.xlsx/",
+    "status_code": 200,
+    "response_time": "0",
+    "metadata": {
+      "filename": "backup_20251113_102456.xlsx"
+    },
+    "timestamp": "2025-11-13T15:25:02.097Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 81,
+  "fields": {
+    "type": "success",
+    "message": "Commande validée: CMD202511130002",
+    "details": "Commande CMD202511130002 validée par Admin Principal",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/71/validate/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 71,
+      "orderNumber": "CMD202511130002",
+      "clientName": "Tech Ayitiiiiiiii",
+      "totalAmount": 175.0,
+      "deliveryType": "retrait_magasin"
+    },
+    "timestamp": "2025-11-13T15:38:59.270Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 82,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130002",
+    "details": "Commande CMD202511130002 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/71/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 71,
+      "orderNumber": "CMD202511130002",
+      "previousStatus": "validee",
+      "newStatus": "en_preparation",
+      "previousTotal": 175.0,
+      "newTotal": 175.0,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T15:39:16.256Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 83,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 13/11/2025 à 17:26:29",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-13T17:26:29.394614+00:00",
+      "loginTimeFormatted": "13/11/2025 à 17:26:29"
+    },
+    "timestamp": "2025-11-13T17:26:29.401Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 84,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée: CMD202511130004",
+    "details": "Commande CMD202511130004 pour Billy",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 73,
+      "orderNumber": "CMD202511130004",
+      "clientName": "Billy",
+      "itemsCount": 1,
+      "totalAmount": 9900.0,
+      "deliveryType": "retrait_magasin",
+      "status": "en_attente"
+    },
+    "timestamp": "2025-11-13T17:44:22.467Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 85,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130004",
+    "details": "Commande CMD202511130004 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/73/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 73,
+      "orderNumber": "CMD202511130004",
+      "previousStatus": "en_attente",
+      "newStatus": "validee",
+      "previousTotal": 9900.0,
+      "newTotal": 9900.0,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T17:46:25.448Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 86,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130004",
+    "details": "Commande CMD202511130004 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/73/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 73,
+      "orderNumber": "CMD202511130004",
+      "previousStatus": "validee",
+      "newStatus": "en_preparation",
+      "previousTotal": 9900.0,
+      "newTotal": 9900.0,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T17:49:34.045Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 87,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130004",
+    "details": "Commande CMD202511130004 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/73/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 73,
+      "orderNumber": "CMD202511130004",
+      "previousStatus": "en_preparation",
+      "newStatus": "en_livraison",
+      "previousTotal": 9900.0,
+      "newTotal": 9900.0,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T17:50:20.628Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 88,
+  "fields": {
+    "type": "success",
+    "message": "Commande modifiée: CMD202511130004",
+    "details": "Commande CMD202511130004 mise à jour",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "PATCH",
+    "endpoint": "/api/orders/73/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "orderId": 73,
+      "orderNumber": "CMD202511130004",
+      "previousStatus": "en_livraison",
+      "newStatus": "livree",
+      "previousTotal": 9900.0,
+      "newTotal": 9900.0,
+      "itemsCount": 1
+    },
+    "timestamp": "2025-11-13T17:51:58.484Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 89,
+  "fields": {
+    "type": "success",
+    "message": "Sauvegarde de la base de données créée (JSON + Excel)",
+    "details": "JSON: backup_20251113_125949.json (0.09 MB), Excel: backup_20251113_125949.xlsx (0.01 MB)",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "json_filename": "backup_20251113_125949.json",
+      "excel_filename": "backup_20251113_125949.xlsx",
+      "json_size_mb": 0.09,
+      "excel_size_mb": 0.01,
+      "timestamp": "20251113_125949"
+    },
+    "timestamp": "2025-11-13T17:59:50.120Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 90,
+  "fields": {
+    "type": "info",
+    "message": "Téléchargement de sauvegarde: backup_20251113_125949.xlsx",
+    "details": "Utilisateur: admin@sygla-h2o.com",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "GET",
+    "endpoint": "/api/auth/database/download/backup_20251113_125949.xlsx/",
+    "status_code": 200,
+    "response_time": "0",
+    "metadata": {
+      "filename": "backup_20251113_125949.xlsx"
+    },
+    "timestamp": "2025-11-13T18:00:21.813Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 91,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 14/11/2025 à 17:39:18",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-14T17:39:18.979357+00:00",
+      "loginTimeFormatted": "14/11/2025 à 17:39:18"
+    },
+    "timestamp": "2025-11-14T17:39:18.996Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 92,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 14/11/2025 à 18:32:28",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-14T18:32:28.658394+00:00",
+      "loginTimeFormatted": "14/11/2025 à 18:32:28"
+    },
+    "timestamp": "2025-11-14T18:32:28.660Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 93,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 14/11/2025 à 19:48:45",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-14T19:48:45.462163+00:00",
+      "loginTimeFormatted": "14/11/2025 à 19:48:45"
+    },
+    "timestamp": "2025-11-14T19:48:45.476Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 94,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 14/11/2025 à 19:48:47",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-14T19:48:47.824520+00:00",
+      "loginTimeFormatted": "14/11/2025 à 19:48:47"
+    },
+    "timestamp": "2025-11-14T19:48:47.825Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 95,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: Test Vendeur",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": 25,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 25,
+      "email": "test.vendeur@sygla-h2o.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T19:48:52.512938+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 19:48:52",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T19:48:52.513Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 96,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: Test Vendeur",
+    "details": "Accès non autorisé à cette heure. Les vendeurs peuvent se connecter du lundi au samedi de 7h00 à 18h00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 26,
+      "email": "test.vendeur.new@sygla-h2o.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T19:57:44.856770+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 19:57:44",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T19:57:44.856Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 97,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: Test Vendeur",
+    "details": "Accès non autorisé à cette heure. Les vendeurs peuvent se connecter du lundi au samedi de 7h00 à 18h00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 27,
+      "email": "test.vendeur.new@sygla-h2o.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T19:58:22.236376+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 19:58:22",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T19:58:22.236Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 98,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: Billy Amboise",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 06:00 - 20:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 24,
+      "email": "billy@gmail.com",
+      "role": "stock",
+      "attemptTime": "2025-11-14T20:03:00.865441+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:03:00",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:03:00.867Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 99,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: Billy Amboise",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 06:00 - 20:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 24,
+      "email": "billy@gmail.com",
+      "role": "stock",
+      "attemptTime": "2025-11-14T20:03:04.292415+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:03:04",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:03:04.292Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 100,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:04:45.728547+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:04:45",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:04:45.728Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 101,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:04:48.060284+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:04:48",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:04:48.060Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 102,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:04:54.141327+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:04:54",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:04:54.141Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 103,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:05:05.712206+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:05:05",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:05:05.712Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 104,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:05:08.886988+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:05:08",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:05:08.887Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 105,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:07:19.517993+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:07:19",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:07:19.518Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 106,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:07:44.318757+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:07:44",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:07:44.318Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 107,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:07:50.359658+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:07:50",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:07:50.359Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 108,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Accès autorisé de 08:00 - 18:00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:08:59.141488+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:08:59",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:08:59.141Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 109,
+  "fields": {
+    "type": "warning",
+    "message": "Tentative de connexion hors horaires: cesar@gmail.com",
+    "details": "Accès non autorisé à cette heure. Les vendeurs peuvent se connecter du lundi au samedi de 7h00 à 18h00",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 403,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "attemptTime": "2025-11-14T20:09:59.240511+00:00",
+      "attemptTimeFormatted": "14/11/2025 à 20:09:59",
+      "reason": "outside_business_hours"
+    },
+    "timestamp": "2025-11-14T20:09:59.240Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 110,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: cesar@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:10:46",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:10:46.901217+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:10:46"
+    },
+    "timestamp": "2025-11-14T20:10:46.906Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 111,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: cesar@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:17:14",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:17:14.842171+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:17:14"
+    },
+    "timestamp": "2025-11-14T20:17:14.847Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 112,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: cesar@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:45:30",
+    "user": null,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 28,
+      "email": "cesar@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:45:30.709511+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:45:30"
+    },
+    "timestamp": "2025-11-14T20:45:30.715Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 113,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: hams@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:51:07",
+    "user": 29,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 29,
+      "email": "hams@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:51:07.059203+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:51:07"
+    },
+    "timestamp": "2025-11-14T20:51:07.061Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 114,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: hams@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:53:07",
+    "user": 29,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 29,
+      "email": "hams@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:53:07.200009+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:53:07"
+    },
+    "timestamp": "2025-11-14T20:53:07.202Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 115,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: hams@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:55:02",
+    "user": 29,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 29,
+      "email": "hams@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:55:02.193625+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:55:02"
+    },
+    "timestamp": "2025-11-14T20:55:02.197Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 116,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: hams@gmail.com",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:55:57",
+    "user": 29,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 29,
+      "email": "hams@gmail.com",
+      "role": "vendeur",
+      "loginTime": "2025-11-14T20:55:57.425396+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:55:57"
+    },
+    "timestamp": "2025-11-14T20:55:57.426Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 117,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 14/11/2025 à 20:57:28",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-14T20:57:28.362335+00:00",
+      "loginTimeFormatted": "14/11/2025 à 20:57:28"
+    },
+    "timestamp": "2025-11-14T20:57:28.363Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 118,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Dlo",
+    "details": "Le produit Dlo a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/21/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 21,
+      "productName": "Dlo",
+      "price": 100.0
+    },
+    "timestamp": "2025-11-14T21:26:22.199Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 119,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Sachet 50",
+    "details": "Le produit Sachet 50 a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/7/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 7,
+      "productName": "Sachet 50",
+      "price": 250.0
+    },
+    "timestamp": "2025-11-14T21:26:25.257Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 120,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: Sachet 50",
+    "details": "Le produit Sachet 50 a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/14/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 14,
+      "productName": "Sachet 50",
+      "price": 175.0
+    },
+    "timestamp": "2025-11-14T21:26:27.941Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 121,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: rezevwa",
+    "details": "Le produit rezevwa a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/13/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 13,
+      "productName": "rezevwa",
+      "price": 10.0
+    },
+    "timestamp": "2025-11-14T21:26:29.485Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 122,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: ro",
+    "details": "Le produit ro a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/19/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 19,
+      "productName": "ro",
+      "price": 23.0
+    },
+    "timestamp": "2025-11-14T21:26:31.755Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 123,
+  "fields": {
+    "type": "warning",
+    "message": "Produit supprimé: ro",
+    "details": "Le produit ro a été supprimé du catalogue",
+    "user": 21,
+    "module": "products",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/products/20/",
+    "status_code": 204,
+    "response_time": "0ms",
+    "metadata": {
+      "productId": 20,
+      "productName": "ro",
+      "price": 23.0
+    },
+    "timestamp": "2025-11-14T21:26:33.957Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 124,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Billy",
+    "details": "Le client Billy a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/7/",
+    "status_code": 204,
+    "response_time": "16ms",
+    "metadata": {
+      "clientId": 7,
+      "clientName": "Billy"
+    },
+    "timestamp": "2025-11-14T21:27:01.963Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 125,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Laguerre Eau",
+    "details": "Le client Laguerre Eau a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/5/",
+    "status_code": 204,
+    "response_time": "16ms",
+    "metadata": {
+      "clientId": 5,
+      "clientName": "Laguerre Eau"
+    },
+    "timestamp": "2025-11-14T21:27:04.324Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 126,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Tech Ayitiiiiiiii",
+    "details": "Le client Tech Ayitiiiiiiii a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/1/",
+    "status_code": 204,
+    "response_time": "6ms",
+    "metadata": {
+      "clientId": 1,
+      "clientName": "Tech Ayitiiiiiiii"
+    },
+    "timestamp": "2025-11-14T21:27:05.878Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 127,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Thomas Multi Services",
+    "details": "Le client Thomas Multi Services a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/4/",
+    "status_code": 204,
+    "response_time": "6ms",
+    "metadata": {
+      "clientId": 4,
+      "clientName": "Thomas Multi Services"
+    },
+    "timestamp": "2025-11-14T21:27:08.141Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 128,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Woulib",
+    "details": "Le client Woulib a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/2/",
+    "status_code": 204,
+    "response_time": "15ms",
+    "metadata": {
+      "clientId": 2,
+      "clientName": "Woulib"
+    },
+    "timestamp": "2025-11-14T21:27:09.929Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 129,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: Yves Jean",
+    "details": "Le client Yves Jean a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/3/",
+    "status_code": 204,
+    "response_time": "14ms",
+    "metadata": {
+      "clientId": 3,
+      "clientName": "Yves Jean"
+    },
+    "timestamp": "2025-11-14T21:27:20.442Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 130,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: jjjjj",
+    "details": "Le client jjjjj a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/10/",
+    "status_code": 204,
+    "response_time": "15ms",
+    "metadata": {
+      "clientId": 10,
+      "clientName": "jjjjj"
+    },
+    "timestamp": "2025-11-14T21:27:22.443Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 131,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: qqqqq",
+    "details": "Le client qqqqq a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/11/",
+    "status_code": 204,
+    "response_time": "16ms",
+    "metadata": {
+      "clientId": 11,
+      "clientName": "qqqqq"
+    },
+    "timestamp": "2025-11-14T21:27:23.949Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 132,
+  "fields": {
+    "type": "warning",
+    "message": "Client supprimé: wqww",
+    "details": "Le client wqww a été supprimé du système",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "DELETE",
+    "endpoint": "/api/clients/8/",
+    "status_code": 204,
+    "response_time": "15ms",
+    "metadata": {
+      "clientId": 8,
+      "clientName": "wqww"
+    },
+    "timestamp": "2025-11-14T21:27:25.416Z"
+  }
+}
+]

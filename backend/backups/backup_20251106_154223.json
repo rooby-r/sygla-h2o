@@ -1,0 +1,1709 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2025-10-23T18:58:52.713Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "17",
+    "object_repr": "bill (Livreur)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2025-10-23T19:01:38.607Z",
+    "user": 14,
+    "content_type": 6,
+    "object_id": "17",
+    "object_repr": "bill (Vendeur)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"First name\", \"Last name\", \"Email\", \"R\\u00f4le\"]}}]"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 1,
+  "fields": {
+    "user": null,
+    "jti": "3e6376e8494b4ed88c6a1a13640cd7a5",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1NTkwNSwiaWF0IjoxNzYyNDUxMTA1LCJqdGkiOiIzZTYzNzZlODQ5NGI0ZWQ4OGM2YTFhMTM2NDBjZDdhNSIsInVzZXJfaWQiOjIxfQ.IHHDOpAGFFThJn2AEw0SoGLuoMV2D-p7U9m3kDkGf5Q",
+    "created_at": null,
+    "expires_at": "2025-11-13T17:45:05Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 2,
+  "fields": {
+    "user": 21,
+    "jti": "b94ff11f25404e5aac19cf51995beeff",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1NjE2NywiaWF0IjoxNzYyNDUxMzY3LCJqdGkiOiJiOTRmZjExZjI1NDA0ZTVhYWMxOWNmNTE5OTViZWVmZiIsInVzZXJfaWQiOjIxfQ.4j6d9qxoyoEywSiXtcqfJfwhZYKuAc5Y0sIYzj5_SCs",
+    "created_at": "2025-11-06T17:49:27.136Z",
+    "expires_at": "2025-11-13T17:49:27Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 3,
+  "fields": {
+    "user": 21,
+    "jti": "d1aeb25fe8a0439c99fd6288bfde6789",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1Njc0NiwiaWF0IjoxNzYyNDUxOTQ2LCJqdGkiOiJkMWFlYjI1ZmU4YTA0MzljOTlmZDYyODhiZmRlNjc4OSIsInVzZXJfaWQiOjIxfQ.7ZjWxFmDTZuuF-fqv4BOIxNYxfE0-4ITiNmIovCvzSE",
+    "created_at": "2025-11-06T17:59:06.795Z",
+    "expires_at": "2025-11-13T17:59:06Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 4,
+  "fields": {
+    "user": 21,
+    "jti": "433308caf3a54987a0339b0d52ac8c8a",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA1Njc3NywiaWF0IjoxNzYyNDUxOTc3LCJqdGkiOiI0MzMzMDhjYWYzYTU0OTg3YTAzMzliMGQ1MmFjOGM4YSIsInVzZXJfaWQiOjIxfQ.cPdkI_ZtoWQLrDWk9Xi2jnD-qHVuDEutIQOnJ-vd49A",
+    "created_at": "2025-11-06T17:59:37.503Z",
+    "expires_at": "2025-11-13T17:59:37Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 5,
+  "fields": {
+    "user": 21,
+    "jti": "26885f3e70ed49a59f9409386dda8bf8",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2MDM5OSwiaWF0IjoxNzYyNDU1NTk5LCJqdGkiOiIyNjg4NWYzZTcwZWQ0OWE1OWY5NDA5Mzg2ZGRhOGJmOCIsInVzZXJfaWQiOjIxfQ.TXWaAQ-9Q1eDgibe9pbTWttuIa3n8Pc2nl610g_HqlA",
+    "created_at": "2025-11-06T18:59:59.322Z",
+    "expires_at": "2025-11-13T18:59:59Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 6,
+  "fields": {
+    "user": 21,
+    "jti": "ccca54b37f8f46cca138fb5dc2f78dc9",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2NDI3NiwiaWF0IjoxNzYyNDU5NDc2LCJqdGkiOiJjY2NhNTRiMzdmOGY0NmNjYTEzOGZiNWRjMmY3OGRjOSIsInVzZXJfaWQiOjIxfQ.nbPuhyIFlGfyUfzghEsYJBTN6y60XkJ1aNUhKaBC45s",
+    "created_at": "2025-11-06T20:04:36.054Z",
+    "expires_at": "2025-11-13T20:04:36Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 7,
+  "fields": {
+    "user": 21,
+    "jti": "d0b3d581b3804db3a171371a5f89707d",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2NDUzNSwiaWF0IjoxNzYyNDU5NzM1LCJqdGkiOiJkMGIzZDU4MWIzODA0ZGIzYTE3MTM3MWE1Zjg5NzA3ZCIsInVzZXJfaWQiOjIxfQ.YqqoVWGq3VPH21ZWniYdea0uLSz4i06HFvOZaTsBYcQ",
+    "created_at": "2025-11-06T20:08:55.404Z",
+    "expires_at": "2025-11-13T20:08:55Z"
+  }
+},
+{
+  "model": "token_blacklist.outstandingtoken",
+  "pk": 8,
+  "fields": {
+    "user": 21,
+    "jti": "db93cdad2439403a908b5ed42bc7a4f6",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc2MzA2NDc0OSwiaWF0IjoxNzYyNDU5OTQ5LCJqdGkiOiJkYjkzY2RhZDI0Mzk0MDNhOTA4YjVlZDQyYmM3YTRmNiIsInVzZXJfaWQiOjIxfQ.OhgLtdaF7UwiqGRF0591J6_o3DmrYSDerdDFdVpqtvU",
+    "created_at": "2025-11-06T20:12:29.855Z",
+    "expires_at": "2025-11-13T20:12:29Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 1,
+  "fields": {
+    "token": 1,
+    "blacklisted_at": "2025-11-06T17:49:21.327Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 2,
+  "fields": {
+    "token": 2,
+    "blacklisted_at": "2025-11-06T17:58:57.154Z"
+  }
+},
+{
+  "model": "token_blacklist.blacklistedtoken",
+  "pk": 3,
+  "fields": {
+    "token": 3,
+    "blacklisted_at": "2025-11-06T17:59:30.358Z"
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$hc4D8p93KLPBiye9HgRjmt$Uoq92+KI370+lfN3LISotGrCAO0YXZuav5xkF0wpJUA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vendeur",
+    "first_name": "Jean",
+    "last_name": "Vendeur",
+    "is_staff": false,
+    "date_joined": "2025-10-14T17:16:31.845Z",
+    "email": "vendeur@sygla-h2o.com",
+    "role": "vendeur",
+    "telephone": "+509 2222 2222",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-10-14T17:16:32.104Z",
+    "date_modification": "2025-11-02T01:49:24.044Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$wNyeqllYgVc8DYZkpFpILg$R7OmPgOUTbDhPEWBiaSerHx5d7sVfsAypx9Vww5WoCw=",
+    "last_login": "2025-10-23T18:57:44.956Z",
+    "is_superuser": true,
+    "username": "Rooby",
+    "first_name": "Rooby",
+    "last_name": "Jean Charles",
+    "is_staff": true,
+    "date_joined": "2025-10-14T17:30:16Z",
+    "email": "roobyjeancharles7@gmail.com",
+    "role": "admin",
+    "telephone": "+50934599265",
+    "adresse": "",
+    "date_creation": "2025-10-14T17:30:16.548Z",
+    "date_modification": "2025-10-26T11:40:23.280Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 16,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$bllJTopjirqlhdVDTUVcRX$ymnkX1hvJ3avg1kcjCoU48w8rmVIkHqtT1BXT/MxvcU=",
+    "last_login": "2025-10-21T14:13:29.354Z",
+    "is_superuser": true,
+    "username": "Phara",
+    "first_name": "",
+    "last_name": "",
+    "is_staff": true,
+    "date_joined": "2025-10-21T14:11:38.571Z",
+    "email": "noelphara52@gmail.com",
+    "role": "vendeur",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-10-21T14:11:38.850Z",
+    "date_modification": "2025-10-21T14:11:38.850Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 17,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$NhhxAXhfTaf17AEk0qAy9Z$2KiZ/uRas3BDzYFhvgpEH+tnHnnoeIULMhhif74Ky7M=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "bill",
+    "first_name": "Bill",
+    "last_name": "Amboise",
+    "is_staff": false,
+    "date_joined": "2025-10-23T18:58:52Z",
+    "email": "bill@gmail.com",
+    "role": "vendeur",
+    "telephone": "+50949051464",
+    "adresse": "eryruiii",
+    "date_creation": "2025-10-23T18:58:52.709Z",
+    "date_modification": "2025-10-23T19:01:38.602Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 18,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$fXTHEL9kn4VeI1rrGWhupP$M6zZIRgSdRjBznW0xUm62JxXtoUnxRz86J1UhU2S0EA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "test",
+    "first_name": "Test",
+    "last_name": "User",
+    "is_staff": false,
+    "date_joined": "2025-10-24T22:35:10.266Z",
+    "email": "test@sygla-h2o.com",
+    "role": "vendeur",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-10-24T22:35:10.995Z",
+    "date_modification": "2025-10-24T22:35:10.995Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 19,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$8wxb25TRBJ0poSDClogBw1$ZOUOTvE1FIuHoznJYXb760AmDonwkUstViLdD9wF7b4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "livreur_test",
+    "first_name": "Pierre",
+    "last_name": "Livreur",
+    "is_staff": false,
+    "date_joined": "2025-10-24T22:44:09.700Z",
+    "email": "livreur@sygla-h2o.com",
+    "role": "livreur",
+    "telephone": "+509 4444 4444",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-10-24T22:44:10.209Z",
+    "date_modification": "2025-11-02T01:49:24.916Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 20,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$1oJxXGogR87GWPjggWMMEA$Q5qalyfTgTFsPDM2EpxIqaJ7FGi4gWR3Vk1Cm1lquas=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "",
+    "first_name": "Test",
+    "last_name": "User",
+    "is_staff": false,
+    "date_joined": "2025-10-26T11:46:45.315Z",
+    "email": "test@test.com",
+    "role": "admin",
+    "telephone": "",
+    "adresse": "",
+    "date_creation": "2025-10-26T11:46:45.315Z",
+    "date_modification": "2025-10-26T11:46:45.676Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 21,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$lOyJ9QJpMThbwBMGZHxHW8$fcDvIPogQ134lmzo1kJr6P6sX+awqAo+Iah5ns2CqRw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin",
+    "first_name": "Admin",
+    "last_name": "Principal",
+    "is_staff": false,
+    "date_joined": "2025-11-02T01:14:40.763Z",
+    "email": "admin@sygla-h2o.com",
+    "role": "admin",
+    "telephone": "+509 1111 1111",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-11-02T01:14:40.765Z",
+    "date_modification": "2025-11-06T17:38:01.794Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.user",
+  "pk": 22,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$k4k1kA6qHq2Entdpokbl7T$vC6yzxE56kRNPENF/reM0COFjaVTwwpDH9Ix0lujR1o=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "stock",
+    "first_name": "Marie",
+    "last_name": "Stock",
+    "is_staff": false,
+    "date_joined": "2025-11-02T01:49:24.051Z",
+    "email": "stock@sygla-h2o.com",
+    "role": "stock",
+    "telephone": "+509 3333 3333",
+    "adresse": "Port-au-Prince",
+    "date_creation": "2025-11-02T01:49:24.449Z",
+    "date_modification": "2025-11-02T01:49:24.449Z",
+    "is_active": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "authentication.businesshoursconfig",
+  "pk": 1,
+  "fields": {
+    "role": "vendeur",
+    "enabled": true,
+    "start_hour": 8,
+    "start_minute": 0,
+    "end_hour": 18,
+    "end_minute": 0,
+    "allowed_days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "created_at": "2025-11-06T18:32:59.939Z",
+    "updated_at": "2025-11-06T19:00:47.496Z"
+  }
+},
+{
+  "model": "authentication.businesshoursconfig",
+  "pk": 2,
+  "fields": {
+    "role": "stock",
+    "enabled": true,
+    "start_hour": 6,
+    "start_minute": 0,
+    "end_hour": 20,
+    "end_minute": 0,
+    "allowed_days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "created_at": "2025-11-06T18:32:59.952Z",
+    "updated_at": "2025-11-06T18:32:59.952Z"
+  }
+},
+{
+  "model": "authentication.businesshoursconfig",
+  "pk": 3,
+  "fields": {
+    "role": "livreur",
+    "enabled": true,
+    "start_hour": 5,
+    "start_minute": 0,
+    "end_hour": 21,
+    "end_minute": 0,
+    "allowed_days": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "created_at": "2025-11-06T18:32:59.960Z",
+    "updated_at": "2025-11-06T18:32:59.960Z"
+  }
+},
+{
+  "model": "authentication.securitysettings",
+  "pk": 1,
+  "fields": {
+    "session_timeout": 30,
+    "max_login_attempts": 5,
+    "lockout_duration": 15,
+    "password_min_length": 8,
+    "require_uppercase": true,
+    "require_lowercase": true,
+    "require_numbers": true,
+    "require_special_chars": false,
+    "jwt_access_token_lifetime": 60,
+    "jwt_refresh_token_lifetime": 1440,
+    "enable_two_factor": false,
+    "force_password_change": 0,
+    "updated_at": "2025-11-06T19:11:43.005Z",
+    "updated_by": null
+  }
+},
+{
+  "model": "authentication.notificationpreferences",
+  "pk": 1,
+  "fields": {
+    "user": 21,
+    "notify_client_created": true,
+    "notify_order_created": true,
+    "notify_order_validated": true,
+    "notify_delivery_assigned": true,
+    "notify_delivery_completed": true,
+    "notify_stock_low": true,
+    "notify_stock_updated": false,
+    "notify_system_errors": true,
+    "notify_security_alerts": true,
+    "notify_daily_report": false,
+    "notify_weekly_report": false,
+    "notify_monthly_report": false,
+    "enable_email_notifications": true,
+    "enable_browser_notifications": true,
+    "created_at": "2025-11-06T19:28:38.439Z",
+    "updated_at": "2025-11-06T19:28:38.440Z"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 1,
+  "fields": {
+    "nom_commercial": "Tech Ayitiiiiiiii",
+    "raison_sociale": "Tech Ayitiiiiiiii",
+    "telephone": "+50934599265",
+    "adresse": "789 Boulevard Harry Truman, Bicentenaire, Port-au-Prince, Haïti",
+    "contact": "Tech Ayiti",
+    "email": "techayiti@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-10-14T18:09:29.918Z",
+    "date_modification": "2025-10-24T22:58:04.768Z",
+    "is_active": true,
+    "notes": "Tech Ayiti"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 2,
+  "fields": {
+    "nom_commercial": "Woulib",
+    "raison_sociale": "Woulib",
+    "telephone": "+50934596589",
+    "adresse": "654 Avenue Christophe, Cap-Haïtien, Haïti",
+    "contact": "Woulib",
+    "email": "woulib@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-10-14T18:15:02.674Z",
+    "date_modification": "2025-10-24T22:58:04.785Z",
+    "is_active": true,
+    "notes": "Woulib"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 3,
+  "fields": {
+    "nom_commercial": "Yves Jean",
+    "raison_sociale": "Yves Jean",
+    "telephone": "+50948562358",
+    "adresse": "987 Rue des Casernes, Jacmel, Sud-Est, Haïti",
+    "contact": "Yves Jean",
+    "email": "jean@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-10-14T18:47:32.829Z",
+    "date_modification": "2025-10-24T22:58:04.796Z",
+    "is_active": true,
+    "notes": "Yves Jean"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 4,
+  "fields": {
+    "nom_commercial": "Thomas Multi Services",
+    "raison_sociale": "Thomas Multi Services",
+    "telephone": "+50422336514",
+    "adresse": "321 Rue Panamericaine, Carrefour, Port-au-Prince, Haïti",
+    "contact": "Thomas Multi Services",
+    "email": "thomas@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-10-14T21:50:33.021Z",
+    "date_modification": "2025-10-24T22:58:04.776Z",
+    "is_active": true,
+    "notes": "Thomas Multi Services"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 5,
+  "fields": {
+    "nom_commercial": "Laguerre Eau",
+    "raison_sociale": "Laguerre Eau",
+    "telephone": "+50933333333",
+    "adresse": "456 Avenue Jean-Paul II, Delmas 33, Port-au-Prince, Haïti",
+    "contact": "Laguerre Eau",
+    "email": "suzee@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-10-21T14:29:35.661Z",
+    "date_modification": "2025-10-24T22:58:04.758Z",
+    "is_active": true,
+    "notes": "Laguerre Eau"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 7,
+  "fields": {
+    "nom_commercial": "Billy",
+    "raison_sociale": "Billy",
+    "telephone": "+50945214521",
+    "adresse": "123 Rue Lamarre, Pétion-Ville, Port-au-Prince, Haïti",
+    "contact": "Bill",
+    "email": "bill@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-10-23T18:07:50.441Z",
+    "date_modification": "2025-10-24T22:58:04.748Z",
+    "is_active": true,
+    "notes": "Bill"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 8,
+  "fields": {
+    "nom_commercial": "wqww",
+    "raison_sociale": "wqww",
+    "telephone": "+50945871235",
+    "adresse": "wqww",
+    "contact": "wqww",
+    "email": "wqww@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-11-02T02:48:32.390Z",
+    "date_modification": "2025-11-02T02:48:32.391Z",
+    "is_active": true,
+    "notes": "wqww"
+  }
+},
+{
+  "model": "clients.client",
+  "pk": 9,
+  "fields": {
+    "nom_commercial": "Bigo",
+    "raison_sociale": "Bigo",
+    "telephone": "+509458796521",
+    "adresse": "Bigo",
+    "contact": "Bigo",
+    "email": "bigo@gmail.com",
+    "credit_limite": "0.00",
+    "credit_utilise": "0.00",
+    "date_creation": "2025-11-06T18:00:40.707Z",
+    "date_modification": "2025-11-06T18:00:40.707Z",
+    "is_active": true,
+    "notes": "Bigo"
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 6,
+  "fields": {
+    "nom": "Glace Premium Test",
+    "code_produit": "PROD-42698",
+    "description": "Produit créé pour tester la nouvelle page",
+    "type_produit": "glace",
+    "unite_mesure": "bloc",
+    "prix_unitaire": "85.00",
+    "stock_actuel": 25,
+    "stock_minimal": 5,
+    "date_creation": "2025-10-09T20:59:08.548Z",
+    "date_modification": "2025-10-21T20:00:56.684Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 7,
+  "fields": {
+    "nom": "Sachet 50",
+    "code_produit": "PROD-55994",
+    "description": "",
+    "type_produit": "eau",
+    "unite_mesure": "sachet",
+    "prix_unitaire": "250.00",
+    "stock_actuel": 98,
+    "stock_minimal": 10,
+    "date_creation": "2025-10-09T21:03:13.138Z",
+    "date_modification": "2025-10-21T20:00:56.697Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 11,
+  "fields": {
+    "nom": "Glace en Bloc 10kg",
+    "code_produit": "PROD-25312",
+    "description": "Bloc de glace de 10 kilogrammes",
+    "type_produit": "Glace",
+    "unite_mesure": "Bloc",
+    "prix_unitaire": "75.00",
+    "stock_actuel": 30,
+    "stock_minimal": 10,
+    "date_creation": "2025-10-14T17:18:58.988Z",
+    "date_modification": "2025-10-21T20:00:56.690Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 12,
+  "fields": {
+    "nom": "Glace en Cubes 5kg",
+    "code_produit": "PROD-52179",
+    "description": "Sac de glaçons de 5 kilogrammes",
+    "type_produit": "Glace",
+    "unite_mesure": "Sac",
+    "prix_unitaire": "60.00",
+    "stock_actuel": 39,
+    "stock_minimal": 10,
+    "date_creation": "2025-10-14T17:18:58.995Z",
+    "date_modification": "2025-10-21T20:00:56.693Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 13,
+  "fields": {
+    "nom": "rezevwa",
+    "code_produit": "PROD-20362",
+    "description": "djjddjvf",
+    "type_produit": "bokit",
+    "unite_mesure": "5 galon",
+    "prix_unitaire": "10.00",
+    "stock_actuel": 99,
+    "stock_minimal": 10,
+    "date_creation": "2025-10-14T18:17:12.829Z",
+    "date_modification": "2025-10-21T20:00:56.707Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 14,
+  "fields": {
+    "nom": "Sachet 50",
+    "code_produit": "PROD-16345",
+    "description": "",
+    "type_produit": "eau",
+    "unite_mesure": "kg",
+    "prix_unitaire": "175.00",
+    "stock_actuel": 5,
+    "stock_minimal": 10,
+    "date_creation": "2025-10-15T16:59:31.787Z",
+    "date_modification": "2025-10-21T20:00:56.701Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 15,
+  "fields": {
+    "nom": "Bidon",
+    "code_produit": "PROD-48364",
+    "description": "",
+    "type_produit": "eau",
+    "unite_mesure": "litre",
+    "prix_unitaire": "50.00",
+    "stock_actuel": 100,
+    "stock_minimal": 20,
+    "date_creation": "2025-10-21T21:06:15.443Z",
+    "date_modification": "2025-10-23T18:13:21.930Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 16,
+  "fields": {
+    "nom": "Eau Potable Premium",
+    "code_produit": "PROD-51210",
+    "description": "Eau potable de haute qualité",
+    "type_produit": "eau",
+    "unite_mesure": "litre",
+    "prix_unitaire": "25.00",
+    "stock_actuel": 1000,
+    "stock_minimal": 50,
+    "date_creation": "2025-10-23T03:33:22.667Z",
+    "date_modification": "2025-10-23T03:33:22.667Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.produit",
+  "pk": 17,
+  "fields": {
+    "nom": "Chato dlo 50",
+    "code_produit": "PROD-55963",
+    "description": "",
+    "type_produit": "eau",
+    "unite_mesure": "litre",
+    "prix_unitaire": "3500.00",
+    "stock_actuel": 100,
+    "stock_minimal": 10,
+    "date_creation": "2025-10-23T18:25:30.946Z",
+    "date_modification": "2025-10-23T18:25:30.946Z",
+    "is_active": true
+  }
+},
+{
+  "model": "products.mouvementstock",
+  "pk": 2,
+  "fields": {
+    "produit": 12,
+    "type_mouvement": "sortie",
+    "quantite": 1,
+    "stock_avant": 39,
+    "stock_apres": 39,
+    "motif": "Commande CMD202510140003",
+    "utilisateur": null,
+    "date_creation": "2025-10-14T22:15:50.864Z",
+    "numero_document": ""
+  }
+},
+{
+  "model": "products.mouvementstock",
+  "pk": 3,
+  "fields": {
+    "produit": 7,
+    "type_mouvement": "sortie",
+    "quantite": 1,
+    "stock_avant": 99,
+    "stock_apres": 99,
+    "motif": "Commande CMD202510140003",
+    "utilisateur": null,
+    "date_creation": "2025-10-14T22:15:50.883Z",
+    "numero_document": ""
+  }
+},
+{
+  "model": "products.mouvementstock",
+  "pk": 6,
+  "fields": {
+    "produit": 7,
+    "type_mouvement": "sortie",
+    "quantite": 1,
+    "stock_avant": 98,
+    "stock_apres": 98,
+    "motif": "Commande CMD202510140002",
+    "utilisateur": null,
+    "date_creation": "2025-10-14T22:19:29.866Z",
+    "numero_document": ""
+  }
+},
+{
+  "model": "products.mouvementstock",
+  "pk": 10,
+  "fields": {
+    "produit": 13,
+    "type_mouvement": "sortie",
+    "quantite": 1,
+    "stock_avant": 99,
+    "stock_apres": 99,
+    "motif": "Commande CMD202510140003",
+    "utilisateur": null,
+    "date_creation": "2025-10-14T23:07:38.105Z",
+    "numero_document": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 45,
+  "fields": {
+    "numero_commande": "CMD202510250001",
+    "client": 7,
+    "vendeur": 14,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "3500.00",
+    "frais_livraison": "525.00",
+    "montant_total": "4025.00",
+    "type_livraison": "livraison_domicile",
+    "date_creation": "2025-10-25T12:13:52.322Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 46,
+  "fields": {
+    "numero_commande": "CMD202510250002",
+    "client": 5,
+    "vendeur": 14,
+    "livreur": null,
+    "statut": "en_livraison",
+    "montant_produits": "50.00",
+    "frais_livraison": "0.00",
+    "montant_total": "50.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-10-25T12:15:12.436Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 47,
+  "fields": {
+    "numero_commande": "CMD202510250003",
+    "client": 1,
+    "vendeur": 14,
+    "livreur": null,
+    "statut": "validee",
+    "montant_produits": "85.00",
+    "frais_livraison": "12.75",
+    "montant_total": "97.75",
+    "type_livraison": "livraison_domicile",
+    "date_creation": "2025-10-25T12:17:23.027Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 48,
+  "fields": {
+    "numero_commande": "CMD202510250004",
+    "client": 4,
+    "vendeur": 14,
+    "livreur": null,
+    "statut": "en_livraison",
+    "montant_produits": "75.00",
+    "frais_livraison": "11.25",
+    "montant_total": "86.25",
+    "type_livraison": "livraison_domicile",
+    "date_creation": "2025-10-25T12:17:46.915Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 49,
+  "fields": {
+    "numero_commande": "TEST-1762047167-0",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1000.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:32:47.639Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 50,
+  "fields": {
+    "numero_commande": "TEST-1762047167-1",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1200.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:32:47.646Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 51,
+  "fields": {
+    "numero_commande": "TEST-1762047167-2",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1400.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:32:47.652Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 52,
+  "fields": {
+    "numero_commande": "TEST-1762047167-3",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1600.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:32:47.664Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 53,
+  "fields": {
+    "numero_commande": "TEST-1762047167-4",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1800.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:32:47.672Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 54,
+  "fields": {
+    "numero_commande": "TEST-1762047202-0",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1000.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:33:22.517Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 55,
+  "fields": {
+    "numero_commande": "TEST-1762047202-1",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1200.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:33:22.522Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 56,
+  "fields": {
+    "numero_commande": "TEST-1762047202-2",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1400.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:33:22.528Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 57,
+  "fields": {
+    "numero_commande": "TEST-1762047202-3",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1600.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:33:22.532Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.commande",
+  "pk": 58,
+  "fields": {
+    "numero_commande": "TEST-1762047202-4",
+    "client": 7,
+    "vendeur": null,
+    "livreur": null,
+    "statut": "livree",
+    "montant_produits": "0.00",
+    "frais_livraison": "0.00",
+    "montant_total": "1800.00",
+    "type_livraison": "retrait_magasin",
+    "date_creation": "2025-11-02T01:33:22.538Z",
+    "date_validation": null,
+    "date_livraison_prevue": null,
+    "date_livraison_effective": null,
+    "adresse_livraison": "",
+    "instructions_livraison": "",
+    "notes": ""
+  }
+},
+{
+  "model": "orders.itemcommande",
+  "pk": 64,
+  "fields": {
+    "commande": 45,
+    "produit": 17,
+    "quantite": 1,
+    "prix_unitaire": "3500.00",
+    "sous_total": "3500.00"
+  }
+},
+{
+  "model": "orders.itemcommande",
+  "pk": 65,
+  "fields": {
+    "commande": 46,
+    "produit": 15,
+    "quantite": 1,
+    "prix_unitaire": "50.00",
+    "sous_total": "50.00"
+  }
+},
+{
+  "model": "orders.itemcommande",
+  "pk": 66,
+  "fields": {
+    "commande": 47,
+    "produit": 6,
+    "quantite": 1,
+    "prix_unitaire": "85.00",
+    "sous_total": "85.00"
+  }
+},
+{
+  "model": "orders.itemcommande",
+  "pk": 67,
+  "fields": {
+    "commande": 48,
+    "produit": 11,
+    "quantite": 1,
+    "prix_unitaire": "75.00",
+    "sous_total": "75.00"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 1,
+  "fields": {
+    "type": "success",
+    "message": "Nouvelle commande créée #CMD-001",
+    "details": "Commande de 50 bidons d'eau pour Client A",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/orders/",
+    "status_code": 201,
+    "response_time": "145ms",
+    "metadata": {
+      "orderId": "CMD-001",
+      "clientId": 1,
+      "clientName": "Client A",
+      "totalAmount": 2500,
+      "itemsCount": 50,
+      "productName": "Eau Potable 20L"
+    },
+    "timestamp": "2025-11-02T02:38:53.085Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 2,
+  "fields": {
+    "type": "info",
+    "message": "Connexion utilisateur réussie",
+    "details": "Connexion depuis 192.168.1.100",
+    "user": 13,
+    "module": "authentication",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "89ms",
+    "metadata": {
+      "sessionId": "sess_abc123",
+      "role": "vendeur",
+      "lastLogin": "2025-10-31T21:38:53.085179"
+    },
+    "timestamp": "2025-11-02T02:38:53.090Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 3,
+  "fields": {
+    "type": "warning",
+    "message": "Stock faible détecté pour Eau Potable 20L",
+    "details": "Quantité restante: 5 unités",
+    "user": null,
+    "module": "stock",
+    "ip_address": "system",
+    "user_agent": "System Alert",
+    "request_method": "SYSTEM",
+    "endpoint": "/internal/stock/check",
+    "status_code": 200,
+    "response_time": "12ms",
+    "metadata": {
+      "productId": 1,
+      "productName": "Eau Potable 20L",
+      "currentStock": 5,
+      "minimumStock": 10,
+      "alertLevel": "warning"
+    },
+    "timestamp": "2025-11-02T02:38:53.095Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 4,
+  "fields": {
+    "type": "success",
+    "message": "Client modifié: Entreprise ABC",
+    "details": "Mise à jour des informations de contact",
+    "user": 13,
+    "module": "clients",
+    "ip_address": "192.168.1.105",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "PUT",
+    "endpoint": "/api/clients/3/",
+    "status_code": 200,
+    "response_time": "234ms",
+    "metadata": {
+      "clientId": 3,
+      "clientName": "Entreprise ABC",
+      "fieldsUpdated": [
+        "telephone",
+        "email",
+        "adresse"
+      ],
+      "previousPhone": "+509 1234 5678",
+      "newPhone": "+509 8765 4321"
+    },
+    "timestamp": "2025-11-02T02:38:53.100Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 5,
+  "fields": {
+    "type": "error",
+    "message": "Échec de validation de commande #CMD-002",
+    "details": "Stock insuffisant pour le produit demandé",
+    "user": 21,
+    "module": "orders",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/orders/2/validate/",
+    "status_code": 400,
+    "response_time": "98ms",
+    "metadata": {
+      "orderId": "CMD-002",
+      "productId": 2,
+      "productName": "Glace 10kg",
+      "requestedQuantity": 100,
+      "availableQuantity": 50,
+      "errorCode": "INSUFFICIENT_STOCK"
+    },
+    "timestamp": "2025-11-02T02:38:53.105Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 6,
+  "fields": {
+    "type": "success",
+    "message": "Livraison complétée #LIV-001",
+    "details": "Livraison effectuée à Port-au-Prince",
+    "user": 19,
+    "module": "deliveries",
+    "ip_address": "192.168.1.110",
+    "user_agent": "Mozilla/5.0 (Android 11; Mobile) AppleWebKit/537.36",
+    "request_method": "PATCH",
+    "endpoint": "/api/deliveries/1/complete/",
+    "status_code": 200,
+    "response_time": "167ms",
+    "metadata": {
+      "deliveryId": "LIV-001",
+      "orderId": "CMD-001",
+      "deliveryAddress": "123 Rue de la Paix, Port-au-Prince",
+      "deliveryTime": "2025-11-01T20:08:53.085210",
+      "signature": "received",
+      "gpsCoordinates": "18.5944, -72.3074"
+    },
+    "timestamp": "2025-11-02T02:38:53.111Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 7,
+  "fields": {
+    "type": "info",
+    "message": "Nouveau produit ajouté: Glace 5kg",
+    "details": "Prix: 150 HTG, Stock initial: 100",
+    "user": 22,
+    "module": "products",
+    "ip_address": "192.168.1.108",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "POST",
+    "endpoint": "/api/products/",
+    "status_code": 201,
+    "response_time": "203ms",
+    "metadata": {
+      "productId": 10,
+      "productName": "Glace 5kg",
+      "category": "Glace",
+      "price": 150,
+      "initialStock": 100,
+      "unit": "kg"
+    },
+    "timestamp": "2025-11-02T02:38:53.116Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 8,
+  "fields": {
+    "type": "success",
+    "message": "Rapport généré et exporté en PDF",
+    "details": "Rapport mensuel des ventes",
+    "user": 21,
+    "module": "reports",
+    "ip_address": "192.168.1.100",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+    "request_method": "GET",
+    "endpoint": "/api/reports/export-pdf/",
+    "status_code": 200,
+    "response_time": "2.3s",
+    "metadata": {
+      "reportType": "monthly_sales",
+      "period": "October 2025",
+      "totalOrders": 45,
+      "totalRevenue": 125000,
+      "fileSize": "234 KB",
+      "format": "PDF"
+    },
+    "timestamp": "2025-11-02T02:38:53.122Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 9,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté avec succès",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin"
+    },
+    "timestamp": "2025-11-06T17:38:23.345Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 10,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté avec succès",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin"
+    },
+    "timestamp": "2025-11-06T17:41:14.139Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 11,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:45:05",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:45:05.733574+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:45:05"
+    },
+    "timestamp": "2025-11-06T17:45:05.741Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 12,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:49:27",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:49:27.144409+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:49:27"
+    },
+    "timestamp": "2025-11-06T17:49:27.167Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 13,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:59:06",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:59:06.810155+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:59:06"
+    },
+    "timestamp": "2025-11-06T17:59:06.820Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 14,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 17:59:37",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T17:59:37.510402+00:00",
+      "loginTimeFormatted": "06/11/2025 à 17:59:37"
+    },
+    "timestamp": "2025-11-06T17:59:37.512Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 15,
+  "fields": {
+    "type": "success",
+    "message": "Nouveau client créé: Bigo",
+    "details": "Client Bigo ajouté avec succès",
+    "user": 21,
+    "module": "clients",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/clients/",
+    "status_code": 201,
+    "response_time": "18ms",
+    "metadata": {
+      "clientId": 9,
+      "clientName": "Bigo",
+      "telephone": "+509458796521",
+      "email": "bigo@gmail.com"
+    },
+    "timestamp": "2025-11-06T18:00:40.717Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 16,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 18:59:59",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T18:59:59.337640+00:00",
+      "loginTimeFormatted": "06/11/2025 à 18:59:59"
+    },
+    "timestamp": "2025-11-06T18:59:59.340Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 17,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 20:04:36",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T20:04:36.349206+00:00",
+      "loginTimeFormatted": "06/11/2025 à 20:04:36"
+    },
+    "timestamp": "2025-11-06T20:04:36.383Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 18,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 20:08:55",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T20:08:55.418166+00:00",
+      "loginTimeFormatted": "06/11/2025 à 20:08:55"
+    },
+    "timestamp": "2025-11-06T20:08:55.426Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 19,
+  "fields": {
+    "type": "success",
+    "message": "Connexion réussie: Admin Principal",
+    "details": "Utilisateur connecté le 06/11/2025 à 20:12:29",
+    "user": 21,
+    "module": "authentication",
+    "ip_address": "127.0.0.1",
+    "user_agent": "python-requests/2.32.5",
+    "request_method": "POST",
+    "endpoint": "/api/auth/login/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "userId": 21,
+      "email": "admin@sygla-h2o.com",
+      "role": "admin",
+      "loginTime": "2025-11-06T20:12:29.876239+00:00",
+      "loginTimeFormatted": "06/11/2025 à 20:12:29"
+    },
+    "timestamp": "2025-11-06T20:12:29.882Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 20,
+  "fields": {
+    "type": "success",
+    "message": "Sauvegarde de la base de données créée",
+    "details": "Fichier: backup_20251106_151955.json (0.04 MB)",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 200,
+    "response_time": "0ms",
+    "metadata": {
+      "backup_filename": "backup_20251106_151955.json",
+      "backup_size_mb": 0.04,
+      "timestamp": "20251106_151955"
+    },
+    "timestamp": "2025-11-06T20:19:55.445Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 21,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Client' object has no attribute 'nom_entreprise'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Client' object has no attribute 'nom_entreprise'"
+    },
+    "timestamp": "2025-11-06T20:35:03.774Z"
+  }
+},
+{
+  "model": "logs.systemlog",
+  "pk": 22,
+  "fields": {
+    "type": "error",
+    "message": "Erreur lors de la création de la sauvegarde",
+    "details": "'Client' object has no attribute 'nom_entreprise'",
+    "user": 21,
+    "module": "database",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0",
+    "request_method": "POST",
+    "endpoint": "/api/auth/database/backup/",
+    "status_code": 500,
+    "response_time": "0ms",
+    "metadata": {
+      "error": "'Client' object has no attribute 'nom_entreprise'"
+    },
+    "timestamp": "2025-11-06T20:35:14.477Z"
+  }
+}
+]
