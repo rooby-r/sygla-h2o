@@ -280,7 +280,7 @@ const LoginPage = () => {
           variants={itemVariants}
         >
           <p className="text-xs text-dark-500">
-            SYGLA-H2O v1.0.0 - © 2024
+            SYGLA-H2O v1.1.0 - © 2025
           </p>
         </motion.div>
       </motion.div>
