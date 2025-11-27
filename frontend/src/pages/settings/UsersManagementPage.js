@@ -52,10 +52,15 @@ const UsersManagementPage = () => {
     try {
       setLoading(true);
       const response = await api.get('/auth/users/');
-      setUsers(response.data);
+      console.log('📦 Réponse API users:', response.data);
+      
+      // S'assurer que response.data est un tableau
+      const usersData = Array.isArray(response.data) ? response.data : [];
+      setUsers(usersData);
     } catch (error) {
       console.error('Erreur lors du chargement des utilisateurs:', error);
       toast.error('Erreur lors du chargement des utilisateurs');
+      setUsers([]); // Initialiser avec un tableau vide en cas d'erreur
     } finally {
       setLoading(false);
     }
@@ -189,12 +194,13 @@ const UsersManagementPage = () => {
     return roles.find(r => r.value === role) || roles[1];
   };
 
-  const filteredUsers = users.filter(user =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  // S'assurer que users est toujours un tableau avant de filtrer
+  const filteredUsers = Array.isArray(users) ? users.filter(user =>
+    user.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.last_name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  ) : [];
 
   return (
     <div className="space-y-6">
