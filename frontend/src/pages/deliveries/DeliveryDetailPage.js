@@ -13,7 +13,8 @@ import {
   Mail,
   CheckCircle,
   AlertCircle,
-  Navigation
+  Navigation,
+  MessageSquare
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { deliveryService } from '../../services/api.js';
@@ -97,6 +98,63 @@ const DeliveryDetailPage = () => {
       hour: '2-digit', 
       minute: '2-digit' 
     });
+  };
+
+  const handleContactClient = () => {
+    console.log('🔔 Bouton Contacter le client cliqué');
+    console.log('📦 Delivery data:', delivery);
+    console.log('👤 Client data:', delivery?.client);
+    
+    if (!delivery?.client?.telephone || delivery.client.telephone === 'Non spécifié') {
+      console.log('❌ Pas de numéro de téléphone');
+      toast.error('Aucun numéro de téléphone pour ce client');
+      return;
+    }
+
+    const phoneNumber = delivery.client.telephone.replace(/[^0-9]/g, '');
+    console.log('📱 Numéro formaté:', phoneNumber);
+    
+    if (!phoneNumber || phoneNumber.length < 8) {
+      toast.error('Numéro de téléphone invalide');
+      return;
+    }
+    
+    // Message personnalisé
+    const clientName = delivery.client.nom || delivery.client.contact || 'Client';
+    const message = `Bonjour ${clientName},
+
+Concernant votre livraison #${delivery.numero_livraison}:
+- Commande: ${delivery.numero_commande}
+- Statut: ${getStatusLabel(delivery.statut)}
+- Date prévue: ${formatDate(delivery.date_livraison)}
+${delivery.livreur !== 'Non assigné' ? `- Livreur: ${delivery.livreur}` : ''}
+
+Merci de votre confiance.
+SYGLA-H2O`;
+    
+    console.log('💬 Message préparé:', message);
+    
+    // Créer un menu pour choisir WhatsApp ou SMS
+    const choice = window.confirm('Choisir le moyen de contact:\n\nOK = WhatsApp\nAnnuler = SMS');
+    console.log('✅ Choix utilisateur:', choice ? 'WhatsApp' : 'SMS');
+    
+    if (choice) {
+      // WhatsApp - format international sans le +
+      let whatsappNumber = phoneNumber;
+      if (!phoneNumber.startsWith('509')) {
+        whatsappNumber = '509' + phoneNumber; // Ajouter le code pays Haïti
+      }
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      console.log('🔗 WhatsApp URL:', whatsappUrl);
+      window.open(whatsappUrl, '_blank');
+      toast.success('Ouverture de WhatsApp...');
+    } else {
+      // SMS
+      const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+      console.log('🔗 SMS URL:', smsUrl);
+      window.location.href = smsUrl;
+      toast.success('Ouverture de l\'application SMS...');
+    }
   };
 
   if (loading) {
@@ -336,7 +394,11 @@ const DeliveryDetailPage = () => {
               <h2 className="text-xl font-semibold text-white mb-4">Actions</h2>
               
               <div className="space-y-3">
-                <button className="w-full p-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                <button 
+                  onClick={handleContactClient}
+                  className="w-full p-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg transition-all flex items-center justify-center gap-2"
+                >
+                  <MessageSquare className="w-4 h-4" />
                   Contacter le client
                 </button>
                 <button className="w-full p-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
