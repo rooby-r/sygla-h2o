@@ -17,7 +17,8 @@ import {
   Phone,
   Mail,
   Printer,
-  DollarSign
+  DollarSign,
+  MessageSquare
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import Button from '../../components/ui/Button.js';
@@ -94,6 +95,37 @@ const OrderDetailPage = () => {
 
   const handleEdit = () => {
     navigate(`/orders/${id}/edit`);
+  };
+
+  const handleContactClient = () => {
+    if (!order?.client?.telephone) {
+      toast.error('Aucun numéro de téléphone pour ce client');
+      return;
+    }
+
+    const phoneNumber = order.client.telephone.replace(/[^0-9]/g, '');
+    
+    // Message personnalisé
+    const message = `Bonjour ${order.client.nom_commercial || order.client.nom_contact},\n\nConcernant votre commande #${order.numero_commande}:\n- Montant total: ${formatHTG(order.montant_total)}\n- Montant payé: ${formatHTG(order.montant_paye)}\n- Montant restant: ${formatHTG(order.montant_restant)}\n\nMerci de votre confiance.\nSYGLA-H2O`;
+    
+    // Créer un menu pour choisir WhatsApp ou SMS
+    const choice = window.confirm('Choisir le moyen de contact:\n\nOK = WhatsApp\nAnnuler = SMS');
+    
+    if (choice) {
+      // WhatsApp - format international sans le +
+      let whatsappNumber = phoneNumber;
+      if (!phoneNumber.startsWith('509')) {
+        whatsappNumber = '509' + phoneNumber; // Ajouter le code pays Haïti
+      }
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+      toast.success('Ouverture de WhatsApp...');
+    } else {
+      // SMS
+      const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+      window.location.href = smsUrl;
+      toast.success('Ouverture de l\'application SMS...');
+    }
   };
 
   const handleAddPaiement = async (e) => {
@@ -1072,6 +1104,14 @@ const OrderDetailPage = () => {
                     {loading ? 'Validation en cours...' : 'Valider la commande'}
                   </Button>
                 )}
+                <Button 
+                  onClick={handleContactClient} 
+                  variant="primary" 
+                  className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600"
+                >
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Contacter le client
+                </Button>
                 <Button onClick={handlePrintOrder} variant="warning" className="w-full">
                   <Printer className="w-4 h-4 mr-2" />
                   Imprimer la fiche
