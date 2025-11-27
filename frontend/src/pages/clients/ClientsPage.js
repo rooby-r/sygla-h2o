@@ -128,7 +128,7 @@ const ClientsPage = () => {
       </motion.div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <motion.div variants={itemVariants} className="stat-card">
           <div className="flex items-center justify-between">
             <div>
@@ -148,18 +148,6 @@ const ClientsPage = () => {
               </p>
             </div>
             <Building className="w-8 h-8 text-green-400/50" />
-          </div>
-        </motion.div>
-
-        <motion.div variants={itemVariants} className="stat-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">CA Total</h3>
-              <p className="text-3xl font-bold text-yellow-400">
-                {formatHTG(clients.reduce((sum, c) => sum + (parseFloat(c.total_depenses) || 0), 0))}
-              </p>
-            </div>
-            <Building className="w-8 h-8 text-yellow-400/50" />
           </div>
         </motion.div>
       </div>

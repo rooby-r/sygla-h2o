@@ -16,7 +16,7 @@ import {
   Lock
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import api from '../../services/api';
+import { userService } from '../../services/api';
 import Button from '../../components/ui/Button';
 
 const UsersManagementPage = () => {
@@ -45,21 +45,47 @@ const UsersManagementPage = () => {
   ];
 
   useEffect(() => {
+    // Log de l'utilisateur connecté
+    const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+    console.log('👤 [DEBUG] Utilisateur connecté:', currentUser);
+    console.log('👤 [DEBUG] Rôle:', currentUser.role);
+    console.log('👤 [DEBUG] Est admin?', currentUser.role === 'admin');
+    
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/auth/users/');
-      console.log('📦 Réponse API users:', response.data);
+      console.log('🔍 [DEBUG] Début fetchUsers...');
+      console.log('🔍 [DEBUG] Token présent:', !!localStorage.getItem('access_token'));
       
-      // S'assurer que response.data est un tableau
-      const usersData = Array.isArray(response.data) ? response.data : [];
+      const response = await userService.getAll();
+      console.log('📦 [DEBUG] Réponse brute API users:', response);
+      console.log('📦 [DEBUG] Type de response:', typeof response);
+      console.log('📦 [DEBUG] Est un tableau?', Array.isArray(response));
+      console.log('📦 [DEBUG] Clés de response:', Object.keys(response || {}));
+      
+      // S'assurer que response est un tableau
+      const usersData = Array.isArray(response) ? response : (response.results || response.data || []);
+      console.log('✅ [DEBUG] usersData final:', usersData);
+      console.log('✅ [DEBUG] Nombre utilisateurs:', usersData.length);
+      
+      // Log des photos
+      usersData.forEach(user => {
+        console.log(`📸 [DEBUG] ${user.username} - photo:`, user.photo, '- photo_url:', user.photo_url);
+      });
+      
       setUsers(usersData);
+      
+      if (usersData.length === 0) {
+        console.warn('⚠️ [DEBUG] Aucun utilisateur trouvé dans la réponse!');
+      }
     } catch (error) {
-      console.error('Erreur lors du chargement des utilisateurs:', error);
-      toast.error('Erreur lors du chargement des utilisateurs');
+      console.error('❌ [DEBUG] Erreur lors du chargement des utilisateurs:', error);
+      console.error('❌ [DEBUG] error.response:', error.response);
+      console.error('❌ [DEBUG] error.response.data:', error.response?.data);
+      toast.error('Erreur lors du chargement des utilisateurs: ' + (error.response?.data?.detail || error.message));
       setUsers([]); // Initialiser avec un tableau vide en cas d'erreur
     } finally {
       setLoading(false);
@@ -152,10 +178,10 @@ const UsersManagementPage = () => {
       };
 
       if (editingUser) {
-        await api.patch(`/auth/users/${editingUser.id}/`, userData);
+        await userService.update(editingUser.id, userData);
         toast.success('Utilisateur modifié avec succès');
       } else {
-        await api.post('/auth/users/create/', userData);
+        await userService.create(userData);
         toast.success('Utilisateur créé avec succès');
       }
 
@@ -179,7 +205,7 @@ const UsersManagementPage = () => {
 
     try {
       setLoading(true);
-      await api.delete(`/auth/users/${userId}/`);
+      await userService.delete(userId);
       toast.success('Utilisateur supprimé avec succès');
       fetchUsers();
     } catch (error) {
@@ -267,9 +293,29 @@ const UsersManagementPage = () => {
                 {/* Avatar et rôle */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-lg">
-                      {user.username.charAt(0).toUpperCase()}
-                    </div>
+                    {/* Avatar - Photo ou Initiale */}
+                    {user.photo_url ? (
+                      <div className="relative">
+                        <img
+                          src={user.photo_url}
+                          alt={user.username}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-primary-500"
+                          onError={(e) => {
+                            console.warn(`❌ Erreur chargement photo pour ${user.username}:`, user.photo_url);
+                            // Remplacer par l'initiale en cas d'erreur
+                            const parent = e.target.parentElement;
+                            const fallback = document.createElement('div');
+                            fallback.className = 'w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-lg';
+                            fallback.textContent = user.username.charAt(0).toUpperCase();
+                            parent.replaceChild(fallback, e.target);
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center text-white font-bold text-lg">
+                        {user.username.charAt(0).toUpperCase()}
+                      </div>
+                    )}
                     <div>
                       <h3 className="text-lg font-semibold text-white">
                         {user.first_name && user.last_name

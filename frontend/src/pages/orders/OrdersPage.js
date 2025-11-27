@@ -31,6 +31,7 @@ const OrdersPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [errorShown, setErrorShown] = useState(false);
 
   // Mock data for orders
   const mockOrders = [
@@ -155,18 +156,18 @@ const OrdersPage = () => {
       // Récupérer les vraies données depuis l'API
       const response = await orderService.getAll();
       setOrders(response.results || response);
+      setErrorShown(false); // Réinitialiser si succès
     } catch (error) {
       console.error('Erreur lors du chargement des commandes:', error);
-      toast.error('Erreur lors du chargement des commandes');
-      // En cas d'erreur, utiliser les données mock pour l'instant
+      // En cas d'erreur, utiliser les données mock sans afficher d'erreur répétée
+      if (!errorShown) {
+        console.warn('⚠️ API non disponible, utilisation des données mock');
+        setErrorShown(true);
+      }
       setOrders(mockOrders);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCreateOrder = () => {
-    navigate('/orders/create');
   };
 
   const handleEditOrder = (order) => {
@@ -304,10 +305,6 @@ const OrdersPage = () => {
             Suivez et gérez toutes vos commandes
           </p>
         </div>
-        <Button onClick={handleCreateOrder} className="flex items-center space-x-2">
-          <Plus className="w-5 h-5" />
-          <span>Nouvelle Commande</span>
-        </Button>
       </motion.div>
 
       {/* Stats Cards */}

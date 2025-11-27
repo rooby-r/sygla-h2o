@@ -474,6 +474,41 @@ export const reportService = {
   },
 };
 
+// Services pour les utilisateurs
+export const userService = {
+  getAll: async () => {
+    const response = await api.get('/auth/users/');
+    return response.data;
+  },
+
+  getById: async (id) => {
+    const response = await api.get(`/auth/users/${id}/`);
+    return response.data;
+  },
+
+  create: async (userData) => {
+    const response = await api.post('/auth/users/create/', userData);
+    return response.data;
+  },
+
+  update: async (id, userData) => {
+    const response = await api.patch(`/auth/users/${id}/`, userData);
+    return response.data;
+  },
+
+  delete: async (id) => {
+    const response = await api.delete(`/auth/users/${id}/`);
+    return response.data;
+  },
+
+  toggleStatus: async (id) => {
+    const response = await api.patch(`/auth/users/${id}/`, {
+      is_active: undefined, // Will be toggled on backend
+    });
+    return response.data;
+  },
+};
+
 // Services pour les logs système
 export const logService = {
   getAll: async (params = {}) => {

@@ -55,6 +55,14 @@ const OrderDetailPage = () => {
     setLoading(true);
     setError(null);
     
+    // Vérifier que l'ID est valide
+    if (!id || id === 'undefined' || id === 'null') {
+      console.error('❌ ID de commande invalide:', id);
+      setError('ID de commande invalide');
+      setLoading(false);
+      return;
+    }
+    
     fetchOrderDetails(true); // Force reload toujours
   }, [id, updateTrigger, location.key, location.state?.timestamp]); // Ajouter timestamp pour recharger après modification
 
@@ -68,13 +76,16 @@ const OrderDetailPage = () => {
       // Cache busting - ajouter un timestamp à la requête
       const timestamp = Date.now();
       const response = await orderService.getById(id, { _t: timestamp });
-      console.log('Order data received:', response);
-      console.log('Order total should be:', response.total_ht, 'HTG');
+      console.log('✅ Order data received:', response);
+      console.log('✅ Order total should be:', response.total_ht, 'HTG');
       setOrder(response);
+      setError(null); // Réinitialiser l'erreur en cas de succès
     } catch (error) {
-      console.error('Erreur lors du chargement de la commande:', error);
+      console.error('❌ Erreur lors du chargement de la commande:', error);
+      console.error('❌ Détails erreur:', error.response?.data);
       setError('Erreur lors du chargement de la commande');
-      toast.error('Erreur lors du chargement de la commande');
+      // Ne pas afficher de toast ici - l'erreur sera gérée par l'affichage conditionnel
+      console.warn('⚠️ Commande introuvable ou API non disponible');
     } finally {
       setLoading(false);
     }
