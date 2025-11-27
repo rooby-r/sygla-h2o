@@ -414,16 +414,16 @@ const DeliveriesPage = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          {delivery.statut === 'planifiee' && (
+                          {(delivery.statut === 'planifiee' || delivery.statut === 'validee') && (
                             <button
-                              onClick={() => updateDeliveryStatus(delivery.id, 'en_cours')}
+                              onClick={() => updateDeliveryStatus(delivery.id, 'en_livraison')}
                               className="p-2 text-green-400 hover:bg-green-400/20 rounded-lg transition-colors"
                               title="Démarrer la livraison"
                             >
                               <Truck className="w-4 h-4" />
                             </button>
                           )}
-                          {delivery.statut === 'en_cours' && (
+                          {(delivery.statut === 'en_cours' || delivery.statut === 'en_livraison') && (
                             <button
                               onClick={() => updateDeliveryStatus(delivery.id, 'livree')}
                               className="p-2 text-green-400 hover:bg-green-400/20 rounded-lg transition-colors"
