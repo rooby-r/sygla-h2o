@@ -960,21 +960,40 @@ const OrderDetailPage = () => {
               </motion.div>
             )}
 
-            {/* Notes */}
-            {order.notes && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                className="bg-dark-800 rounded-xl p-6 border border-dark-700"
-              >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                  <FileText className="w-5 h-5 mr-3 text-secondary-400" />
-                  Notes
-                </h3>
-                <p className="text-dark-300 leading-relaxed">{order.notes}</p>
-              </motion.div>
-            )}
+            {/* Notes - Affichage dynamique du statut de paiement */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+            >
+              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <FileText className="w-5 h-5 mr-3 text-secondary-400" />
+                Notes
+              </h3>
+              <div className="space-y-2">
+                {/* Statut de paiement actuel */}
+                <p className="text-dark-300 leading-relaxed">
+                  {order.statut_paiement === 'paye_complet' ? (
+                    <span className="text-green-400 font-semibold">✓ Paiement complet (100%)</span>
+                  ) : order.statut_paiement === 'paye_partiel' ? (
+                    <span className="text-orange-400 font-semibold">
+                      Paiement: {((parseFloat(order.montant_paye) / parseFloat(order.montant_total)) * 100).toFixed(0)}% 
+                      ({parseFloat(order.montant_paye).toFixed(2)} HTG sur {parseFloat(order.montant_total).toFixed(2)} HTG)
+                    </span>
+                  ) : (
+                    <span className="text-red-400 font-semibold">Aucun paiement (0%)</span>
+                  )}
+                </p>
+                
+                {/* Notes additionnelles de la commande si elles existent */}
+                {order.notes && order.notes.trim() !== '' && !order.notes.includes('Paiement') && (
+                  <p className="text-dark-400 text-sm mt-2 pt-2 border-t border-dark-700">
+                    {order.notes}
+                  </p>
+                )}
+              </div>
+            </motion.div>
           </div>
 
           {/* Sidebar - Informations sur les dates et statut */}
