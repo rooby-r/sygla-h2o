@@ -260,13 +260,14 @@ const CreateVentePage = () => {
 
       // Si paiement < 100%, créer une commande
       if (pourcentage < 100) {
+        const pourcentageNote = pourcentage > 0 ? `Paiement initial: ${pourcentage.toFixed(0)}% (${montantPaye.toFixed(2)} HTG sur ${montantTotal.toFixed(2)} HTG)` : 'Aucun paiement initial';
         const commandeData = {
           client_id: parseInt(formData.client_id),
           type_livraison: formData.type_livraison || 'retrait_magasin',
           frais_livraison: parseFloat(formData.frais_livraison) || 0,
           date_livraison_prevue: formData.date_livraison_prevue || null,
           date_echeance: formData.date_echeance || null,
-          notes: formData.notes || `Paiement ${pourcentage}%`,
+          notes: formData.notes || pourcentageNote,
           items: formData.items.map(item => ({
             produit_id: parseInt(item.produit_id),
             quantite: parseInt(item.quantite),
@@ -300,7 +301,7 @@ const CreateVentePage = () => {
             body: JSON.stringify({
               montant: montantPaye,
               methode: formData.methode_paiement || 'especes',
-              notes: `Paiement initial ${pourcentage}%`
+              notes: `Paiement initial: ${pourcentage.toFixed(0)}% du montant total`
             })
           });
         }

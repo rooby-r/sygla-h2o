@@ -111,7 +111,18 @@ const OrderDetailPage = () => {
 
     try {
       setLoading(true);
-      const response = await orderService.addPaiement(id, paiementData);
+      
+      // Calculer le nouveau pourcentage après ce paiement
+      const nouveauMontantPaye = parseFloat(order.montant_paye || 0) + parseFloat(paiementData.montant);
+      const nouveauPourcentage = (nouveauMontantPaye / parseFloat(order.montant_total)) * 100;
+      
+      // Générer une note dynamique si aucune note n'est fournie
+      const notePaiement = paiementData.notes || `Paiement: ${nouveauPourcentage.toFixed(0)}% (${nouveauMontantPaye.toFixed(2)} HTG sur ${parseFloat(order.montant_total).toFixed(2)} HTG)`;
+      
+      const response = await orderService.addPaiement(id, {
+        ...paiementData,
+        notes: notePaiement
+      });
       
       if (response.convertie_en_vente) {
         toast.success('Paiement complet ! La commande a été convertie en vente automatiquement 🎉');
