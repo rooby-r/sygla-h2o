@@ -36,6 +36,7 @@ import NotificationsPage from './pages/settings/NotificationsPage';
 import ProfilePage from './pages/settings/ProfilePage';
 import DatabasePage from './pages/settings/DatabasePage';
 import ConnectedUsersPage from './pages/settings/ConnectedUsersPage';
+import UsersManagementPage from './pages/settings/UsersManagementPage';
 
 // Layout & Components
 import MainLayout from './components/layout/MainLayout';
@@ -200,6 +201,11 @@ function App() {
                   
                   {/* Paramètres */}
                   <Route path="settings" element={<SettingsPage />} />
+                  <Route path="settings/users" element={
+                    <ProtectedRoute requiredRole="admin">
+                      <UsersManagementPage />
+                    </ProtectedRoute>
+                  } />
                   <Route path="settings/business-hours" element={
                     <ProtectedRoute module="logs">
                       <BusinessHoursPage />

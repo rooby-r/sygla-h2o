@@ -23,6 +23,7 @@ urlpatterns = [
     
     # Gestion utilisateurs
     path('users/', views.UserListView.as_view(), name='user-list'),
+    path('users/create/', views.create_user, name='user-create'),
     path('users/<int:pk>/', views.UserDetailView.as_view(), name='user-detail'),
     
     # Paramètres

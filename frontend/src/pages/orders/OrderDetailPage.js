@@ -98,18 +98,41 @@ const OrderDetailPage = () => {
   };
 
   const handleContactClient = () => {
+    console.log('🔔 Bouton Contacter le client cliqué');
+    console.log('📦 Order data:', order);
+    console.log('👤 Client data:', order?.client);
+    
     if (!order?.client?.telephone) {
+      console.log('❌ Pas de numéro de téléphone');
       toast.error('Aucun numéro de téléphone pour ce client');
       return;
     }
 
     const phoneNumber = order.client.telephone.replace(/[^0-9]/g, '');
+    console.log('📱 Numéro formaté:', phoneNumber);
+    
+    if (!phoneNumber || phoneNumber.length < 8) {
+      toast.error('Numéro de téléphone invalide');
+      return;
+    }
     
     // Message personnalisé
-    const message = `Bonjour ${order.client.nom_commercial || order.client.nom_contact},\n\nConcernant votre commande #${order.numero_commande}:\n- Montant total: ${formatHTG(order.montant_total)}\n- Montant payé: ${formatHTG(order.montant_paye)}\n- Montant restant: ${formatHTG(order.montant_restant)}\n\nMerci de votre confiance.\nSYGLA-H2O`;
+    const clientName = order.client.nom_commercial || order.client.nom_contact || 'Client';
+    const message = `Bonjour ${clientName},
+
+Concernant votre commande #${order.numero_commande}:
+- Montant total: ${formatHTG(order.montant_total)}
+- Montant payé: ${formatHTG(order.montant_paye)}
+- Montant restant: ${formatHTG(order.montant_restant)}
+
+Merci de votre confiance.
+SYGLA-H2O`;
+    
+    console.log('💬 Message préparé:', message);
     
     // Créer un menu pour choisir WhatsApp ou SMS
     const choice = window.confirm('Choisir le moyen de contact:\n\nOK = WhatsApp\nAnnuler = SMS');
+    console.log('✅ Choix utilisateur:', choice ? 'WhatsApp' : 'SMS');
     
     if (choice) {
       // WhatsApp - format international sans le +
@@ -118,11 +141,13 @@ const OrderDetailPage = () => {
         whatsappNumber = '509' + phoneNumber; // Ajouter le code pays Haïti
       }
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      console.log('🔗 WhatsApp URL:', whatsappUrl);
       window.open(whatsappUrl, '_blank');
       toast.success('Ouverture de WhatsApp...');
     } else {
       // SMS
       const smsUrl = `sms:${phoneNumber}?body=${encodeURIComponent(message)}`;
+      console.log('🔗 SMS URL:', smsUrl);
       window.location.href = smsUrl;
       toast.success('Ouverture de l\'application SMS...');
     }

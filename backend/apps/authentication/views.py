@@ -449,6 +449,79 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         return super().destroy(request, *args, **kwargs)
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_user(request):
+    """
+    Créer un nouvel utilisateur (admin uniquement)
+    """
+    # Vérifier que l'utilisateur est admin
+    if request.user.role != 'admin':
+        return Response({
+            'error': 'Permission refusée. Seuls les administrateurs peuvent créer des utilisateurs.'
+        }, status=status.HTTP_403_FORBIDDEN)
+    
+    try:
+        # Extraire les données
+        username = request.data.get('username')
+        password = request.data.get('password')
+        email = request.data.get('email', '')
+        first_name = request.data.get('first_name', '')
+        last_name = request.data.get('last_name', '')
+        telephone = request.data.get('telephone', '')
+        role = request.data.get('role', 'vendeur')
+        
+        # Validation
+        if not username:
+            return Response({
+                'error': 'Le nom d\'utilisateur est requis'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not password:
+            return Response({
+                'error': 'Le mot de passe est requis'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        if len(password) < 6:
+            return Response({
+                'error': 'Le mot de passe doit contenir au moins 6 caractères'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Vérifier si l'username existe déjà
+        if User.objects.filter(username=username).exists():
+            return Response({
+                'error': 'Ce nom d\'utilisateur est déjà utilisé'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Créer l'utilisateur
+        user = User.objects.create_user(
+            username=username,
+            password=password,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            role=role
+        )
+        
+        # Ajouter le téléphone si fourni
+        if telephone:
+            user.telephone = telephone
+            user.save()
+        
+        # Sérialiser et retourner
+        serializer = UserSerializer(user)
+        return Response({
+            'message': 'Utilisateur créé avec succès',
+            'user': serializer.data
+        }, status=status.HTTP_201_CREATED)
+        
+    except Exception as e:
+        print(f"❌ Erreur lors de la création de l'utilisateur: {str(e)}")
+        return Response({
+            'error': f'Erreur lors de la création de l\'utilisateur: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def check_access_allowed(request):

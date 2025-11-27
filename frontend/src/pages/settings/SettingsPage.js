@@ -10,6 +10,15 @@ const SettingsPage = () => {
 
   const settingsOptions = [
     {
+      id: 'users',
+      title: 'Gestion des Utilisateurs',
+      description: 'Créer et gérer les comptes utilisateurs du système',
+      icon: Users,
+      color: 'from-purple-500 to-pink-500',
+      path: '/settings/users',
+      adminOnly: true
+    },
+    {
       id: 'business-hours',
       title: 'Horaires d\'Accès',
       description: 'Configurer les heures de connexion autorisées pour chaque rôle',
