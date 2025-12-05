@@ -147,13 +147,13 @@ def update_delivery_status(request, pk):
             # Mettre à jour les dates et le livreur selon le statut
             from django.utils import timezone
             if new_status == 'en_livraison' and old_status != 'en_livraison':
-                # Commencer la livraison - assigner automatiquement l'utilisateur connecté comme livreur
-                if not commande.livreur:
-                    commande.livreur = request.user.get_full_name() or request.user.username
-                    print(f"🚚 Livreur assigné automatiquement: {commande.livreur}")
+                # Commencer la livraison
+                pass  # Le livreur sera assigné quand il marquera comme livrée
             elif new_status == 'livree' and old_status != 'livree':
-                # Terminer la livraison
+                # Terminer la livraison - assigner le livreur qui a effectué la livraison
+                commande.livreur = request.user.get_full_name() or request.user.username
                 commande.date_livraison_effective = timezone.now()
+                print(f"🚚 Livreur assigné: {commande.livreur}")
             
             commande.save()
             
