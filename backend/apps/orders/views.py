@@ -287,11 +287,11 @@ class CommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
                         instance.date_livraison_effective = timezone.now()
                         logger.info(f"📅 Date de livraison effective mise à jour: {instance.date_livraison_effective}")
                     
-                    # Assigner le livreur si en livraison et utilisateur est livreur
-                    if new_status == 'en_livraison' and request.user.role == 'livreur':
-                        if not instance.livreur:
-                            instance.livreur = request.user.get_full_name() or request.user.username
-                            logger.info(f"🚚 Livreur assigné: {instance.livreur}")
+                    # Assigner le livreur quand la commande passe en livraison
+                    # Peu importe le rôle de l'utilisateur (admin, vendeur ou livreur)
+                    if new_status == 'en_livraison' and not instance.livreur:
+                        instance.livreur = request.user.get_full_name() or request.user.username
+                        logger.info(f"🚚 Livreur assigné: {instance.livreur}")
                 
                 logger.info(f"🔄 Recalcul des totaux en cours...")
                 # IMPORTANT: Ne pas recalculer les frais de livraison (ils ont été définis manuellement)
