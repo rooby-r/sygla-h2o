@@ -129,9 +129,45 @@ class CommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommandeSerializer
     permission_classes = [permissions.IsAuthenticated]
     
+    def destroy(self, request, *args, **kwargs):
+        """
+        Suppression d'une commande - Interdit si validée ou au-delà
+        """
+        instance = self.get_object()
+        
+        # Vérifier si la commande peut être supprimée
+        # Une fois validée, la commande ne peut plus être supprimée
+        if instance.statut in ['validee', 'en_preparation', 'en_livraison', 'livree', 'annulee']:
+            return Response(
+                {"error": f"Impossible de supprimer une commande {instance.get_statut_display().lower()}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Créer un log avant suppression
+        create_log(
+            log_type='warning',
+            message=f"Commande supprimée: {instance.numero_commande}",
+            details=f"Commande {instance.numero_commande} supprimée par {request.user.username}",
+            user=request.user,
+            module='orders',
+            request=request,
+            metadata={
+                'orderId': instance.id,
+                'orderNumber': instance.numero_commande,
+                'clientName': instance.client.nom_commercial or instance.client.raison_sociale,
+                'totalAmount': float(instance.montant_total),
+                'status': instance.statut
+            },
+            status_code=204
+        )
+        
+        return super().destroy(request, *args, **kwargs)
+    
     def update(self, request, *args, **kwargs):
         """
         Mise à jour avec logs de débogage et recalcul des totaux
+        Interdit la modification des données si la commande est validée ou au-delà
+        MAIS autorise le changement de statut (workflow)
         """
         import logging
         logger = logging.getLogger(__name__)
@@ -141,8 +177,82 @@ class CommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
         
         with LogTimer() as timer:
             try:
-                partial = kwargs.pop('partial', False)
                 instance = self.get_object()
+                
+                # Vérifier si c'est uniquement un changement de statut
+                is_status_change_only = (
+                    len(request.data) == 1 and 
+                    'statut' in request.data
+                )
+                
+                # Si la commande est validée ou au-delà
+                if instance.statut in ['validee', 'en_preparation', 'en_livraison', 'livree', 'annulee']:
+                    # Permettre UNIQUEMENT les changements de statut (workflow)
+                    if not is_status_change_only:
+                        logger.warning(f"⛔ Tentative de modification des données d'une commande {instance.statut}: {instance.numero_commande}")
+                        return Response(
+                            {"error": f"Impossible de modifier les données d'une commande {instance.get_statut_display().lower()}. Seul le changement de statut est autorisé."},
+                            status=status.HTTP_400_BAD_REQUEST
+                        )
+                    
+                    # Vérifier le workflow de statut
+                    new_status = request.data.get('statut')
+                    valid_transitions = {
+                        'en_attente': ['validee', 'annulee'],
+                        'validee': ['en_preparation', 'en_livraison'],
+                        'en_preparation': ['en_livraison'],
+                        'en_livraison': ['livree'],
+                        'livree': [],  # Pas de transition depuis livree
+                        'annulee': []  # Pas de transition depuis annulee
+                    }
+                    
+                    allowed = valid_transitions.get(instance.statut, [])
+                    if new_status not in allowed:
+                        logger.warning(f"⛔ Transition de statut invalide: {instance.statut} → {new_status}")
+                        return Response(
+                            {"error": f"Impossible de passer du statut '{instance.get_statut_display()}' vers '{new_status}'"},
+                            status=status.HTTP_400_BAD_REQUEST
+                        )
+                    
+                    # Le gestionnaire de stock ne peut pas marquer comme livrée
+                    if new_status == 'livree' and request.user.role == 'stock':
+                        logger.warning(f"⛔ Le gestionnaire de stock ne peut pas marquer comme livrée")
+                        return Response(
+                            {"error": "Seul un livreur ou un administrateur peut marquer une commande comme livrée"},
+                            status=status.HTTP_403_FORBIDDEN
+                        )
+                    
+                    # BLOCAGE TRANSITION EN_LIVRAISON: Vérifier si l'échéance est passée et paiement non complet
+                    if new_status == 'en_livraison':
+                        peut_livrer, message_livraison = instance.peut_passer_en_livraison()
+                        if not peut_livrer:
+                            logger.warning(f"⛔ Transition vers en_livraison bloquée: {message_livraison}")
+                            # Calculer les détails pour le frontend
+                            penalite = float(instance.calculer_penalite())
+                            return Response(
+                                {
+                                    "error": message_livraison,
+                                    "montant_restant": float(instance.montant_restant),
+                                    "penalite": penalite,
+                                    "montant_total_a_payer": float(instance.montant_restant) + penalite,
+                                    "date_echeance": str(instance.date_echeance) if instance.date_echeance else None,
+                                    "blocage_echeance": True
+                                },
+                                status=status.HTTP_400_BAD_REQUEST
+                            )
+                    
+                    # Le vendeur ne peut pas changer les statuts (sauf annuler une commande en attente)
+                    if request.user.role == 'vendeur':
+                        if not (instance.statut == 'en_attente' and new_status == 'annulee'):
+                            logger.warning(f"⛔ Le vendeur ne peut pas changer le statut de {instance.statut} vers {new_status}")
+                            return Response(
+                                {"error": "Les vendeurs ne peuvent qu'annuler les commandes en attente"},
+                                status=status.HTTP_403_FORBIDDEN
+                            )
+                    
+                    logger.info(f"✅ Changement de statut autorisé: {instance.statut} → {new_status}")
+                
+                partial = kwargs.pop('partial', False)
                 old_status = instance.statut
                 old_total = instance.montant_total
                 
@@ -161,8 +271,31 @@ class CommandeRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
                 
                 # IMPORTANT: Recalculer les totaux après la mise à jour
                 instance.refresh_from_db()
+                
+                # Mettre à jour les dates selon le changement de statut
+                from django.utils import timezone
+                new_status = instance.statut
+                
+                if new_status != old_status:
+                    logger.info(f"📅 Changement de statut détecté: {old_status} → {new_status}")
+                    
+                    if new_status == 'validee' and not instance.date_validation:
+                        instance.date_validation = timezone.now()
+                        logger.info(f"📅 Date de validation mise à jour: {instance.date_validation}")
+                    
+                    if new_status == 'livree' and not instance.date_livraison_effective:
+                        instance.date_livraison_effective = timezone.now()
+                        logger.info(f"📅 Date de livraison effective mise à jour: {instance.date_livraison_effective}")
+                    
+                    # Assigner le livreur si en livraison et utilisateur est livreur
+                    if new_status == 'en_livraison' and request.user.role == 'livreur':
+                        if not instance.livreur:
+                            instance.livreur = request.user.get_full_name() or request.user.username
+                            logger.info(f"🚚 Livreur assigné: {instance.livreur}")
+                
                 logger.info(f"🔄 Recalcul des totaux en cours...")
-                instance.calculer_montant_total()
+                # IMPORTANT: Ne pas recalculer les frais de livraison (ils ont été définis manuellement)
+                instance.calculer_montant_total(recalculer_frais_livraison=False)
                 instance.save()
                 
                 logger.info(f"💰 Nouveau montant après recalcul: {instance.montant_total} HTG")
@@ -367,11 +500,22 @@ def valider_commande(request, pk):
 def ajouter_paiement_commande(request, commande_id):
     """
     Ajouter un paiement à une commande
+    Règles:
+    - Minimum 60% du montant total au premier paiement
+    - Date d'échéance = 1 jour avant livraison
+    - Si paiement après échéance: pénalité de 1.5% du montant restant
     """
     timer = LogTimer()
     
     try:
         commande = get_object_or_404(Commande, id=commande_id)
+        
+        # Vérifier que la commande n'est pas annulée
+        if commande.statut == 'annulee':
+            return Response(
+                {'error': 'Impossible d\'ajouter un paiement à une commande annulée'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         
         # Vérifier que la commande n'est pas déjà payée totalement
         if commande.statut_paiement == 'paye':
@@ -395,25 +539,88 @@ def ajouter_paiement_commande(request, commande_id):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        if montant > float(commande.montant_restant):
-            return Response(
-                {'error': f'Le montant dépasse le montant restant ({commande.montant_restant} HTG)'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # Calculer la pénalité si applicable (après échéance)
+        penalite = float(commande.calculer_penalite())
+        montant_total_restant = float(commande.montant_restant) + penalite
         
-        # Créer le paiement
+        # RÈGLE 1: Minimum 60% au premier paiement
+        montant_minimum = float(commande.montant_total) * 0.60
+        montant_deja_paye = float(commande.montant_paye)
+        
+        if montant_deja_paye == 0:
+            # C'est le premier paiement - vérifier le minimum 60%
+            if montant < montant_minimum:
+                return Response(
+                    {
+                        'error': f'Le premier paiement doit être d\'au moins 60% du montant total ({montant_minimum:.2f} HTG). Montant proposé: {montant:.2f} HTG',
+                        'montant_minimum': montant_minimum,
+                        'pourcentage_requis': 60
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        
+        # RÈGLE 2: Vérifier si paiement après échéance - inclure la pénalité
+        include_penalite = request.data.get('include_penalite', False)
+        
+        if commande.est_apres_echeance() and commande.montant_restant > 0:
+            if not include_penalite:
+                return Response(
+                    {
+                        'error': 'La date d\'échéance est passée. Une pénalité de 1.5% s\'applique.',
+                        'montant_restant': float(commande.montant_restant),
+                        'penalite': penalite,
+                        'montant_total_a_payer': montant_total_restant,
+                        'date_echeance': str(commande.date_echeance) if commande.date_echeance else None,
+                        'require_penalite': True
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Si l'utilisateur a accepté la pénalité, vérifier que le montant couvre tout
+            if montant < montant_total_restant:
+                return Response(
+                    {
+                        'error': f'Le montant doit couvrir le solde restant plus la pénalité ({montant_total_restant:.2f} HTG)',
+                        'montant_restant': float(commande.montant_restant),
+                        'penalite': penalite,
+                        'montant_total_a_payer': montant_total_restant
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        else:
+            # Pas de pénalité - vérification normale
+            if montant > float(commande.montant_restant):
+                return Response(
+                    {'error': f'Le montant dépasse le montant restant ({commande.montant_restant} HTG)'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+        
+        # Créer le paiement (montant principal seulement, la pénalité est séparée)
+        montant_paiement = min(montant, float(commande.montant_restant))
+        montant_penalite_paye = montant - montant_paiement if include_penalite and penalite > 0 else 0
+        
+        notes_paiement = request.data.get('notes', '')
+        if include_penalite and penalite > 0:
+            notes_paiement = f"Inclut pénalité de retard: {montant_penalite_paye:.2f} HTG. {notes_paiement}"
+        
         paiement_data = {
             'commande': commande.id,
-            'montant': montant,
+            'montant': montant_paiement,
             'methode': request.data.get('methode', 'especes'),
             'reference': request.data.get('reference', ''),
-            'notes': request.data.get('notes', ''),
+            'notes': notes_paiement,
             'recu_par': request.user.id
         }
         
         serializer = PaiementCommandeSerializer(data=paiement_data)
         if serializer.is_valid():
             paiement = serializer.save()
+            
+            # Enregistrer la pénalité payée
+            if include_penalite and montant_penalite_paye > 0:
+                from decimal import Decimal
+                commande.montant_penalite = Decimal(str(montant_penalite_paye))
+                commande.save()
             
             # Recharger la commande pour avoir les montants à jour
             commande.refresh_from_db()
@@ -422,7 +629,7 @@ def ajouter_paiement_commande(request, commande_id):
             create_log(
                 log_type='info',
                 message=f"Paiement de {montant} HTG ajouté à la commande {commande.numero_commande}",
-                details=f"Méthode: {paiement.methode}, Nouveau statut: {commande.statut_paiement}",
+                details=f"Méthode: {paiement.methode}, Nouveau statut: {commande.statut_paiement}" + (f", Pénalité: {montant_penalite_paye:.2f} HTG" if montant_penalite_paye > 0 else ""),
                 user=request.user,
                 module='orders',
                 request=request,
@@ -436,7 +643,8 @@ def ajouter_paiement_commande(request, commande_id):
                 'message': 'Paiement ajouté avec succès',
                 'paiement': serializer.data,
                 'commande': commande_serializer.data,
-                'convertie_en_vente': commande.convertie_en_vente
+                'convertie_en_vente': commande.convertie_en_vente,
+                'penalite_payee': montant_penalite_paye if include_penalite else 0
             }, status=status.HTTP_201_CREATED)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

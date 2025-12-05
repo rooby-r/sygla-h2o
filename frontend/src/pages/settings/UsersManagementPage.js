@@ -146,6 +146,18 @@ const UsersManagementPage = () => {
       return;
     }
 
+    if (!formData.email.trim()) {
+      toast.error('L\'email est requis');
+      return;
+    }
+
+    // Validation du format email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error('Veuillez entrer un email valide');
+      return;
+    }
+
     if (!editingUser) {
       if (!formData.password) {
         toast.error('Le mot de passe est requis');
@@ -254,7 +266,7 @@ const UsersManagementPage = () => {
       {/* Barre de recherche */}
       <div className="card p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 w-5 h-5 pointer-events-none" />
           <input
             type="text"
             placeholder="Rechercher un utilisateur..."
@@ -449,7 +461,7 @@ const UsersManagementPage = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-dark-300 mb-2">
-                    Email
+                    Email <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="email"
@@ -457,6 +469,7 @@ const UsersManagementPage = () => {
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
                     placeholder="john@example.com"
+                    required
                   />
                 </div>
                 <div>

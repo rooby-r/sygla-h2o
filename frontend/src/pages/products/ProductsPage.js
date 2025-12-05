@@ -272,7 +272,7 @@ const ProductsPage = () => {
       <motion.div variants={itemVariants} className="card p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
             <input
               type="text"
               placeholder="Rechercher un produit..."

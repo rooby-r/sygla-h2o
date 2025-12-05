@@ -6,9 +6,7 @@ import {
   MapPin, 
   Clock, 
   CheckCircle, 
-  Package,
   User,
-  Calendar,
   Navigation,
   Eye,
   Search
@@ -16,11 +14,9 @@ import {
 import { toast } from 'react-hot-toast';
 import { deliveryService } from '../../services/api.js';
 import { useAuth } from '../../context/AuthContext.js';
-import { useDataUpdate } from '../../contexts/DataUpdateContext.js';
 
 const DeliveriesPage = () => {
   const { user } = useAuth();
-  const { triggerDashboardUpdate } = useDataUpdate();
   const navigate = useNavigate();
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,8 +25,7 @@ const DeliveriesPage = () => {
   const [stats, setStats] = useState({
     total: 0,
     en_cours: 0,
-    livrees: 0,
-    planifiees: 0
+    livrees: 0
   });
 
   // Vérifier si l'utilisateur connecté est un livreur
@@ -54,11 +49,10 @@ const DeliveriesPage = () => {
       const deliveriesRaw = deliveriesResponse.results || deliveriesResponse;
 
       const mapStatus = (statut) => {
-        if (statut === 'en_preparation' || statut === 'validee') return 'planifiee';
         if (statut === 'en_livraison') return 'en_cours';
         if (statut === 'livree') return 'livree';
         if (statut === 'annulee') return 'annulee';
-        return statut || 'planifiee';
+        return statut || 'en_cours';
       };
 
       const mappedDeliveries = deliveriesRaw.map(order => ({
@@ -95,8 +89,7 @@ const DeliveriesPage = () => {
       setStats({
         total: statsResponse?.total || 0,
         en_cours: statsResponse?.en_cours || 0,
-        livrees: statsResponse?.livrees || 0,
-        planifiees: statsResponse?.planifiees || 0
+        livrees: statsResponse?.livrees || 0
       });
     } catch (error) {
       console.error('Erreur lors du chargement des livraisons:', error);
@@ -106,8 +99,7 @@ const DeliveriesPage = () => {
       setStats({
         total: 0,
         en_cours: 0,
-        livrees: 0,
-        planifiees: 0
+        livrees: 0
       });
     } finally {
       setLoading(false);
@@ -164,7 +156,6 @@ const DeliveriesPage = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'planifiee': return 'bg-blue-400/20 text-blue-400';
       case 'en_cours': return 'bg-orange-400/20 text-orange-400';
       case 'livree': return 'bg-green-400/20 text-green-400';
       case 'annulee': return 'bg-red-400/20 text-red-400';
@@ -174,7 +165,6 @@ const DeliveriesPage = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'planifiee': return Calendar;
       case 'en_cours': return Truck;
       case 'livree': return CheckCircle;
       case 'annulee': return Clock;
@@ -242,7 +232,7 @@ const DeliveriesPage = () => {
       </motion.div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <motion.div variants={itemVariants} className="stat-card">
           <div className="flex items-center justify-between">
             <div>
@@ -272,24 +262,13 @@ const DeliveriesPage = () => {
             <CheckCircle className="w-8 h-8 text-green-400/50" />
           </div>
         </motion.div>
-
-        <motion.div variants={itemVariants} className="stat-card">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Planifiées</h3>
-              <p className="text-3xl font-bold text-blue-400">{stats.planifiees}</p>
-              <p className="text-xs text-dark-400 mt-1">Livraisons à domicile futures</p>
-            </div>
-            <Calendar className="w-8 h-8 text-blue-400/50" />
-          </div>
-        </motion.div>
       </div>
 
       {/* Search and Filters */}
       <motion.div variants={itemVariants} className="card p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
             <input
               type="text"
               placeholder="Rechercher une livraison..."
@@ -301,10 +280,9 @@ const DeliveriesPage = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="input"
+            className="input w-48"
           >
             <option value="all">Tous les statuts</option>
-            <option value="planifiee">Planifiée</option>
             <option value="en_cours">En cours</option>
             <option value="livree">Livrée</option>
             <option value="annulee">Annulée</option>
@@ -414,7 +392,7 @@ const DeliveriesPage = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          {(delivery.statut === 'planifiee' || delivery.statut === 'validee') && (
+                          {delivery.statut === 'validee' && (
                             <button
                               onClick={() => updateDeliveryStatus(delivery.id, 'en_livraison')}
                               className="p-2 text-green-400 hover:bg-green-400/20 rounded-lg transition-colors"

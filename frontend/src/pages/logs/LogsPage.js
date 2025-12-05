@@ -271,7 +271,7 @@ const LogsPage = () => {
           {/* Recherche */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Rechercher dans les logs..."

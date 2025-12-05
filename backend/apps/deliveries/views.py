@@ -119,11 +119,25 @@ def update_delivery_status(request, pk):
                 )
             
             # Valider le nouveau statut
-            valid_statuses = ['validee', 'en_preparation', 'en_livraison', 'livree', 'annulee']
+            valid_statuses = ['validee', 'en_preparation', 'en_livraison', 'livree']
             if new_status not in valid_statuses:
                 return Response(
                     {'error': f'Statut invalide. Statuts autorisés: {valid_statuses}'},
                     status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Empêcher l'annulation des commandes validées ou en préparation
+            if new_status == 'annulee' and old_status in ['validee', 'en_preparation', 'en_livraison']:
+                return Response(
+                    {'error': 'Impossible d\'annuler une commande déjà validée ou en préparation'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Le gestionnaire de stock ne peut pas marquer comme livrée
+            if new_status == 'livree' and request.user.role == 'stock':
+                return Response(
+                    {'error': 'Seul un livreur ou un administrateur peut marquer une commande comme livrée'},
+                    status=status.HTTP_403_FORBIDDEN
                 )
             
             # Mettre à jour le statut
@@ -234,8 +248,7 @@ def delivery_stats(request):
         result = {
             'total': 0,
             'en_cours': 0,
-            'livrees': 0,
-            'planifiees': 0  # Commandes à domicile planifiées pour les jours suivants
+            'livrees': 0
         }
         
         for stat in stats:
@@ -244,49 +257,6 @@ def delivery_stats(request):
             elif stat['statut'] == 'livree':
                 result['livrees'] = stat['count']
         
-        # Debug: Afficher toutes les commandes pour diagnostic
-        all_commandes = Commande.objects.all()
-        logger.info(f"🔍 Debug - Toutes les commandes ({all_commandes.count()}):")
-        for cmd in all_commandes:
-            logger.info(f"   • {cmd.numero_commande} - Statut: {cmd.statut} - Type: {cmd.type_livraison} - Date livraison: {cmd.date_livraison_prevue}")
-        
-        # Calculer les livraisons à domicile planifiées pour les jours suivants
-        # (commandes validées ou en préparation avec type_livraison = 'livraison_domicile' 
-        # et date_livraison_prevue > aujourd'hui)
-        planifiees_query = Commande.objects.filter(
-            Q(statut__in=['validee', 'en_preparation']) &
-            Q(type_livraison='livraison_domicile')
-        )
-        
-        logger.info(f"🚚 Commandes à domicile validées/en préparation: {planifiees_query.count()}")
-        
-        # Filtrer par date de livraison prévue dans le futur
-        planifiees_futures = 0
-        for commande in planifiees_query:
-            logger.info(f"   • Vérification {commande.numero_commande}:")
-            logger.info(f"     - Date livraison prévue: {commande.date_livraison_prevue}")
-            logger.info(f"     - Date création: {commande.date_creation}")
-            
-            # Si date_livraison_prevue existe et est dans le futur
-            if commande.date_livraison_prevue:
-                date_livraison = commande.date_livraison_prevue.date()
-                logger.info(f"     - Date livraison (date): {date_livraison}")
-                logger.info(f"     - Aujourd'hui: {today}")
-                logger.info(f"     - Est future: {date_livraison > today}")
-                if date_livraison > today:
-                    planifiees_futures += 1
-                    logger.info(f"     ✅ Ajoutée aux planifiées")
-                else:
-                    logger.info(f"     ❌ Date passée, non ajoutée")
-            # Sinon, si la commande a été créée récemment (dans les 7 derniers jours)
-            # on la considère comme planifiée
-            elif commande.date_creation.date() >= (today - timedelta(days=7)):
-                planifiees_futures += 1
-                logger.info(f"     ✅ Ajoutée aux planifiées (création récente)")
-            else:
-                logger.info(f"     ❌ Pas de date de livraison et création ancienne")
-        
-        result['planifiees'] = planifiees_futures
         result['total'] = result['en_cours'] + result['livrees']
         
         logger.info(f"📈 Résultat final: {result}")

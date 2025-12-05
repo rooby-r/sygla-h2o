@@ -33,7 +33,7 @@ export const rolePermissions = {
       dashboard: true,
       clients: { view: true, create: true, edit: true, delete: false },
       products: { view: true, create: false, edit: false, delete: false },
-      orders: { view: true, create: true, edit: true, delete: false, validate: false },
+      orders: { view: true, create: true, edit: true, delete: false, validate: false, changeStatus: false, cancelPending: true },
       sales: { view: true, create: true, edit: true, delete: false },
       deliveries: { view: true, create: false, edit: false, delete: false, assign: false },
       reports: { view: true, export: false },
@@ -58,9 +58,9 @@ export const rolePermissions = {
       dashboard: true,
       clients: { view: true, create: false, edit: false, delete: false },
       products: { view: true, create: true, edit: true, delete: false },
-      orders: { view: true, create: false, edit: false, delete: false, validate: false },
-      deliveries: { view: true, create: false, edit: false, delete: false, assign: false },
-      reports: { view: true, export: false },
+      orders: { view: true, create: false, edit: true, delete: false, validate: true, changeStatus: true, markDelivered: false },
+      deliveries: { view: true, create: false, edit: true, delete: false, assign: false, markDelivered: false },
+      reports: { view: false, export: false },
       logs: { view: false, export: false, clear: false },
       users: { view: false, create: false, edit: false, delete: false },
       settings: false
@@ -68,8 +68,7 @@ export const rolePermissions = {
     menu: [
       { path: '/dashboard', label: 'Tableau de Bord', icon: 'LayoutDashboard' },
       { path: '/products', label: 'Produits', icon: 'Package' },
-      { path: '/orders', label: 'Commandes', icon: 'ShoppingCart' },
-      { path: '/reports', label: 'Rapports', icon: 'BarChart3' }
+      { path: '/orders', label: 'Commandes', icon: 'ShoppingCart' }
     ]
   },
   
@@ -80,8 +79,8 @@ export const rolePermissions = {
       dashboard: true,
       clients: { view: true, create: false, edit: false, delete: false },
       products: { view: true, create: false, edit: false, delete: false },
-      orders: { view: true, create: false, edit: false, delete: false, validate: false },
-      deliveries: { view: true, create: false, edit: true, delete: false, assign: false },
+      orders: { view: false, create: false, edit: false, delete: false, validate: false },
+      deliveries: { view: true, create: false, edit: true, delete: false, assign: false, markDelivered: true },
       reports: { view: false, export: false },
       logs: { view: false, export: false, clear: false },
       users: { view: false, create: false, edit: false, delete: false },
@@ -89,8 +88,7 @@ export const rolePermissions = {
     },
     menu: [
       { path: '/dashboard', label: 'Tableau de Bord', icon: 'LayoutDashboard' },
-      { path: '/deliveries', label: 'Mes Livraisons', icon: 'Truck' },
-      { path: '/orders', label: 'Commandes', icon: 'ShoppingCart' }
+      { path: '/deliveries', label: 'Mes Livraisons', icon: 'Truck' }
     ]
   }
 };

@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
-import { reportService, orderService } from '../../services/api';
+import { reportService, orderService, deliveryService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { rolePermissions, hasPermission } from '../../config/permissions';
 
@@ -34,7 +34,11 @@ const DashboardPage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [recentOrders, setRecentOrders] = useState([]);
+  const [recentDeliveries, setRecentDeliveries] = useState([]);
   const [salesChartData, setSalesChartData] = useState([]);
+  
+  // Vérifier si l'utilisateur est un livreur
+  const isLivreur = user?.role === 'livreur';
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -42,9 +46,10 @@ const DashboardPage = () => {
         setLoading(true);
         
         // Récupérer les statistiques avec les tendances depuis la nouvelle API
-        const [statsRes, ordersRes] = await Promise.all([
+        const [statsRes, ordersRes, deliveriesRes] = await Promise.all([
           reportService.getDashboardStats(),
-          orderService.getAll()
+          orderService.getAll(),
+          deliveryService.getAll()
         ]);
 
         // Debug: afficher les données reçues
@@ -134,6 +139,32 @@ const DashboardPage = () => {
         console.log('📈 Données du graphique:', last7Days);
 
         setRecentOrders(recentOrdersData);
+        
+        // Préparer les livraisons récentes pour les livreurs
+        const deliveriesList = Array.isArray(deliveriesRes.results) ? deliveriesRes.results : 
+                          Array.isArray(deliveriesRes) ? deliveriesRes : [];
+        
+        const recentDeliveriesData = deliveriesList
+          .filter(delivery => delivery && delivery.id)
+          .sort((a, b) => new Date(b.date_creation || b.date_livraison_prevue) - new Date(a.date_creation || a.date_livraison_prevue))
+          .slice(0, 5)
+          .map(delivery => ({
+            id: delivery.id,
+            numeroLivraison: `LIV-${delivery.id.toString().padStart(4, '0')}`,
+            numeroCommande: delivery.numero_commande || `CMD-${delivery.id}`,
+            client: delivery.client?.nom_commercial || delivery.client?.raison_sociale || delivery.client?.nom || 'Client non défini',
+            adresse: delivery.adresse_livraison || delivery.client?.adresse || 'Adresse non spécifiée',
+            status: delivery.statut === 'en_attente' ? 'En attente' : 
+                    delivery.statut === 'en_preparation' ? 'En préparation' :
+                    delivery.statut === 'en_livraison' ? 'En livraison' :
+                    delivery.statut === 'livree' ? 'Livrée' :
+                    delivery.statut === 'annulee' ? 'Annulée' : 'En attente',
+            statut: delivery.statut,
+            date: delivery.date_livraison_prevue || delivery.date_creation
+          }));
+        
+        console.log('🚚 Livraisons récentes:', recentDeliveriesData);
+        setRecentDeliveries(recentDeliveriesData);
 
       } catch (error) {
         console.error('Erreur lors du chargement des données:', error);
@@ -430,110 +461,183 @@ const DashboardPage = () => {
         </motion.div>
       </div>
 
-      {/* Recent Orders */}
-      <motion.div variants={itemVariants} className="card p-6">
-        <h3 className="text-xl font-semibold text-white mb-6">Commandes Récentes</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-dark-700">
-                <th className="text-left py-3 text-dark-300 font-medium">Commande</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Client</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Montant</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentOrders.length === 0 ? (
-                <tr>
-                  <td colSpan="5" className="text-center py-8 text-dark-400">
-                    Aucune commande récente
-                  </td>
+      {/* Recent Orders ou Recent Deliveries selon le rôle */}
+      {isLivreur ? (
+        /* Livraisons Récentes pour les livreurs */
+        <motion.div variants={itemVariants} className="card p-6">
+          <h3 className="text-xl font-semibold text-white mb-6">Mes Livraisons Récentes</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-dark-700">
+                  <th className="text-left py-3 text-dark-300 font-medium">Livraison</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Client</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Adresse</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Date prévue</th>
                 </tr>
-              ) : (
-                recentOrders.map((order) => (
-                  <tr key={order.id} className="border-b border-dark-800 hover:bg-dark-800/50">
-                    <td className="py-4">
-                      <div>
-                        <p className="text-white font-medium">{order.numeroCommande}</p>
-                        <p className="text-dark-400 text-xs">#{order.id}</p>
-                      </div>
-                    </td>
-                    <td className="py-4 text-white">{order.client}</td>
-                    <td className="py-4 text-green-400 font-medium">
-                      {formatHTG(order.amount)}
-                    </td>
-                    <td className="py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        order.status === 'Livrée' 
-                          ? 'bg-green-400/20 text-green-400'
-                          : order.status === 'Validée'
-                          ? 'bg-cyan-400/20 text-cyan-400'
-                          : order.status === 'Confirmée'
-                          ? 'bg-blue-400/20 text-blue-400'
-                          : order.status === 'En préparation'
-                          ? 'bg-purple-400/20 text-purple-400'
-                          : order.status === 'En livraison'
-                          ? 'bg-orange-400/20 text-orange-400'
-                          : order.status === 'Annulée'
-                          ? 'bg-red-400/20 text-red-400'
-                          : 'bg-yellow-400/20 text-yellow-400'
-                      }`}>
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="py-4 text-dark-300">
-                      {new Date(order.date).toLocaleDateString('fr-FR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
+              </thead>
+              <tbody>
+                {recentDeliveries.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="text-center py-8 text-dark-400">
+                      Aucune livraison récente
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </motion.div>
+                ) : (
+                  recentDeliveries.map((delivery) => (
+                    <tr 
+                      key={delivery.id} 
+                      className="border-b border-dark-800 hover:bg-dark-800/50 cursor-pointer"
+                      onClick={() => navigate(`/deliveries/${delivery.id}`)}
+                    >
+                      <td className="py-4">
+                        <div>
+                          <p className="text-white font-medium">{delivery.numeroLivraison}</p>
+                          <p className="text-dark-400 text-xs">{delivery.numeroCommande}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 text-white">{delivery.client}</td>
+                      <td className="py-4 text-dark-300 max-w-xs truncate">{delivery.adresse}</td>
+                      <td className="py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          delivery.status === 'Livrée' 
+                            ? 'bg-green-400/20 text-green-400'
+                            : delivery.status === 'En livraison'
+                            ? 'bg-orange-400/20 text-orange-400'
+                            : delivery.status === 'En préparation'
+                            ? 'bg-purple-400/20 text-purple-400'
+                            : delivery.status === 'Annulée'
+                            ? 'bg-red-400/20 text-red-400'
+                            : 'bg-yellow-400/20 text-yellow-400'
+                        }`}>
+                          {delivery.status}
+                        </span>
+                      </td>
+                      <td className="py-4 text-dark-300">
+                        {new Date(delivery.date).toLocaleDateString('fr-FR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      ) : (
+        /* Commandes Récentes pour les autres rôles */
+        <motion.div variants={itemVariants} className="card p-6">
+          <h3 className="text-xl font-semibold text-white mb-6">Commandes Récentes</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-dark-700">
+                  <th className="text-left py-3 text-dark-300 font-medium">Commande</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Client</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Montant</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
+                  <th className="text-left py-3 text-dark-300 font-medium">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentOrders.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="text-center py-8 text-dark-400">
+                      Aucune commande récente
+                    </td>
+                  </tr>
+                ) : (
+                  recentOrders.map((order) => (
+                    <tr key={order.id} className="border-b border-dark-800 hover:bg-dark-800/50">
+                      <td className="py-4">
+                        <div>
+                          <p className="text-white font-medium">{order.numeroCommande}</p>
+                          <p className="text-dark-400 text-xs">#{order.id}</p>
+                        </div>
+                      </td>
+                      <td className="py-4 text-white">{order.client}</td>
+                      <td className="py-4 text-green-400 font-medium">
+                        {formatHTG(order.amount)}
+                      </td>
+                      <td className="py-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          order.status === 'Livrée' 
+                            ? 'bg-green-400/20 text-green-400'
+                            : order.status === 'Validée'
+                            ? 'bg-cyan-400/20 text-cyan-400'
+                            : order.status === 'Confirmée'
+                            ? 'bg-blue-400/20 text-blue-400'
+                            : order.status === 'En préparation'
+                            ? 'bg-purple-400/20 text-purple-400'
+                            : order.status === 'En livraison'
+                            ? 'bg-orange-400/20 text-orange-400'
+                            : order.status === 'Annulée'
+                            ? 'bg-red-400/20 text-red-400'
+                            : 'bg-yellow-400/20 text-yellow-400'
+                        }`}>
+                          {order.status}
+                        </span>
+                      </td>
+                      <td className="py-4 text-dark-300">
+                        {new Date(order.date).toLocaleDateString('fr-FR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </motion.div>
+      )}
 
-      {/* Quick Actions */}
-      <motion.div variants={itemVariants} className="card p-6">
-        <h3 className="text-xl font-semibold text-white mb-6">Actions Rapides</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <button 
-            onClick={() => navigate('/clients/create')}
-            className="btn btn-primary flex items-center justify-center space-x-2 py-4"
-          >
-            <Users className="w-5 h-5" />
-            <span>Nouveau Client</span>
-          </button>
-          <button 
-            onClick={() => navigate('/orders/create')}
-            className="btn btn-secondary flex items-center justify-center space-x-2 py-4"
-          >
-            <ShoppingCart className="w-5 h-5" />
-            <span>Nouvelle Commande</span>
-          </button>
-          <button 
-            onClick={() => navigate('/products')}
-            className="btn btn-accent flex items-center justify-center space-x-2 py-4"
-          >
-            <Package className="w-5 h-5" />
-            <span>Gérer Stock</span>
-          </button>
-          <button 
-            onClick={() => navigate('/deliveries')}
-            className="btn bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center space-x-2 py-4"
-          >
-            <Truck className="w-5 h-5" />
-            <span>Planifier Livraison</span>
-          </button>
-        </div>
-      </motion.div>
+      {/* Quick Actions - Masqué pour les livreurs et gestionnaires de stock */}
+      {user?.role !== 'livreur' && user?.role !== 'stock' && (
+        <motion.div variants={itemVariants} className="card p-6">
+          <h3 className="text-xl font-semibold text-white mb-6">Actions Rapides</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <button 
+              onClick={() => navigate('/clients/create')}
+              className="btn btn-primary flex items-center justify-center space-x-2 py-4"
+            >
+              <Users className="w-5 h-5" />
+              <span>Nouveau Client</span>
+            </button>
+            <button 
+              onClick={() => navigate('/orders/create')}
+              className="btn btn-secondary flex items-center justify-center space-x-2 py-4"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              <span>Nouvelle Commande</span>
+            </button>
+            <button 
+              onClick={() => navigate('/products')}
+              className="btn btn-accent flex items-center justify-center space-x-2 py-4"
+            >
+              <Package className="w-5 h-5" />
+              <span>Gérer Stock</span>
+            </button>
+            <button 
+              onClick={() => navigate('/deliveries')}
+              className="btn bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center space-x-2 py-4"
+            >
+              <Truck className="w-5 h-5" />
+              <span>Planifier Livraison</span>
+            </button>
+          </div>
+        </motion.div>
+      )}
     </motion.div>
   );
 };

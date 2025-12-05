@@ -200,11 +200,26 @@ export const AuthProvider = ({ children }) => {
       dispatch({ type: AUTH_ACTIONS.LOGIN_SUCCESS, payload: response.user });
       return { success: true, user: response.user, must_change_password: false };
     } catch (error) {
-      // Extraire le message d'erreur (peut être dans error ou message)
-      const errorMessage = error.response?.data?.error || 
-                          error.response?.data?.message || 
-                          error.message || 
-                          'Erreur de connexion';
+      // Extraire le message d'erreur - Django REST renvoie les erreurs de validation dans non_field_errors
+      const errorData = error.response?.data;
+      let errorMessage = 'Erreur de connexion';
+      
+      if (errorData) {
+        if (errorData.non_field_errors && errorData.non_field_errors.length > 0) {
+          errorMessage = errorData.non_field_errors[0];
+        } else if (errorData.error) {
+          errorMessage = errorData.error;
+        } else if (errorData.detail) {
+          errorMessage = errorData.detail;
+        } else if (errorData.message) {
+          errorMessage = errorData.message;
+        } else if (typeof errorData === 'string') {
+          errorMessage = errorData;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       dispatch({ type: AUTH_ACTIONS.LOGIN_ERROR, payload: errorMessage });
       return { success: false, error: errorMessage };
     }

@@ -13,8 +13,7 @@ import {
   Search,
   AlertCircle,
   Calculator,
-  FileText,
-  Percent
+  FileText
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import Button from '../../components/ui/Button.js';
@@ -40,7 +39,7 @@ const CreateVentePage = () => {
   const [formData, setFormData] = useState({
     client_id: '',
     methode_paiement: 'especes',
-    pourcentage_paiement: 100,
+    montant_verse: '', // Montant saisi par le vendeur (remplace pourcentage_paiement)
     type_livraison: 'retrait_magasin',
     frais_livraison: 0,
     date_livraison_prevue: '',
@@ -140,10 +139,25 @@ const CreateVentePage = () => {
     return calculateProductsTotal() + calculateDeliveryFees() + frais;
   };
 
-  // Calculer le montant payé
+  // Calculer le montant payé (montant saisi par le vendeur)
   const calculateMontantPaye = () => {
+    const montantVerse = parseFloat(formData.montant_verse) || 0;
     const total = calculateTotal();
-    return (total * parseFloat(formData.pourcentage_paiement || 0)) / 100;
+    // Ne pas dépasser le montant total
+    return Math.min(montantVerse, total);
+  };
+
+  // Calculer le pourcentage automatiquement
+  const calculatePourcentage = () => {
+    const total = calculateTotal();
+    if (total <= 0) return 0;
+    const montantVerse = parseFloat(formData.montant_verse) || 0;
+    return Math.min((montantVerse / total) * 100, 100);
+  };
+
+  // Calculer le minimum 60%
+  const calculateMinimum60 = () => {
+    return calculateTotal() * 0.60;
   };
 
   // Calculer le montant restant
@@ -234,6 +248,26 @@ const CreateVentePage = () => {
       return false;
     }
 
+    // Vérifier que la date d'échéance ne dépasse pas la date de livraison
+    if (formData.date_echeance && formData.date_livraison_prevue) {
+      const dateEcheance = new Date(formData.date_echeance);
+      const dateLivraison = new Date(formData.date_livraison_prevue);
+      if (dateEcheance > dateLivraison) {
+        toast.error('La date d\'\u00e9ch\u00e9ance ne peut pas d\u00e9passer la date de livraison');
+        return false;
+      }
+    }
+
+    // Vérifier le minimum 60% si paiement partiel
+    const montantVerse = parseFloat(formData.montant_verse) || 0;
+    const total = calculateTotal();
+    const minimum60 = total * 0.60;
+    
+    if (montantVerse > 0 && montantVerse < total && montantVerse < minimum60) {
+      toast.error(`Le premier paiement doit \u00eatre d'au moins 60% du montant total (${formatHTG(minimum60)})`);
+      return false;
+    }
+
     // Vérifier les stocks
     for (const item of formData.items) {
       if (item.quantite > item.stock_disponible) {
@@ -255,11 +289,12 @@ const CreateVentePage = () => {
       setLoading(true);
       
       const montantTotal = calculateTotal();
-      const pourcentage = parseFloat(formData.pourcentage_paiement || 0);
+      const montantVerse = parseFloat(formData.montant_verse) || 0;
+      const pourcentage = calculatePourcentage();
       const montantPaye = calculateMontantPaye();
 
       // Si paiement < 100%, créer une commande
-      if (pourcentage < 100) {
+      if (montantVerse < montantTotal) {
         const pourcentageNote = pourcentage > 0 ? `Paiement initial: ${pourcentage.toFixed(0)}% (${montantPaye.toFixed(2)} HTG sur ${montantTotal.toFixed(2)} HTG)` : 'Aucun paiement initial';
         const commandeData = {
           client_id: parseInt(formData.client_id),
@@ -275,7 +310,10 @@ const CreateVentePage = () => {
           }))
         };
 
-        const commandeResponse = await fetch('http://localhost:8000/api/orders/', {
+        // Utiliser l'URL dynamique basée sur l'hostname actuel
+        const apiBaseUrl = `http://${window.location.hostname}:8000/api`;
+        
+        const commandeResponse = await fetch(`${apiBaseUrl}/orders/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -292,7 +330,7 @@ const CreateVentePage = () => {
 
         // Ajouter le paiement si > 0%
         if (montantPaye > 0) {
-          await fetch(`http://localhost:8000/api/orders/${commandeCreated.id}/paiement/`, {
+          const paiementResponse = await fetch(`${apiBaseUrl}/orders/${commandeCreated.id}/paiement/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -304,6 +342,11 @@ const CreateVentePage = () => {
               notes: `Paiement initial: ${pourcentage.toFixed(0)}% du montant total`
             })
           });
+
+          if (!paiementResponse.ok) {
+            console.error('Erreur lors de l\'enregistrement du paiement');
+            toast.error('Commande créée mais erreur lors de l\'enregistrement du paiement');
+          }
         }
 
         toast.success(`Commande créée avec succès (${pourcentage}% payé)`);
@@ -415,7 +458,7 @@ const CreateVentePage = () => {
                       Rechercher un client
                     </label>
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400" size={20} />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 pointer-events-none" size={20} />
                       <input
                         type="text"
                         value={clientSearch}
@@ -576,7 +619,7 @@ const CreateVentePage = () => {
                 className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6"
               >
                 <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
-                  <Percent className="text-accent-400" size={20} />
+                  <DollarSign className="text-accent-400" size={20} />
                   <span>Paiement</span>
                 </h3>
 
@@ -602,30 +645,61 @@ const CreateVentePage = () => {
 
                   <div>
                     <label className="block text-sm font-medium text-dark-200 mb-2">
-                      Pourcentage de paiement (%)
+                      Montant versé (HTG) *
                     </label>
                     <input
                       type="number"
                       min="0"
-                      max="100"
-                      value={formData.pourcentage_paiement}
-                      onChange={(e) => setFormData(prev => ({ ...prev, pourcentage_paiement: e.target.value }))}
+                      step="0.01"
+                      max={calculateTotal()}
+                      value={formData.montant_verse}
+                      onChange={(e) => setFormData(prev => ({ ...prev, montant_verse: e.target.value }))}
+                      placeholder={`Total: ${formatHTG(calculateTotal())}`}
                       className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
                     />
-                    <p className="text-xs text-dark-400 mt-1">
-                      {formData.pourcentage_paiement < 100 
-                        ? `Sera créée comme commande (paiement partiel)` 
-                        : 'Sera créée comme vente (100% payé)'}
-                    </p>
+                    <div className="mt-2 space-y-1">
+                      <p className="text-xs text-dark-400">
+                        Pourcentage: <span className="text-primary-400 font-bold">{calculatePourcentage().toFixed(0)}%</span>
+                        {calculatePourcentage() < 100 && calculatePourcentage() > 0 && (
+                          <span className="text-warning-400 ml-2">
+                            (Minimum 60%: {formatHTG(calculateMinimum60())})
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-xs text-dark-400">
+                        {parseFloat(formData.montant_verse || 0) >= calculateTotal()
+                          ? <span className="text-green-400">✓ Sera créée comme vente (100% payé)</span>
+                          : parseFloat(formData.montant_verse || 0) > 0
+                            ? <span className="text-warning-400">⚠ Sera créée comme commande (paiement partiel)</span>
+                            : <span className="text-red-400">⚠ Aucun paiement - Sera créée comme commande impayée</span>
+                        }
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                {formData.pourcentage_paiement < 100 && (
+                {parseFloat(formData.montant_verse || 0) < calculateTotal() && parseFloat(formData.montant_verse || 0) > 0 && (
                   <div className="mt-4 p-4 bg-warning-500/10 border border-warning-500/30 rounded-lg">
                     <div className="flex items-center space-x-2 text-warning-400">
                       <AlertCircle size={16} />
                       <span className="text-sm font-medium">
-                        Cette transaction sera enregistrée comme commande (paiement partiel)
+                        Paiement partiel ({calculatePourcentage().toFixed(0)}%) - Cette transaction sera enregistrée comme commande
+                      </span>
+                    </div>
+                    {parseFloat(formData.montant_verse || 0) < calculateMinimum60() && (
+                      <p className="text-red-400 text-xs mt-2">
+                        ⚠ Le premier paiement doit être d'au moins 60% ({formatHTG(calculateMinimum60())})
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {parseFloat(formData.montant_verse || 0) === 0 && calculateTotal() > 0 && (
+                  <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 text-red-400">
+                      <AlertCircle size={16} />
+                      <span className="text-sm font-medium">
+                        Aucun paiement initial - Le client devra verser au moins 60% pour valider
                       </span>
                     </div>
                   </div>
@@ -699,7 +773,7 @@ const CreateVentePage = () => {
                     </div>
                     
                     <div className="relative mb-3">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400" size={16} />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 pointer-events-none" size={16} />
                       <input
                         type="text"
                         value={productSearch}
@@ -902,7 +976,7 @@ const CreateVentePage = () => {
                         <span className="text-white">{formatHTG(calculateTotal())}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-dark-300">Montant payé ({formData.pourcentage_paiement}%)</span>
+                        <span className="text-dark-300">Montant payé ({calculatePourcentage().toFixed(0)}%)</span>
                         <span className="text-green-400">{formatHTG(calculateMontantPaye())}</span>
                       </div>
                       <div className="flex justify-between text-sm">
@@ -924,7 +998,7 @@ const CreateVentePage = () => {
                       ) : (
                         <>
                           <Save size={16} />
-                          <span>Créer {formData.pourcentage_paiement < 100 ? 'la commande' : 'la vente'}</span>
+                          <span>Créer {parseFloat(formData.montant_verse || 0) < calculateTotal() ? 'la commande' : 'la vente'}</span>
                         </>
                       )}
                     </Button>

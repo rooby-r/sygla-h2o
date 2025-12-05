@@ -81,14 +81,14 @@ class LoginSerializer(serializers.Serializer):
                 # Vérifier le mot de passe
                 if user.check_password(password):
                     if not user.is_active:
-                        raise serializers.ValidationError('Compte désactivé.')
+                        raise serializers.ValidationError('Votre compte a été désactivé. Contactez l\'administrateur.')
                     attrs['user'] = user
                 else:
-                    raise serializers.ValidationError('Identifiants invalides.')
+                    raise serializers.ValidationError('Mot de passe incorrect. Veuillez réessayer.')
             except User.DoesNotExist:
-                raise serializers.ValidationError('Identifiants invalides.')
+                raise serializers.ValidationError('Aucun compte trouvé avec cet email. Vérifiez votre adresse email.')
         else:
-            raise serializers.ValidationError('Email et mot de passe requis.')
+            raise serializers.ValidationError('Veuillez saisir votre email et mot de passe.')
 
         return attrs
 

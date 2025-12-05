@@ -275,15 +275,17 @@ def dashboard_stats(request):
         ).count()
         
         # CHIFFRE D'AFFAIRES - Montant réellement encaissé (ventes + paiements commandes)
-        # Exclure les commandes converties en ventes pour éviter le double comptage
+        # Exclure les commandes converties en ventes et les commandes annulées pour éviter le double comptage
         from apps.sales.models import Vente
         
         # Ventes (100% payées)
         ventes_total = Vente.objects.aggregate(total=Sum('montant_paye'))['total'] or 0
         
-        # Paiements sur commandes NON converties en ventes
+        # Paiements sur commandes NON converties en ventes et NON annulées
         commandes_paye = Commande.objects.filter(
             convertie_en_vente=False
+        ).exclude(
+            statut='annulee'
         ).aggregate(total=Sum('montant_paye'))['total'] or 0
         
         # CA Total = Ventes + Paiements commandes non converties
@@ -299,6 +301,8 @@ def dashboard_stats(request):
             convertie_en_vente=False,
             date_creation__gte=previous_month_start,
             date_creation__lt=current_month_start
+        ).exclude(
+            statut='annulee'
         ).aggregate(total=Sum('montant_paye'))['total'] or 0
         
         revenue_previous = float(ventes_previous) + float(commandes_previous)
@@ -674,8 +678,7 @@ def delivery_report(request):
         status_breakdown = {
             'livree': delivered,
             'en_cours': in_progress,
-            'annulee': cancelled,
-            'planifiee': orders.filter(statut='validee').count()
+            'annulee': cancelled
         }
         
         # Livraisons par livreur

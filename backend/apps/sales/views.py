@@ -51,12 +51,13 @@ class VenteViewSet(viewsets.ModelViewSet):
         
         try:
             # Déterminer le statut selon le type de livraison
+            # Toutes les ventes payées commencent en préparation
             if vente.type_livraison == 'livraison_domicile':
-                statut = 'en_livraison'  # EN COURS - Livraison à domicile
+                statut = 'en_preparation'  # EN PREPARATION - Livraison à domicile (sera passée en livraison après)
                 notes_prefix = "🎯 LIVRAISON PRIORITAIRE (À DOMICILE)"
                 print(f"🚚 DEBUG: Création livraison À DOMICILE pour vente {vente.numero_vente}")
             else:  # retrait_magasin
-                statut = 'en_preparation'  # PLANIFIÉE - Retrait en magasin
+                statut = 'en_preparation'  # EN PREPARATION - Retrait en magasin
                 notes_prefix = "📦 RETRAIT EN MAGASIN"
                 print(f"🏪 DEBUG: Création retrait EN MAGASIN pour vente {vente.numero_vente}")
             
@@ -234,8 +235,8 @@ class VenteViewSet(viewsets.ModelViewSet):
             'montant_paye_ventes': ventes.aggregate(Sum('montant_paye'))['montant_paye__sum'] or 0,
         }
         
-        # Commandes NON CONVERTIES EN VENTES (pour éviter double comptage)
-        commandes_actives = Commande.objects.filter(convertie_en_vente=False)
+        # Commandes NON CONVERTIES EN VENTES et NON ANNULÉES (pour éviter double comptage)
+        commandes_actives = Commande.objects.filter(convertie_en_vente=False).exclude(statut='annulee')
         
         # Total des commandes (pour CA total potentiel)
         commandes_total = commandes_actives.aggregate(Sum('montant_total'))['montant_total__sum'] or 0

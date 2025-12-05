@@ -356,7 +356,7 @@ const OrdersPage = () => {
       <motion.div variants={itemVariants} className="card p-6">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
             <input
               type="text"
               placeholder="Rechercher une commande..."
@@ -368,7 +368,7 @@ const OrdersPage = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="input"
+            className="input w-48"
           >
             <option value="all">Tous les statuts</option>
             <option value="en_attente">En attente</option>
@@ -473,21 +473,29 @@ const OrdersPage = () => {
                           <button
                             onClick={() => handleViewOrder(order)}
                             className="p-2 text-blue-400 hover:bg-blue-400/20 rounded-lg transition-colors"
+                            title="Voir les détails"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          <button
-                            onClick={() => handleEditOrder(order)}
-                            className="p-2 text-yellow-400 hover:bg-yellow-400/20 rounded-lg transition-colors"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => handleDeleteOrder(order.id)}
-                            className="p-2 text-red-400 hover:bg-red-400/20 rounded-lg transition-colors"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                          {/* Boutons Modifier/Supprimer - uniquement pour les commandes en attente */}
+                          {order.statut === 'en_attente' && (
+                            <>
+                              <button
+                                onClick={() => handleEditOrder(order)}
+                                className="p-2 text-yellow-400 hover:bg-yellow-400/20 rounded-lg transition-colors"
+                                title="Modifier"
+                              >
+                                <Edit3 className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteOrder(order.id)}
+                                className="p-2 text-red-400 hover:bg-red-400/20 rounded-lg transition-colors"
+                                title="Supprimer"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </>
+                          )}
                         </div>
                       </td>
                     </tr>

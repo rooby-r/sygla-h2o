@@ -153,7 +153,17 @@ class Commande(models.Model):
         null=True,
         blank=True,
         verbose_name='Date d\'échéance',
-        help_text='Date limite pour le paiement du montant restant'
+        help_text='Date limite pour le paiement du montant restant (1 jour avant livraison)'
+    )
+    
+    # Pénalité
+    montant_penalite = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        default=Decimal('0.00'),
+        validators=[MinValueValidator(Decimal('0.00'))],
+        verbose_name='Montant pénalité (HTG)',
+        help_text='Pénalité de 1.5% sur le montant restant si paiement après échéance'
     )
     
     # Informations de livraison
@@ -193,9 +203,16 @@ class Commande(models.Model):
         
         # Calculer le montant total SEULEMENT si la commande existe déjà
         # (car une nouvelle commande n'a pas encore d'items)
+        # IMPORTANT: Ne PAS recalculer les frais de livraison ici (ils ont été définis manuellement)
         if self.pk:
             try:
-                self.calculer_montant_total()
+                # Sauvegarder les frais de livraison actuels avant le calcul
+                frais_actuels = self.frais_livraison
+                self.calculer_montant_total(recalculer_frais_livraison=False)
+                # S'assurer que les frais n'ont pas été modifiés
+                if frais_actuels and frais_actuels > 0:
+                    self.frais_livraison = frais_actuels
+                    self.montant_total = self.montant_produits + self.frais_livraison
             except Exception as e:
                 # Si le calcul échoue (pas d'items par exemple), on continue
                 pass
@@ -203,10 +220,14 @@ class Commande(models.Model):
         # Calculer le montant restant et le statut de paiement
         self.montant_restant = self.montant_total - self.montant_paye
         
-        if self.montant_paye >= self.montant_total and self.montant_total > 0:
+        # S'assurer que montant_paye est un Decimal
+        montant_paye = Decimal(str(self.montant_paye or 0))
+        montant_total = Decimal(str(self.montant_total or 0))
+        
+        if montant_paye >= montant_total and montant_total > Decimal('0'):
             self.statut_paiement = 'paye'
             self.montant_restant = Decimal('0.00')
-        elif self.montant_paye > 0:
+        elif montant_paye > Decimal('0'):
             self.statut_paiement = 'paye_partiel'
         else:
             self.statut_paiement = 'impaye'
@@ -230,19 +251,28 @@ class Commande(models.Model):
         
         return f'CMD{date_str}{count:04d}'
 
-    def calculer_montant_total(self):
-        """Calcule le montant total de la commande avec frais de livraison"""
+    def calculer_montant_total(self, recalculer_frais_livraison=False):
+        """
+        Calcule le montant total de la commande avec frais de livraison
+        
+        Args:
+            recalculer_frais_livraison: Si True, recalcule les frais de livraison à 15%.
+                                        Si False, conserve les frais actuels (entrée manuelle).
+        """
         # Calculer le montant des produits
         montant_produits = sum(item.sous_total for item in self.items.all())
         self.montant_produits = montant_produits
         
-        # Calculer les frais de livraison
-        if self.type_livraison == 'livraison_domicile':
-            # 15% du montant des produits pour livraison à domicile
-            self.frais_livraison = montant_produits * Decimal('0.15')
-        else:
-            # Gratuit pour retrait en magasin
-            self.frais_livraison = Decimal('0.00')
+        # Calculer les frais de livraison SEULEMENT si demandé explicitement
+        # ou si les frais sont à 0 et c'est une livraison à domicile (première fois)
+        if recalculer_frais_livraison:
+            if self.type_livraison == 'livraison_domicile':
+                # 15% du montant des produits pour livraison à domicile
+                self.frais_livraison = montant_produits * Decimal('0.15')
+            else:
+                # Gratuit pour retrait en magasin
+                self.frais_livraison = Decimal('0.00')
+        # Sinon, on garde les frais actuels (ils ont peut-être été définis manuellement)
         
         # Calculer le montant total
         self.montant_total = self.montant_produits + self.frais_livraison
@@ -259,6 +289,61 @@ class Commande(models.Model):
     def livraison_necessite_date(self):
         """Vérifie si le type de livraison nécessite une date"""
         return self.type_livraison == 'livraison_domicile'
+    
+    def calculer_date_echeance(self):
+        """
+        Calcule la date d'échéance automatiquement (1 jour avant la livraison)
+        """
+        from datetime import timedelta
+        
+        if self.date_livraison_prevue:
+            # La date d'échéance est 1 jour avant la date de livraison
+            if hasattr(self.date_livraison_prevue, 'date'):
+                date_livraison = self.date_livraison_prevue.date()
+            else:
+                date_livraison = self.date_livraison_prevue
+            self.date_echeance = date_livraison - timedelta(days=1)
+        return self.date_echeance
+    
+    def est_apres_echeance(self):
+        """
+        Vérifie si la date actuelle dépasse la date d'échéance
+        """
+        from django.utils import timezone
+        from datetime import date
+        
+        if not self.date_echeance:
+            return False
+        
+        today = timezone.now().date() if hasattr(timezone.now(), 'date') else date.today()
+        return today > self.date_echeance
+    
+    def calculer_penalite(self):
+        """
+        Calcule la pénalité de 1.5% sur le montant restant si paiement après échéance
+        """
+        if self.est_apres_echeance() and self.montant_restant > 0:
+            self.montant_penalite = self.montant_restant * Decimal('0.015')
+        else:
+            self.montant_penalite = Decimal('0.00')
+        return self.montant_penalite
+    
+    def peut_passer_en_livraison(self):
+        """
+        Vérifie si la commande peut passer en statut 'en_livraison'
+        Bloque si l'échéance est passée et le paiement n'est pas complet
+        """
+        # Si l'échéance est passée et il reste un montant à payer, bloquer
+        if self.est_apres_echeance() and self.montant_restant > 0:
+            return False, "La date d'échéance est passée et le paiement n'est pas complet. Le client doit payer le montant restant plus la pénalité de 1.5%."
+        return True, "OK"
+    
+    def get_montant_total_a_payer(self):
+        """
+        Retourne le montant total à payer incluant la pénalité si applicable
+        """
+        self.calculer_penalite()
+        return self.montant_restant + self.montant_penalite
 
     def peut_etre_validee(self):
         """Vérifie si la commande peut être validée"""
@@ -287,8 +372,8 @@ class Commande(models.Model):
         if self.type_livraison == 'livraison_domicile' and not self.date_livraison_prevue:
             raise ValueError("Une date de livraison est requise pour une livraison à domicile")
         
-        # Recalculer les montants avant validation
-        self.calculer_montant_total()
+        # Recalculer les montants avant validation SANS recalculer les frais de livraison
+        self.calculer_montant_total(recalculer_frais_livraison=False)
         
         # Réserver le stock
         for item in self.items.all():
@@ -421,9 +506,10 @@ class ItemCommande(models.Model):
         super().save(*args, **kwargs)
         
         # Recalculer le montant total de la commande SI elle existe
+        # IMPORTANT: Ne pas recalculer les frais de livraison (ils ont été définis manuellement)
         if self.commande_id and self.commande.pk:
             try:
-                self.commande.calculer_montant_total()
+                self.commande.calculer_montant_total(recalculer_frais_livraison=False)
                 self.commande.save()
             except Exception:
                 # Si le calcul échoue, on continue (évite les erreurs en cascade)
@@ -434,7 +520,8 @@ class ItemCommande(models.Model):
         super().delete(*args, **kwargs)
         
         # Recalculer le montant total de la commande
-        commande.calculer_montant_total()
+        # IMPORTANT: Ne pas recalculer les frais de livraison (ils ont été définis manuellement)
+        commande.calculer_montant_total(recalculer_frais_livraison=False)
         commande.save()
 
 

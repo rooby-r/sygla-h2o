@@ -65,7 +65,12 @@ const LoginPage = () => {
         toast.error(result.error || 'Erreur de connexion');
       }
     } catch (err) {
-      toast.error('Une erreur inattendue s\'est produite');
+      console.error('Erreur de connexion:', err);
+      const errorMessage = err.response?.data?.non_field_errors?.[0] || 
+                          err.response?.data?.error || 
+                          err.response?.data?.detail ||
+                          'Une erreur inattendue s\'est produite';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -240,11 +245,14 @@ const LoginPage = () => {
             {/* Affichage des erreurs */}
             {error && (
               <motion.div
-                className="bg-red-500/10 border border-red-500/20 rounded-lg p-3"
+                className="bg-red-500/10 border border-red-500/20 rounded-lg p-4"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                <p className="text-red-400 text-sm">{error}</p>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                  <p className="text-red-400 text-sm font-medium">{error}</p>
+                </div>
               </motion.div>
             )}
 

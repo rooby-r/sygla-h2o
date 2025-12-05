@@ -38,6 +38,7 @@ const EditOrderPage = () => {
     date_commande: '',
     date_livraison_prevue: '',
     type_livraison: 'retrait_magasin',
+    frais_livraison: 0,
     statut: 'en_attente',
     notes: '',
     items: []
@@ -75,6 +76,7 @@ const EditOrderPage = () => {
           date_commande: order.date_creation ? order.date_creation.split('T')[0] : '',
           date_livraison_prevue: order.date_livraison_prevue ? order.date_livraison_prevue.split('T')[0] : '',
           type_livraison: order.type_livraison || 'retrait_magasin',
+          frais_livraison: parseFloat(order.frais_livraison) || 0,
           statut: order.statut || 'en_attente',
           notes: order.notes || '',
           items: order.items?.map(item => {
@@ -189,7 +191,9 @@ const EditOrderPage = () => {
 
   const calculateTotal = () => {
     const montantProduits = formData.items.reduce((sum, item) => sum + item.sous_total, 0);
-    const fraisLivraison = formData.type_livraison === 'livraison_domicile' ? montantProduits * 0.15 : 0;
+    const fraisLivraison = formData.type_livraison === 'livraison_domicile' 
+      ? parseFloat(formData.frais_livraison) || 0 
+      : 0;
     return {
       montantProduits,
       fraisLivraison,
@@ -266,6 +270,9 @@ const EditOrderPage = () => {
         type_livraison: formData.type_livraison,
         statut: formData.statut,
         notes: formData.notes || '',
+        frais_livraison: formData.type_livraison === 'livraison_domicile' 
+          ? parseFloat(formData.frais_livraison) || 0 
+          : 0,
         items: formData.items.map(item => ({
           produit_id: parseInt(item.produit_id),
           quantite: parseInt(item.quantite),
@@ -514,16 +521,39 @@ const EditOrderPage = () => {
                             newData.date_livraison_prevue = tomorrow.toISOString().split('T')[0];
                           }
                           
+                          // Réinitialiser les frais si retrait en magasin
+                          if (newType === 'retrait_magasin') {
+                            newData.frais_livraison = 0;
+                          }
+                          
                           return newData;
                         });
                       }}
                       className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     >
                       <option value="retrait_magasin">Retrait en magasin (Gratuit)</option>
-                      <option value="livraison_domicile">Livraison à domicile (+15%)</option>
+                      <option value="livraison_domicile">Livraison à domicile</option>
                     </select>
                   </div>
                 </div>
+
+                {/* Frais de livraison - visible seulement pour livraison à domicile */}
+                {formData.type_livraison === 'livraison_domicile' && (
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                      Frais de livraison (HTG)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={formData.frais_livraison}
+                      onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
+                      className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      placeholder="0.00"
+                    />
+                  </div>
+                )}
 
                 <div className="mt-6">
                   <label className="block text-sm font-medium text-dark-300 mb-2">
@@ -647,8 +677,8 @@ const EditOrderPage = () => {
                   
                   <div className="flex justify-between items-center">
                     <span className="text-dark-300">
-                      Frais de livraison 
-                      {formData.type_livraison === 'retrait_magasin' ? ' (Gratuit)' : ' (+15%)'}:
+                      Frais de livraison
+                      {formData.type_livraison === 'retrait_magasin' ? ' (Gratuit)' : ''}:
                     </span>
                     <span className="text-white font-medium">{formatHTG(totals.fraisLivraison)}</span>
                   </div>

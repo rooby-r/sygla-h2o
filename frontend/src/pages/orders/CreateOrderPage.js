@@ -43,6 +43,7 @@ const CreateOrderPage = () => {
     type_livraison: 'retrait_magasin',
     statut: 'attente', // Corriger pour correspondre au backend
     notes: '',
+    frais_livraison: '',  // Frais de livraison manuels (vide = auto 15%)
     items: []
   });
 
@@ -164,10 +165,18 @@ const CreateOrderPage = () => {
     }, 0);
   };
 
-  // Calculer les frais de livraison (15% pour livraison à domicile)
+  // Calculer les frais de livraison (manuel ou 15% pour livraison à domicile)
   const calculateDeliveryFees = () => {
+    if (formData.type_livraison !== 'livraison_domicile') return 0;
+    
+    // Si l'utilisateur a saisi des frais manuels, utiliser cette valeur
+    if (formData.frais_livraison !== '' && formData.frais_livraison !== null) {
+      return parseFloat(formData.frais_livraison) || 0;
+    }
+    
+    // Sinon, calculer 15% automatiquement
     const productsTotal = calculateProductsTotal();
-    return formData.type_livraison === 'livraison_domicile' ? productsTotal * 0.15 : 0;
+    return productsTotal * 0.15;
   };
 
   // Calculer le montant total (produits + livraison)
@@ -263,6 +272,17 @@ const CreateOrderPage = () => {
       return false;
     }
 
+    // Vérifier que la date d'échéance ne dépasse pas la date de livraison
+    if (formData.date_echeance && formData.date_livraison_prevue) {
+      const dateEcheance = new Date(formData.date_echeance);
+      const dateLivraison = new Date(formData.date_livraison_prevue);
+      if (dateEcheance > dateLivraison) {
+        console.log('❌ Validation échouée: Date d\'échéance dépasse la date de livraison');
+        toast.error('La date d\'échéance ne peut pas dépasser la date de livraison');
+        return false;
+      }
+    }
+
     if (formData.items.length === 0) {
       console.log('❌ Validation échouée: Aucun produit');
       toast.error('Veuillez ajouter au moins un produit à la commande');
@@ -304,6 +324,10 @@ const CreateOrderPage = () => {
         date_echeance: formData.date_echeance || null,
         type_livraison: formData.type_livraison || 'retrait_magasin',
         notes: formData.notes || '',
+        // Inclure les frais de livraison si saisis manuellement
+        ...(formData.type_livraison === 'livraison_domicile' && formData.frais_livraison !== '' && {
+          frais_livraison: parseFloat(formData.frais_livraison) || 0
+        }),
         items: formData.items.map(item => ({
           produit_id: parseInt(item.produit_id),
           quantite: parseInt(item.quantite),
@@ -410,7 +434,7 @@ const CreateOrderPage = () => {
                       Rechercher un client
                     </label>
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400" size={20} />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 pointer-events-none" size={20} />
                       <input
                         type="text"
                         value={clientSearch}
@@ -539,10 +563,30 @@ const CreateOrderPage = () => {
                   </div>
 
                   {formData.type_livraison === 'livraison_domicile' && (
-                    <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                    <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg space-y-3">
                       <div className="flex items-center space-x-2 text-blue-400">
                         <AlertCircle size={16} />
-                        <span className="text-sm font-medium">Frais de livraison : {formatHTG(calculateDeliveryFees())}</span>
+                        <span className="text-sm font-medium">
+                          Frais de livraison : {formatHTG(calculateDeliveryFees())}
+                          {formData.frais_livraison === '' && ' (15% automatique)'}
+                        </span>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-dark-200 mb-2">
+                          Frais de livraison personnalisés (HTG)
+                        </label>
+                        <input
+                          type="number"
+                          step="0.01"
+                          min="0"
+                          value={formData.frais_livraison}
+                          onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
+                          placeholder={`Auto: ${formatHTG(calculateProductsTotal() * 0.15)} (15%)`}
+                          className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white placeholder-dark-400"
+                        />
+                        <p className="text-xs text-dark-400 mt-1">
+                          Laissez vide pour appliquer automatiquement 15% du montant des produits
+                        </p>
                       </div>
                     </div>
                   )}
@@ -654,7 +698,7 @@ const CreateOrderPage = () => {
                     </div>
                     
                     <div className="relative mb-3">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400" size={16} />
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 pointer-events-none" size={16} />
                       <input
                         type="text"
                         value={productSearch}
@@ -858,7 +902,7 @@ const CreateOrderPage = () => {
                         <span className="text-dark-300">Frais de livraison</span>
                         <span className="text-white">
                           {formData.type_livraison === 'livraison_domicile' ? 
-                            `${formatHTG(calculateDeliveryFees())} (15%)` : 
+                            `${formatHTG(calculateDeliveryFees())} ${formData.frais_livraison === '' ? '(15%)' : '(personnalisé)'}` : 
                             'Gratuit'
                           }
                         </span>

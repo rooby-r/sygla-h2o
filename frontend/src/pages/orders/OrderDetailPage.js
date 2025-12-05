@@ -25,12 +25,14 @@ import Button from '../../components/ui/Button.js';
 import { orderService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useAuth } from '../../hooks/useAuth';
 
 const OrderDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const { triggerDashboardUpdate, updateTrigger } = useDataUpdate();
+  const { user } = useAuth();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -172,24 +174,54 @@ SYGLA-H2O`;
       return;
     }
 
-    if (parseFloat(paiementData.montant) > parseFloat(order.montant_restant)) {
-      toast.error('Le montant dépasse le montant restant');
-      return;
+    const montant = parseFloat(paiementData.montant);
+    const montantTotal = parseFloat(order.montant_total);
+    const montantRestant = parseFloat(order.montant_restant);
+    const montantDejaPaye = parseFloat(order.montant_paye || 0);
+    const penalite = parseFloat(order.penalite_applicable || 0);
+    const montantTotalAPayer = parseFloat(order.montant_total_a_payer || montantRestant);
+    
+    // Vérifier minimum 60% au premier paiement
+    if (montantDejaPaye === 0) {
+      const minimumRequis = montantTotal * 0.60;
+      if (montant < minimumRequis) {
+        toast.error(`Le premier paiement doit être d'au moins 60% (${formatHTG(minimumRequis)})`);
+        return;
+      }
+    }
+    
+    // Vérifier si pénalité applicable (après échéance)
+    if (order.est_apres_echeance && montantRestant > 0) {
+      if (montant < montantTotalAPayer) {
+        toast.error(`Montant insuffisant. Vous devez payer le solde restant + pénalité (${formatHTG(montantTotalAPayer)})`);
+        return;
+      }
+    } else {
+      if (montant > montantRestant) {
+        toast.error('Le montant dépasse le montant restant');
+        return;
+      }
     }
 
     try {
       setLoading(true);
       
       // Calculer le nouveau pourcentage après ce paiement
-      const nouveauMontantPaye = parseFloat(order.montant_paye || 0) + parseFloat(paiementData.montant);
-      const nouveauPourcentage = (nouveauMontantPaye / parseFloat(order.montant_total)) * 100;
+      const nouveauMontantPaye = montantDejaPaye + Math.min(montant, montantRestant);
+      const nouveauPourcentage = (nouveauMontantPaye / montantTotal) * 100;
       
       // Générer une note dynamique si aucune note n'est fournie
-      const notePaiement = paiementData.notes || `Paiement: ${nouveauPourcentage.toFixed(0)}% (${nouveauMontantPaye.toFixed(2)} HTG sur ${parseFloat(order.montant_total).toFixed(2)} HTG)`;
+      let notePaiement = paiementData.notes || `Paiement: ${nouveauPourcentage.toFixed(0)}% (${nouveauMontantPaye.toFixed(2)} HTG sur ${montantTotal.toFixed(2)} HTG)`;
+      
+      // Ajouter info pénalité dans les notes si applicable
+      if (order.est_apres_echeance && penalite > 0) {
+        notePaiement += ` - Inclut pénalité de retard: ${penalite.toFixed(2)} HTG`;
+      }
       
       const response = await orderService.addPaiement(id, {
         ...paiementData,
-        notes: notePaiement
+        notes: notePaiement,
+        include_penalite: order.est_apres_echeance && penalite > 0
       });
       
       if (response.convertie_en_vente) {
@@ -205,7 +237,16 @@ SYGLA-H2O`;
       }
     } catch (error) {
       console.error('Erreur ajout paiement:', error);
-      toast.error(error.response?.data?.error || 'Erreur lors de l\'ajout du paiement');
+      const errorData = error.response?.data;
+      
+      // Gérer les erreurs spécifiques du backend
+      if (errorData?.require_penalite) {
+        toast.error(`Pénalité requise: ${formatHTG(errorData.penalite)}. Total à payer: ${formatHTG(errorData.montant_total_a_payer)}`);
+      } else if (errorData?.montant_minimum) {
+        toast.error(`Minimum 60% requis: ${formatHTG(errorData.montant_minimum)}`);
+      } else {
+        toast.error(errorData?.error || 'Erreur lors de l\'ajout du paiement');
+      }
     } finally {
       setLoading(false);
     }
@@ -299,317 +340,359 @@ SYGLA-H2O`;
       return dateToShow ? new Date(dateToShow).toLocaleString('fr-FR') : 'N/A';
     })();
 
+    const getStatusClass = (status) => {
+      switch(status) {
+        case 'livree': return 'status-livree';
+        case 'validee': return 'status-validee';
+        case 'en_preparation': return 'status-en_preparation';
+        case 'en_livraison': return 'status-en_livraison';
+        case 'annulee': return 'status-annulee';
+        default: return 'status-attente';
+      }
+    };
+
+    const getStatusLabel = (status) => {
+      switch(status) {
+        case 'livree': return 'LIVRÉE';
+        case 'validee': return 'VALIDÉE';
+        case 'en_preparation': return 'EN PRÉPARATION';
+        case 'en_livraison': return 'EN LIVRAISON';
+        case 'annulee': return 'ANNULÉE';
+        case 'en_attente': case 'attente': return 'EN ATTENTE';
+        default: return status.toUpperCase();
+      }
+    };
+
     const printContent = `
       <!DOCTYPE html>
-      <html>
+      <html lang="fr">
       <head>
         <meta charset="UTF-8">
         <title>Fiche de Commande - ${order.numero_commande}</title>
         <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
-          body { 
-            font-family: 'Arial', sans-serif; 
-            line-height: 1.6; 
-            color: #333; 
-            max-width: 800px; 
-            margin: 0 auto; 
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          body {
+            font-family: 'Courier New', monospace;
             padding: 20px;
+            max-width: 80mm;
+            margin: 0 auto;
             background: white;
+            color: black;
           }
-          .header { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            border-bottom: 3px solid #2563eb; 
-            padding-bottom: 20px; 
+          .header {
+            text-align: center;
+            border-bottom: 2px dashed #000;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
           }
-          .company-name { 
-            font-size: 28px; 
-            font-weight: bold; 
-            color: #2563eb; 
-            margin-bottom: 5px; 
+          .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
           }
-          .company-subtitle { 
-            font-size: 14px; 
-            color: #666; 
-            margin-bottom: 20px; 
+          .subtitle {
+            font-size: 12px;
+            color: #666;
           }
-          .document-title { 
-            font-size: 24px; 
-            font-weight: bold; 
-            color: #1f2937; 
-            margin-top: 10px; 
+          .receipt-info {
+            text-align: center;
+            margin-bottom: 15px;
           }
-          .info-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 30px; 
-            margin-bottom: 30px; 
+          .receipt-number {
+            font-size: 16px;
+            font-weight: bold;
           }
-          .info-section { 
-            background: #f8fafc; 
-            padding: 20px; 
-            border-radius: 8px; 
-            border-left: 4px solid #2563eb; 
+          .date {
+            font-size: 11px;
+            color: #666;
           }
-          .info-section h3 { 
-            font-size: 16px; 
-            font-weight: bold; 
-            color: #2563eb; 
-            margin-bottom: 15px; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
+          .section {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
           }
-          .info-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 8px; 
-            padding: 5px 0; 
+          .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
           }
-          .info-label { 
-            font-weight: 600; 
-            color: #4b5563; 
-            flex: 1; 
+          .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 4px;
           }
-          .info-value { 
-            color: #1f2937; 
-            flex: 1; 
-            text-align: right; 
+          .info-row .label {
+            color: #666;
           }
-          .status-badge { 
-            display: inline-block; 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            font-size: 12px; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px; 
+          .info-row .value {
+            font-weight: bold;
+            text-align: right;
+            max-width: 50%;
           }
-          .status-en-attente { background: #fef3c7; color: #d97706; }
-          .status-validee { background: #dcfce7; color: #16a34a; }
-          .status-en-preparation { background: #e0e7ff; color: #7c3aed; }
-          .status-en-livraison { background: #fed7aa; color: #ea580c; }
-          .status-livree { background: #dcfce7; color: #16a34a; }
-          .status-annulee { background: #fecaca; color: #dc2626; }
-          .items-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin: 20px 0; 
-            background: white; 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+          .items-table {
+            width: 100%;
+            font-size: 11px;
           }
-          .items-table th { 
-            background: #2563eb; 
-            color: white; 
-            padding: 12px; 
-            text-align: left; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            font-size: 12px; 
-            letter-spacing: 0.5px; 
+          .items-table th {
+            text-align: left;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            font-size: 10px;
           }
-          .items-table td { 
-            padding: 12px; 
-            border-bottom: 1px solid #e5e7eb; 
+          .items-table td {
+            padding: 5px 0;
+            vertical-align: top;
           }
-          .items-table tr:nth-child(even) { 
-            background: #f9fafb; 
+          .items-table .qty {
+            text-align: center;
+            width: 30px;
           }
-          .total-section { 
-            background: #f8fafc; 
-            padding: 20px; 
-            border-radius: 8px; 
-            border: 2px solid #2563eb; 
-            margin-top: 20px; 
+          .items-table .price {
+            text-align: right;
+            width: 70px;
           }
-          .total-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin-bottom: 10px; 
-            padding: 5px 0; 
+          .total-section {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
           }
-          .total-final { 
-            font-size: 20px; 
-            font-weight: bold; 
-            color: #2563eb; 
-            border-top: 2px solid #2563eb; 
-            padding-top: 15px; 
-            margin-top: 15px; 
+          .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 5px;
           }
-          .notes-section { 
-            background: #fffbeb; 
-            padding: 20px; 
-            border-radius: 8px; 
-            border-left: 4px solid #f59e0b; 
-            margin-top: 20px; 
+          .grand-total {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed #000;
           }
-          .footer { 
-            margin-top: 40px; 
-            text-align: center; 
-            font-size: 12px; 
-            color: #6b7280; 
-            border-top: 1px solid #e5e7eb; 
-            padding-top: 20px; 
+          .payment-info {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+          }
+          .payment-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 3px;
+          }
+          .payment-row.paid {
+            color: #16a34a;
+          }
+          .payment-row.remaining {
+            color: #dc2626;
+          }
+          .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 5px;
+          }
+          .status-livree { background: #d4edda; color: #155724; }
+          .status-en_livraison { background: #fff3cd; color: #856404; }
+          .status-validee { background: #e2d5f1; color: #5a2d82; }
+          .status-en_preparation { background: #cce5ff; color: #004085; }
+          .status-annulee { background: #f8d7da; color: #721c24; }
+          .status-attente { background: #fff3cd; color: #856404; }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #000;
+            font-size: 10px;
+          }
+          .footer .thanks {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+          .signature-area {
+            margin-top: 20px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+          }
+          .signature-line {
+            margin-top: 30px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+            font-size: 10px;
+            text-align: center;
+          }
+          .paiements-list {
+            margin-top: 10px;
+            font-size: 10px;
+          }
+          .paiement-item {
+            padding: 5px;
+            margin-bottom: 5px;
+            background: #f5f5f5;
+            border-left: 3px solid #16a34a;
           }
           @media print {
-            body { padding: 0; }
-            .no-print { display: none; }
+            body {
+              padding: 0;
+            }
           }
         </style>
       </head>
       <body>
         <div class="header">
-          <div class="company-name">SYGLA-H2O</div>
-          <div class="company-subtitle">Système de Gestion d'Eau Potable et Glace</div>
-          <div class="document-title">FICHE DE COMMANDE</div>
+          <div class="logo">💧 SYGLA-H2O</div>
+          <div class="subtitle">Eau Potable & Glace de Qualité</div>
         </div>
 
-        <div class="info-grid">
-          <div class="info-section">
-            <h3>Informations Commande</h3>
-            <div class="info-row">
-              <span class="info-label">N° Commande:</span>
-              <span class="info-value">${order.numero_commande}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Date de création:</span>
-              <span class="info-value">${orderDate}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Date de livraison:</span>
-              <span class="info-value">${deliveryDate}</span>
-            </div>
-            ${order.date_echeance ? `
-            <div class="info-row">
-              <span class="info-label">Date d'échéance:</span>
-              <span class="info-value">${new Date(order.date_echeance).toLocaleDateString('fr-FR')}</span>
-            </div>` : ''}
-            <div class="info-row">
-              <span class="info-label">Type de livraison:</span>
-              <span class="info-value">${order.type_livraison === 'retrait_magasin' ? 'Retrait en magasin' : 'Livraison à domicile'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Créée par:</span>
-              <span class="info-value">${order.vendeur_nom_complet || order.vendeur_nom || 'Système'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Statut:</span>
-              <span class="info-value">
-                <span class="status-badge status-${order.statut}">
-                  ${order.statut.replace('_', ' ').toUpperCase()}
-                </span>
-              </span>
-            </div>
-          </div>
+        <div class="receipt-info">
+          <div class="receipt-number">${order.numero_commande}</div>
+          <div class="date">Imprimé le: ${currentDate}</div>
+          <span class="status-badge ${getStatusClass(order.statut)}">${getStatusLabel(order.statut)}</span>
+        </div>
 
-          <div class="info-section">
-            <h3>Informations Client</h3>
-            <div class="info-row">
-              <span class="info-label">Nom/Raison sociale:</span>
-              <span class="info-value">${order.client?.raison_sociale || order.client?.nom || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Contact:</span>
-              <span class="info-value">${order.client?.contact || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Téléphone:</span>
-              <span class="info-value">${order.client?.telephone || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Email:</span>
-              <span class="info-value">${order.client?.email || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Adresse:</span>
-              <span class="info-value">${order.client?.adresse || 'N/A'}</span>
-            </div>
+        <div class="section">
+          <div class="section-title">📦 Commande</div>
+          <div class="info-row">
+            <span class="label">Date création:</span>
+            <span class="value">${orderDate}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Date livraison:</span>
+            <span class="value">${deliveryDate}</span>
+          </div>
+          ${order.date_echeance ? `
+          <div class="info-row">
+            <span class="label">Échéance:</span>
+            <span class="value">${new Date(order.date_echeance).toLocaleDateString('fr-FR')}</span>
+          </div>` : ''}
+          <div class="info-row">
+            <span class="label">Type:</span>
+            <span class="value">${order.type_livraison === 'livraison_domicile' ? 'Livraison' : 'Retrait'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Vendeur:</span>
+            <span class="value">${order.vendeur_nom_complet || order.vendeur_nom || 'Système'}</span>
           </div>
         </div>
 
-        <h3 style="color: #2563eb; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;">Articles Commandés</h3>
-        <table class="items-table">
-          <thead>
-            <tr>
-              <th>Produit</th>
-              <th style="text-align: center;">Quantité</th>
-              <th style="text-align: right;">Prix Unitaire</th>
-              <th style="text-align: right;">Sous-total</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${order.items?.map(item => `
+        <div class="section">
+          <div class="section-title">👤 Client</div>
+          <div class="info-row">
+            <span class="label">Nom:</span>
+            <span class="value">${order.client?.raison_sociale || order.client?.nom || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Contact:</span>
+            <span class="value">${order.client?.contact || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Tél:</span>
+            <span class="value">${order.client?.telephone || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Adresse:</span>
+            <span class="value">${order.client?.adresse || 'N/A'}</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">📋 Articles</div>
+          <table class="items-table">
+            <thead>
               <tr>
-                <td><strong>${item.produit_nom}</strong></td>
-                <td style="text-align: center;">${item.quantite}</td>
-                <td style="text-align: right;">${formatHTG(item.prix_unitaire)}</td>
-                <td style="text-align: right; font-weight: bold;">${formatHTG(item.sous_total)}</td>
+                <th>Produit</th>
+                <th class="qty">Qté</th>
+                <th class="price">Prix</th>
               </tr>
-            `).join('') || '<tr><td colspan="4" style="text-align: center; font-style: italic;">Aucun article</td></tr>'}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              ${order.items?.map(item => `
+                <tr>
+                  <td>${item.produit_nom}</td>
+                  <td class="qty">${item.quantite}</td>
+                  <td class="price">${formatHTG(item.sous_total)}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="3" style="text-align:center">Aucun article</td></tr>'}
+            </tbody>
+          </table>
+        </div>
 
         <div class="total-section">
           <div class="total-row">
-            <span>Montant des produits:</span>
+            <span>Sous-total produits:</span>
             <span>${formatHTG(order.montant_produits || 0)}</span>
           </div>
           <div class="total-row">
-            <span>Frais de livraison ${order.type_livraison === 'retrait_magasin' ? '(Gratuit)' : '(+15%)'}:</span>
+            <span>Frais de livraison:</span>
             <span>${formatHTG(order.frais_livraison || 0)}</span>
           </div>
-          <div class="total-row total-final">
-            <span>TOTAL DE LA COMMANDE:</span>
+          <div class="total-row grand-total">
+            <span>TOTAL:</span>
             <span>${formatHTG(order.montant_total)}</span>
           </div>
-          ${order.montant_paye > 0 ? `
-          <div class="total-row" style="color: #10b981; margin-top: 10px;">
-            <span>Montant payé:</span>
-            <span>${formatHTG(order.montant_paye)}</span>
-          </div>
-          <div class="total-row" style="color: ${order.montant_restant > 0 ? '#f59e0b' : '#10b981'};">
-            <span>Montant restant:</span>
-            <span>${formatHTG(order.montant_restant)}</span>
+          
+          ${order.montant_paye > 0 || order.montant_restant > 0 ? `
+          <div class="payment-info">
+            <div class="payment-row paid">
+              <span>✓ Payé:</span>
+              <span>${formatHTG(order.montant_paye || 0)}</span>
+            </div>
+            <div class="payment-row ${order.montant_restant > 0 ? 'remaining' : 'paid'}">
+              <span>${order.montant_restant > 0 ? '⏳' : '✓'} Restant:</span>
+              <span>${formatHTG(order.montant_restant || 0)}</span>
+            </div>
           </div>
           ` : ''}
         </div>
 
         ${order.paiements_commande && order.paiements_commande.length > 0 ? `
-          <div class="notes-section">
-            <h3 style="color: #10b981; margin-bottom: 10px;">Historique des paiements</h3>
-            ${order.paiements_commande.map(paiement => `
-              <div style="padding: 10px; margin-bottom: 8px; background: #f3f4f6; border-radius: 5px; border-left: 3px solid #10b981;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <span style="font-size: 0.9em; color: #6b7280;">${new Date(paiement.date_paiement).toLocaleString('fr-FR')}</span>
-                    <br/>
-                    <span style="font-size: 0.85em; padding: 2px 6px; background: #3b82f6; color: white; border-radius: 3px; margin-top: 4px; display: inline-block;">
-                      ${paiement.methode === 'especes' ? 'Espèces' :
-                        paiement.methode === 'carte' ? 'Carte bancaire' :
-                        paiement.methode === 'virement' ? 'Virement' :
-                        paiement.methode === 'cheque' ? 'Chèque' :
-                        paiement.methode === 'mobile' ? 'Paiement mobile' :
-                        paiement.methode}
-                    </span>
-                  </div>
-                  <strong style="color: #10b981; font-size: 1.1em;">${formatHTG(paiement.montant)}</strong>
+        <div class="section" style="margin-top: 15px;">
+          <div class="section-title">💳 Paiements</div>
+          <div class="paiements-list">
+            ${order.paiements_commande.map(p => `
+              <div class="paiement-item">
+                <div style="display:flex;justify-content:space-between;">
+                  <span>${new Date(p.date_paiement).toLocaleDateString('fr-FR')}</span>
+                  <strong>${formatHTG(p.montant)}</strong>
                 </div>
-                ${paiement.notes ? `<p style="font-size: 0.85em; color: #6b7280; margin-top: 5px;">${paiement.notes}</p>` : ''}
-                ${paiement.reference ? `<p style="font-size: 0.85em; color: #6b7280; margin-top: 3px;">Réf: ${paiement.reference}</p>` : ''}
+                <div style="color:#666;font-size:9px;">
+                  ${p.methode === 'especes' ? 'Espèces' : p.methode === 'carte' ? 'Carte' : p.methode === 'virement' ? 'Virement' : p.methode === 'mobile' ? 'Mobile' : p.methode}
+                  ${p.reference ? ` - Réf: ${p.reference}` : ''}
+                </div>
               </div>
             `).join('')}
           </div>
+        </div>
         ` : ''}
 
         ${order.notes ? `
-          <div class="notes-section">
-            <h3 style="color: #f59e0b; margin-bottom: 10px;">Notes</h3>
-            <p>${order.notes}</p>
-          </div>
+        <div class="section" style="margin-top: 15px;">
+          <div class="section-title">📝 Notes</div>
+          <p style="font-size: 11px;">${order.notes}</p>
+        </div>
         ` : ''}
 
+        <div class="signature-area">
+          <div class="info-row">
+            <span>Reçu par:</span>
+            <span>_____________________</span>
+          </div>
+          <div class="signature-line">Signature du client</div>
+        </div>
+
         <div class="footer">
-          <p>Document généré le ${currentDate}</p>
-          <p>SYGLA-H2O - Système de Gestion d'Eau Potable et Glace</p>
+          <div class="thanks">Merci de votre confiance ! 🙏</div>
+          <div>SYGLA-H2O - Votre partenaire en eau potable</div>
+          <div>Pour toute question, contactez-nous</div>
         </div>
       </body>
       </html>
@@ -620,10 +703,7 @@ SYGLA-H2O`;
     
     // Attendre que le contenu soit chargé avant d'imprimer
     printWindow.onload = () => {
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 250);
+      printWindow.print();
     };
   };
 
@@ -750,8 +830,8 @@ SYGLA-H2O`;
               {getStatusLabel(order.statut)}
             </span>
             
-            {/* Boutons de changement de statut */}
-            {order.statut === 'en_attente' && (
+            {/* Boutons de changement de statut - masqués pour le vendeur */}
+            {order.statut === 'en_attente' && user?.role !== 'vendeur' && (
               <button
                 onClick={() => handleStatusChange('validee')}
                 disabled={loading}
@@ -762,7 +842,7 @@ SYGLA-H2O`;
               </button>
             )}
             
-            {order.statut === 'validee' && (
+            {order.statut === 'validee' && user?.role !== 'vendeur' && (
               <button
                 onClick={() => handleStatusChange('en_preparation')}
                 disabled={loading}
@@ -773,7 +853,7 @@ SYGLA-H2O`;
               </button>
             )}
             
-            {order.statut === 'en_preparation' && (
+            {order.statut === 'en_preparation' && user?.role !== 'vendeur' && (
               <button
                 onClick={() => handleStatusChange('en_livraison')}
                 disabled={loading}
@@ -784,7 +864,8 @@ SYGLA-H2O`;
               </button>
             )}
             
-            {order.statut === 'en_livraison' && (
+            {/* Bouton Livrée - masqué pour le rôle stock et vendeur */}
+            {order.statut === 'en_livraison' && user?.role !== 'stock' && user?.role !== 'vendeur' && (
               <button
                 onClick={() => handleStatusChange('livree')}
                 disabled={loading}
@@ -795,8 +876,8 @@ SYGLA-H2O`;
               </button>
             )}
             
-            {/* Bouton d'annulation (toujours disponible sauf si déjà livrée ou annulée) */}
-            {!['livree', 'annulee'].includes(order.statut) && (
+            {/* Bouton d'annulation - disponible seulement pour les commandes en attente */}
+            {order.statut === 'en_attente' && (
               <button
                 onClick={() => handleStatusChange('annulee')}
                 disabled={loading}
@@ -807,8 +888,8 @@ SYGLA-H2O`;
               </button>
             )}
             
-            {/* Boutons d'action généraux */}
-            {order.montant_restant > 0 && !order.convertie_en_vente && (
+            {/* Boutons d'action généraux - masquer si commande annulée */}
+            {order.montant_restant > 0 && !order.convertie_en_vente && order.statut !== 'annulee' && (
               <button
                 onClick={() => setShowPaiementModal(true)}
                 className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg flex items-center space-x-2 transition-colors"
@@ -818,21 +899,26 @@ SYGLA-H2O`;
               </button>
             )}
             
-            <button
-              onClick={handleEdit}
-              className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg flex items-center space-x-2 transition-colors"
-            >
-              <Edit3 className="w-4 h-4" />
-              <span>Modifier</span>
-            </button>
-            
-            <button
-              onClick={handleDelete}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg flex items-center space-x-2 transition-colors"
-            >
-              <Trash2 className="w-4 h-4" />
-              <span>Supprimer</span>
-            </button>
+            {/* Boutons Modifier et Supprimer - masqués si commande validée ou au-delà */}
+            {!['validee', 'en_preparation', 'en_livraison', 'livree', 'annulee'].includes(order.statut) && (
+              <>
+                <button
+                  onClick={handleEdit}
+                  className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-lg flex items-center space-x-2 transition-colors"
+                >
+                  <Edit3 className="w-4 h-4" />
+                  <span>Modifier</span>
+                </button>
+                
+                <button
+                  onClick={handleDelete}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg flex items-center space-x-2 transition-colors"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  <span>Supprimer</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -937,8 +1023,8 @@ SYGLA-H2O`;
                 {/* Frais de livraison */}
                 <div className="flex justify-between items-center mb-4">
                   <span className="text-dark-300">
-                    Frais de livraison 
-                    {order.type_livraison === 'retrait_magasin' ? ' (Gratuit)' : ' (+15%)'}:
+                    Frais de livraison
+                    {order.type_livraison === 'retrait_magasin' ? ' (Gratuit)' : ''}:
                   </span>
                   <span className="text-white">{formatHTG(order.frais_livraison || 0)}</span>
                 </div>
@@ -1096,9 +1182,39 @@ SYGLA-H2O`;
                 {order.date_echeance && (
                   <div>
                     <label className="text-dark-300 text-sm font-medium">Date d'échéance</label>
-                    <p className="text-white text-lg mt-1">
+                    <p className={`text-lg mt-1 ${order.est_apres_echeance && order.montant_restant > 0 ? 'text-red-400 font-bold' : 'text-white'}`}>
                       {new Date(order.date_echeance).toLocaleDateString('fr-FR')}
+                      {order.est_apres_echeance && order.montant_restant > 0 && (
+                        <span className="text-xs ml-2">⚠️ Dépassée</span>
+                      )}
                     </p>
+                  </div>
+                )}
+                
+                {/* Avertissement pénalité si échéance passée */}
+                {order.est_apres_echeance && order.montant_restant > 0 && order.statut !== 'annulee' && (
+                  <div className="mt-4 p-4 bg-red-900/30 border border-red-500/50 rounded-lg">
+                    <div className="flex items-center text-red-400 mb-2">
+                      <XCircle className="w-5 h-5 mr-2" />
+                      <span className="font-bold">Échéance dépassée</span>
+                    </div>
+                    <p className="text-red-300 text-sm mb-2">
+                      Une pénalité de 1.5% s'applique sur le montant restant.
+                    </p>
+                    <div className="text-sm space-y-1">
+                      <div className="flex justify-between">
+                        <span className="text-dark-300">Montant restant:</span>
+                        <span className="text-white">{formatHTG(order.montant_restant)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-dark-300">Pénalité (1.5%):</span>
+                        <span className="text-red-400">+{formatHTG(order.penalite_applicable || 0)}</span>
+                      </div>
+                      <div className="flex justify-between border-t border-red-500/30 pt-1 mt-1">
+                        <span className="text-dark-300 font-bold">Total à payer:</span>
+                        <span className="text-red-400 font-bold">{formatHTG(order.montant_total_a_payer || order.montant_restant)}</span>
+                      </div>
+                    </div>
                   </div>
                 )}
                 {order.date_validation && (
@@ -1152,14 +1268,19 @@ SYGLA-H2O`;
                   <Printer className="w-4 h-4 mr-2" />
                   Imprimer la fiche
                 </Button>
-                <Button onClick={handleEdit} variant="primary" className="w-full">
-                  <Edit3 className="w-4 h-4 mr-2" />
-                  Modifier la commande
-                </Button>
-                <Button onClick={handleDelete} variant="danger" className="w-full">
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Supprimer la commande
-                </Button>
+                {/* Boutons de modification/suppression uniquement pour les commandes en attente */}
+                {order.statut === 'en_attente' && (
+                  <>
+                    <Button onClick={handleEdit} variant="primary" className="w-full">
+                      <Edit3 className="w-4 h-4 mr-2" />
+                      Modifier la commande
+                    </Button>
+                    <Button onClick={handleDelete} variant="danger" className="w-full">
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Supprimer la commande
+                    </Button>
+                  </>
+                )}
                 <Button onClick={() => navigate('/orders')} variant="secondary" className="w-full">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Retour à la liste
@@ -1195,6 +1316,37 @@ SYGLA-H2O`;
                   <span className="text-dark-300">Montant restant:</span>
                   <span className="text-warning-400 font-bold text-lg">{formatHTG(order.montant_restant)}</span>
                 </div>
+                
+                {/* Afficher info minimum 60% si premier paiement */}
+                {parseFloat(order.montant_paye) === 0 && (
+                  <div className="mt-3 p-3 bg-blue-900/30 border border-blue-500/50 rounded-lg">
+                    <p className="text-blue-300 text-xs">
+                      <span className="font-bold">⚡ Premier paiement:</span> Minimum 60% requis
+                    </p>
+                    <p className="text-blue-400 text-sm font-bold mt-1">
+                      Minimum: {formatHTG(parseFloat(order.montant_total) * 0.60)}
+                    </p>
+                  </div>
+                )}
+                
+                {/* Afficher pénalité si échéance dépassée */}
+                {order.est_apres_echeance && order.montant_restant > 0 && (
+                  <div className="mt-3 p-3 bg-red-900/30 border border-red-500/50 rounded-lg">
+                    <p className="text-red-300 text-xs font-bold">
+                      ⚠️ Échéance dépassée - Pénalité applicable
+                    </p>
+                    <div className="text-sm space-y-1 mt-2">
+                      <div className="flex justify-between">
+                        <span className="text-dark-300">Pénalité (1.5%):</span>
+                        <span className="text-red-400">+{formatHTG(order.penalite_applicable || 0)}</span>
+                      </div>
+                      <div className="flex justify-between border-t border-red-500/30 pt-1">
+                        <span className="text-dark-300 font-bold">Total à payer:</span>
+                        <span className="text-red-400 font-bold">{formatHTG(order.montant_total_a_payer || order.montant_restant)}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               
               <form onSubmit={handleAddPaiement} className="space-y-4">
@@ -1204,15 +1356,20 @@ SYGLA-H2O`;
                   </label>
                   <input
                     type="number"
-                    min="0.01"
+                    min={parseFloat(order.montant_paye) === 0 ? (parseFloat(order.montant_total) * 0.60).toFixed(2) : "0.01"}
                     step="0.01"
-                    max={order.montant_restant}
+                    max={order.est_apres_echeance ? order.montant_total_a_payer : order.montant_restant}
                     value={paiementData.montant}
                     onChange={(e) => setPaiementData({ ...paiementData, montant: e.target.value })}
                     className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
-                    placeholder={`Max: ${formatHTG(order.montant_restant)}`}
+                    placeholder={order.est_apres_echeance ? `Total avec pénalité: ${formatHTG(order.montant_total_a_payer)}` : `Max: ${formatHTG(order.montant_restant)}`}
                     required
                   />
+                  {parseFloat(order.montant_paye) === 0 && (
+                    <p className="text-xs text-blue-400 mt-1">
+                      Minimum 60%: {formatHTG(parseFloat(order.montant_total) * 0.60)}
+                    </p>
+                  )}
                 </div>
 
                 <div>

@@ -63,12 +63,17 @@ class CommandeSerializer(serializers.ModelSerializer):
     vendeur_nom = serializers.CharField(source='vendeur.username', read_only=True)
     vendeur_nom_complet = serializers.SerializerMethodField()
     taux_paiement = serializers.SerializerMethodField()
+    numero_vente_associee = serializers.SerializerMethodField()
+    est_apres_echeance = serializers.SerializerMethodField()
+    penalite_applicable = serializers.SerializerMethodField()
+    montant_total_a_payer = serializers.SerializerMethodField()
     
     class Meta:
         model = Commande
         fields = [
             'id',
             'numero_commande',
+            'numero_vente_associee',
             'client',
             'client_id',
             'vendeur_nom',
@@ -86,6 +91,10 @@ class CommandeSerializer(serializers.ModelSerializer):
             'montant_total',
             'montant_paye',
             'montant_restant',
+            'montant_penalite',
+            'penalite_applicable',
+            'montant_total_a_payer',
+            'est_apres_echeance',
             'statut_paiement',
             'taux_paiement',
             'convertie_en_vente',
@@ -93,7 +102,19 @@ class CommandeSerializer(serializers.ModelSerializer):
             'items',
             'paiements_commande',
         ]
-        read_only_fields = ['id', 'numero_commande', 'date_creation', 'montant_produits', 'frais_livraison', 'montant_total', 'montant_paye', 'montant_restant', 'statut_paiement', 'taux_paiement', 'convertie_en_vente', 'vendeur_nom', 'vendeur_nom_complet']
+        read_only_fields = ['id', 'numero_commande', 'numero_vente_associee', 'date_creation', 'montant_produits', 'montant_total', 'montant_paye', 'montant_restant', 'montant_penalite', 'penalite_applicable', 'montant_total_a_payer', 'est_apres_echeance', 'statut_paiement', 'taux_paiement', 'convertie_en_vente', 'vendeur_nom', 'vendeur_nom_complet']
+    
+    def get_est_apres_echeance(self, obj):
+        """Vérifie si la date d'échéance est passée"""
+        return obj.est_apres_echeance()
+    
+    def get_penalite_applicable(self, obj):
+        """Calcule la pénalité applicable (1.5% si après échéance)"""
+        return float(obj.calculer_penalite())
+    
+    def get_montant_total_a_payer(self, obj):
+        """Retourne le montant total à payer incluant la pénalité"""
+        return float(obj.get_montant_total_a_payer())
     
     def get_vendeur_nom_complet(self, obj):
         """Retourne le nom complet du vendeur"""
@@ -102,6 +123,12 @@ class CommandeSerializer(serializers.ModelSerializer):
                 return f"{obj.vendeur.first_name} {obj.vendeur.last_name}"
             return obj.vendeur.username
         return "Système"
+    
+    def get_numero_vente_associee(self, obj):
+        """Retourne le numéro de vente associée si la commande a été convertie"""
+        if obj.convertie_en_vente and obj.vente_associee:
+            return obj.vente_associee.numero_vente
+        return None
     
     def get_taux_paiement(self, obj):
         """Calcule le taux de paiement en pourcentage"""
@@ -115,12 +142,20 @@ class CommandeSerializer(serializers.ModelSerializer):
         """
         type_livraison = data.get('type_livraison', 'retrait_magasin')
         date_livraison_prevue = data.get('date_livraison_prevue')
+        date_echeance = data.get('date_echeance')
         
         # Pour livraison à domicile, la date de livraison est obligatoire
         if type_livraison == 'livraison_domicile' and not date_livraison_prevue:
             raise serializers.ValidationError({
                 'date_livraison_prevue': 'La date de livraison est obligatoire pour une livraison à domicile.'
             })
+        
+        # Vérifier que la date d'échéance ne dépasse pas la date de livraison
+        if date_echeance and date_livraison_prevue:
+            if date_echeance > date_livraison_prevue:
+                raise serializers.ValidationError({
+                    'date_echeance': 'La date d\'échéance ne peut pas dépasser la date de livraison.'
+                })
         
         # Pour retrait en magasin, pas besoin de date de livraison
         if type_livraison == 'retrait_magasin':
@@ -141,6 +176,10 @@ class CommandeSerializer(serializers.ModelSerializer):
         items_data = validated_data.pop('items', [])
         logger.info(f"🔥 CREATE - Items extraits: {items_data}")
         logger.info(f"🔥 CREATE - Nombre d'items: {len(items_data)}")
+        
+        # Vérifier si les frais de livraison ont été fournis manuellement
+        frais_livraison_manuel = validated_data.get('frais_livraison')
+        logger.info(f"🔥 CREATE - Frais de livraison fournis: {frais_livraison_manuel}")
         
         # Vérifier que client_id existe
         if 'client_id' not in validated_data:
@@ -164,10 +203,25 @@ class CommandeSerializer(serializers.ModelSerializer):
         
         logger.info(f"✅ Total items créés: {items_created}")
         
-        # Calculer les montants avec frais de livraison et forcer la sauvegarde
+        # Calculer les montants
+        # Si les frais ont été fournis manuellement (y compris 0), les conserver
+        # Sinon (None), recalculer automatiquement
         logger.info(f"🔥 Calcul des montants...")
-        commande.calculer_montant_total()
+        recalculer_frais = frais_livraison_manuel is None
+        commande.calculer_montant_total(recalculer_frais_livraison=recalculer_frais)
+        
+        # Si les frais ont été fournis explicitement, s'assurer qu'ils sont appliqués
+        if frais_livraison_manuel is not None:
+            commande.frais_livraison = frais_livraison_manuel
+            commande.montant_total = commande.montant_produits + commande.frais_livraison
+        
+        # Calculer automatiquement la date d'échéance (1 jour avant livraison)
+        if commande.date_livraison_prevue and not commande.date_echeance:
+            commande.calculer_date_echeance()
+            logger.info(f"✅ Date d'échéance calculée: {commande.date_echeance}")
+        
         commande.save()
+        logger.info(f"✅ Frais de livraison: {commande.frais_livraison} HTG (recalculé: {recalculer_frais})")
         logger.info(f"✅ Montant final: {commande.montant_total} HTG")
         logger.info(f"✅ Vérification finale - Items dans commande: {commande.items.count()}")
         
@@ -178,6 +232,12 @@ class CommandeSerializer(serializers.ModelSerializer):
         Mettre à jour une commande existante avec ses items
         """
         items_data = validated_data.pop('items', None)
+        
+        # Vérifier si les frais de livraison ont été fournis manuellement
+        frais_livraison_manuel = validated_data.get('frais_livraison')
+        
+        # Sauvegarder les frais de livraison actuels avant toute modification
+        frais_livraison_a_conserver = frais_livraison_manuel if frais_livraison_manuel is not None else instance.frais_livraison
         
         # Mettre à jour les champs de la commande
         for attr, value in validated_data.items():
@@ -195,7 +255,18 @@ class CommandeSerializer(serializers.ModelSerializer):
                 item_data['sous_total'] = sous_total
                 ItemCommande.objects.create(commande=instance, produit_id=produit_id, **item_data)
         
-        # Recalculer les montants avec frais de livraison
-        instance.calculer_montant_total()
+        # Recalculer les montants SANS recalculer les frais de livraison
+        # Les frais ont été définis manuellement et doivent être préservés
+        instance.calculer_montant_total(recalculer_frais_livraison=False)
+        
+        # Restaurer les frais de livraison conservés
+        if frais_livraison_a_conserver and frais_livraison_a_conserver > 0:
+            instance.frais_livraison = frais_livraison_a_conserver
+            instance.montant_total = instance.montant_produits + instance.frais_livraison
+        
+        # Calculer automatiquement la date d'échéance si nouvelle date de livraison
+        if instance.date_livraison_prevue:
+            instance.calculer_date_echeance()
+        
         instance.save()
         return instance

@@ -82,294 +82,326 @@ const VenteDetailPage = () => {
     const printWindow = window.open('', '_blank');
     const currentDate = new Date().toLocaleString('fr-FR');
     
+    const getStatusClass = (statut) => {
+      switch(statut) {
+        case 'paye': return 'status-paye';
+        case 'paye_partiel': return 'status-partiel';
+        default: return 'status-impaye';
+      }
+    };
+
+    const getStatusLabel = (statut) => {
+      switch(statut) {
+        case 'paye': return 'PAYÉ';
+        case 'paye_partiel': return 'PARTIEL';
+        default: return 'IMPAYÉ';
+      }
+    };
+    
     const printContent = `
       <!DOCTYPE html>
-      <html>
+      <html lang="fr">
       <head>
+        <meta charset="UTF-8">
         <title>Reçu de Vente - ${vente.numero_vente}</title>
         <style>
-          * { margin: 0; padding: 0; box-sizing: border-box; }
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
           body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', monospace;
             padding: 20px;
-            color: #333;
+            max-width: 80mm;
+            margin: 0 auto;
+            background: white;
+            color: black;
           }
           .header {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #3b82f6;
-            padding-bottom: 20px;
+            border-bottom: 2px dashed #000;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
           }
-          .company-name {
+          .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #3b82f6;
             margin-bottom: 5px;
           }
-          .document-title {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 15px 0;
+          .subtitle {
+            font-size: 12px;
+            color: #666;
           }
-          .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-          }
-          .info-section {
-            border: 1px solid #e5e7eb;
-            padding: 15px;
-            border-radius: 8px;
-          }
-          .info-section h3 {
-            color: #3b82f6;
-            font-size: 14px;
-            text-transform: uppercase;
+          .receipt-info {
+            text-align: center;
             margin-bottom: 15px;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 8px;
+          }
+          .receipt-number {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .date {
+            font-size: 11px;
+            color: #666;
+          }
+          .section {
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 10px;
+          }
+          .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-transform: uppercase;
           }
           .info-row {
             display: flex;
             justify-content: space-between;
-            margin: 8px 0;
-            font-size: 14px;
+            font-size: 11px;
+            margin-bottom: 4px;
           }
-          .info-label {
-            color: #6b7280;
+          .info-row .label {
+            color: #666;
           }
-          .info-value {
-            font-weight: 600;
-            color: #111827;
-          }
-          .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-          }
-          .status-paye {
-            background: #d1fae5;
-            color: #065f46;
-          }
-          .status-paye_partiel {
-            background: #fef3c7;
-            color: #92400e;
-          }
-          .status-impaye {
-            background: #fee2e2;
-            color: #991b1b;
+          .info-row .value {
+            font-weight: bold;
+            text-align: right;
+            max-width: 50%;
           }
           .items-table {
             width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
+            font-size: 11px;
           }
           .items-table th {
-            background: #f3f4f6;
-            padding: 12px;
             text-align: left;
-            font-size: 14px;
-            color: #374151;
-            border-bottom: 2px solid #3b82f6;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            font-size: 10px;
           }
           .items-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 14px;
+            padding: 5px 0;
+            vertical-align: top;
           }
-          .items-table tbody tr:last-child td {
-            border-bottom: 2px solid #e5e7eb;
+          .items-table .qty {
+            text-align: center;
+            width: 30px;
+          }
+          .items-table .price {
+            text-align: right;
+            width: 70px;
           }
           .total-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f9fafb;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
           }
           .total-row {
             display: flex;
             justify-content: space-between;
-            margin: 10px 0;
-            font-size: 16px;
+            font-size: 12px;
+            margin-bottom: 5px;
           }
-          .total-final {
-            font-size: 20px;
-            font-weight: bold;
-            color: #3b82f6;
-            padding-top: 15px;
-            border-top: 2px solid #3b82f6;
-            margin-top: 15px;
-          }
-          .paiements-section {
-            margin-top: 30px;
-            page-break-inside: avoid;
-          }
-          .paiements-section h3 {
-            color: #10b981;
-            margin-bottom: 15px;
+          .grand-total {
             font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed #000;
+          }
+          .payment-info {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+          }
+          .payment-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 3px;
+          }
+          .payment-row.paid {
+            color: #16a34a;
+          }
+          .payment-row.remaining {
+            color: #dc2626;
+          }
+          .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-top: 5px;
+          }
+          .status-paye { background: #d4edda; color: #155724; }
+          .status-partiel { background: #fff3cd; color: #856404; }
+          .status-impaye { background: #f8d7da; color: #721c24; }
+          .footer {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px dashed #000;
+            font-size: 10px;
+          }
+          .footer .thanks {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+          .signature-area {
+            margin-top: 20px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+          }
+          .signature-line {
+            margin-top: 30px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
+            font-size: 10px;
+            text-align: center;
+          }
+          .paiements-list {
+            margin-top: 10px;
+            font-size: 10px;
           }
           .paiement-item {
-            padding: 12px;
-            margin-bottom: 10px;
-            background: #f3f4f6;
-            border-radius: 6px;
-            border-left: 4px solid #10b981;
-          }
-          .notes-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #fffbeb;
-            border-left: 4px solid #f59e0b;
-            border-radius: 8px;
-          }
-          .footer {
-            margin-top: 50px;
-            text-align: center;
-            font-size: 12px;
-            color: #6b7280;
-            border-top: 1px solid #e5e7eb;
-            padding-top: 20px;
+            padding: 5px;
+            margin-bottom: 5px;
+            background: #f5f5f5;
+            border-left: 3px solid #16a34a;
           }
           @media print {
-            body { padding: 0; }
-            .no-print { display: none; }
+            body {
+              padding: 0;
+            }
           }
         </style>
       </head>
       <body>
         <div class="header">
-          <div class="company-name">Système de Gestion d'Eau Potable et Glace</div>
-          <div class="document-title">REÇU DE VENTE</div>
+          <div class="logo">💧 SYGLA-H2O</div>
+          <div class="subtitle">Eau Potable & Glace de Qualité</div>
         </div>
 
-        <div class="info-grid">
-          <div class="info-section">
-            <h3>INFORMATIONS VENTE</h3>
-            <div class="info-row">
-              <span class="info-label">N° Vente:</span>
-              <span class="info-value">${vente.numero_vente}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Date de vente:</span>
-              <span class="info-value">${format(new Date(vente.date_vente), 'dd/MM/yyyy', { locale: fr })}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Vendeur:</span>
-              <span class="info-value">${vente.vendeur_details?.full_name || vente.vendeur_details?.email || 'Système'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Statut:</span>
-              <span class="info-value">
-                <span class="status-badge status-${vente.statut_paiement}">
-                  ${vente.statut_paiement === 'paye' ? 'PAYÉ' : vente.statut_paiement === 'paye_partiel' ? 'PAYÉ PARTIELLEMENT' : 'IMPAYÉ'}
-                </span>
-              </span>
-            </div>
-          </div>
+        <div class="receipt-info">
+          <div class="receipt-number">${vente.numero_vente}</div>
+          <div class="date">Imprimé le: ${currentDate}</div>
+          <span class="status-badge ${getStatusClass(vente.statut_paiement)}">${getStatusLabel(vente.statut_paiement)}</span>
+        </div>
 
-          <div class="info-section">
-            <h3>INFORMATIONS CLIENT</h3>
-            <div class="info-row">
-              <span class="info-label">Nom/Raison sociale:</span>
-              <span class="info-value">${vente.client_details?.nom_commercial || vente.client_details?.raison_sociale || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Contact:</span>
-              <span class="info-value">${vente.client_details?.contact || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Téléphone:</span>
-              <span class="info-value">${vente.client_details?.telephone || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Email:</span>
-              <span class="info-value">${vente.client_details?.email || 'N/A'}</span>
-            </div>
-            <div class="info-row">
-              <span class="info-label">Adresse:</span>
-              <span class="info-value">${vente.client_details?.adresse || 'N/A'}</span>
-            </div>
+        <div class="section">
+          <div class="section-title">🧾 Vente</div>
+          <div class="info-row">
+            <span class="label">Date:</span>
+            <span class="value">${format(new Date(vente.date_vente), 'dd/MM/yyyy', { locale: fr })}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Vendeur:</span>
+            <span class="value">${vente.vendeur_details?.full_name || vente.vendeur_details?.email || 'Système'}</span>
           </div>
         </div>
 
-        <table class="items-table">
-          <thead>
-            <tr>
-              <th>Produit</th>
-              <th style="text-align: center;">Quantité</th>
-              <th style="text-align: right;">Prix Unitaire</th>
-              <th style="text-align: right;">Montant</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${vente.lignes?.map(ligne => `
+        <div class="section">
+          <div class="section-title">👤 Client</div>
+          <div class="info-row">
+            <span class="label">Nom:</span>
+            <span class="value">${vente.client_details?.nom_commercial || vente.client_details?.raison_sociale || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Contact:</span>
+            <span class="value">${vente.client_details?.contact || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Tél:</span>
+            <span class="value">${vente.client_details?.telephone || 'N/A'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Adresse:</span>
+            <span class="value">${vente.client_details?.adresse || 'N/A'}</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">📋 Articles</div>
+          <table class="items-table">
+            <thead>
               <tr>
-                <td><strong>${ligne.produit_details?.nom || 'N/A'}</strong></td>
-                <td style="text-align: center;">${ligne.quantite}</td>
-                <td style="text-align: right;">${formatHTG(ligne.prix_unitaire)}</td>
-                <td style="text-align: right; font-weight: bold;">${formatHTG(ligne.montant)}</td>
+                <th>Produit</th>
+                <th class="qty">Qté</th>
+                <th class="price">Prix</th>
               </tr>
-            `).join('') || '<tr><td colspan="4" style="text-align: center; font-style: italic;">Aucun article</td></tr>'}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              ${vente.lignes?.map(ligne => `
+                <tr>
+                  <td>${ligne.produit_details?.nom || 'N/A'}</td>
+                  <td class="qty">${ligne.quantite}</td>
+                  <td class="price">${formatHTG(ligne.montant)}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="3" style="text-align:center">Aucun article</td></tr>'}
+            </tbody>
+          </table>
+        </div>
 
         <div class="total-section">
-          <div class="total-row total-final">
-            <span>TOTAL DE LA VENTE:</span>
+          <div class="total-row grand-total">
+            <span>TOTAL:</span>
             <span>${formatHTG(vente.montant_total)}</span>
           </div>
-          <div class="total-row" style="color: #10b981; margin-top: 10px;">
-            <span>Montant payé:</span>
-            <span>${formatHTG(vente.montant_paye)}</span>
-          </div>
-          <div class="total-row" style="color: ${vente.montant_restant > 0 ? '#f59e0b' : '#10b981'};">
-            <span>Montant restant:</span>
-            <span>${formatHTG(vente.montant_restant)}</span>
+          
+          <div class="payment-info">
+            <div class="payment-row paid">
+              <span>✓ Payé:</span>
+              <span>${formatHTG(vente.montant_paye)}</span>
+            </div>
+            <div class="payment-row ${vente.montant_restant > 0 ? 'remaining' : 'paid'}">
+              <span>${vente.montant_restant > 0 ? '⏳' : '✓'} Restant:</span>
+              <span>${formatHTG(vente.montant_restant)}</span>
+            </div>
           </div>
         </div>
 
         ${vente.paiements && vente.paiements.length > 0 ? `
-          <div class="paiements-section">
-            <h3>Historique des paiements</h3>
-            ${vente.paiements.map(paiement => `
+        <div class="section" style="margin-top: 15px;">
+          <div class="section-title">💳 Paiements</div>
+          <div class="paiements-list">
+            ${vente.paiements.map(p => `
               <div class="paiement-item">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <div>
-                    <span style="font-size: 0.9em; color: #6b7280;">${format(new Date(paiement.date_paiement), 'dd/MM/yyyy à HH:mm', { locale: fr })}</span>
-                    <br/>
-                    <span style="font-size: 0.85em; padding: 2px 6px; background: #3b82f6; color: white; border-radius: 3px; margin-top: 4px; display: inline-block;">
-                      ${paiement.methode === 'especes' ? 'Espèces' :
-                        paiement.methode === 'carte' ? 'Carte bancaire' :
-                        paiement.methode === 'virement' ? 'Virement' :
-                        paiement.methode === 'cheque' ? 'Chèque' :
-                        paiement.methode === 'mobile' ? 'Paiement mobile' :
-                        paiement.methode}
-                    </span>
-                  </div>
-                  <strong style="color: #10b981; font-size: 1.1em;">${formatHTG(paiement.montant)}</strong>
+                <div style="display:flex;justify-content:space-between;">
+                  <span>${format(new Date(p.date_paiement), 'dd/MM/yyyy', { locale: fr })}</span>
+                  <strong>${formatHTG(p.montant)}</strong>
                 </div>
-                ${paiement.notes ? `<p style="font-size: 0.85em; color: #6b7280; margin-top: 5px;">${paiement.notes}</p>` : ''}
-                ${paiement.reference ? `<p style="font-size: 0.85em; color: #6b7280; margin-top: 3px;">Réf: ${paiement.reference}</p>` : ''}
+                <div style="color:#666;font-size:9px;">
+                  ${p.methode === 'especes' ? 'Espèces' : p.methode === 'carte' ? 'Carte' : p.methode === 'virement' ? 'Virement' : p.methode === 'mobile' ? 'Mobile' : p.methode}
+                  ${p.reference ? ` - Réf: ${p.reference}` : ''}
+                </div>
               </div>
             `).join('')}
           </div>
+        </div>
         ` : ''}
 
         ${vente.notes ? `
-          <div class="notes-section">
-            <h3 style="color: #f59e0b; margin-bottom: 10px;">Notes</h3>
-            <p>${vente.notes}</p>
-          </div>
+        <div class="section" style="margin-top: 15px;">
+          <div class="section-title">📝 Notes</div>
+          <p style="font-size: 11px;">${vente.notes}</p>
+        </div>
         ` : ''}
 
+        <div class="signature-area">
+          <div class="info-row">
+            <span>Reçu par:</span>
+            <span>_____________________</span>
+          </div>
+          <div class="signature-line">Signature du client</div>
+        </div>
+
         <div class="footer">
-          <p>Document généré le ${currentDate}</p>
-          <p>SYGLA-H2O - Système de Gestion d'Eau Potable et Glace</p>
+          <div class="thanks">Merci de votre confiance ! 🙏</div>
+          <div>SYGLA-H2O - Votre partenaire en eau potable</div>
+          <div>Pour toute question, contactez-nous</div>
         </div>
       </body>
       </html>
@@ -379,10 +411,7 @@ const VenteDetailPage = () => {
     printWindow.document.close();
     
     printWindow.onload = () => {
-      setTimeout(() => {
-        printWindow.print();
-        printWindow.close();
-      }, 250);
+      printWindow.print();
     };
   };
 

@@ -1,8 +1,20 @@
 import axios from 'axios';
 
+// Détection automatique de l'URL de l'API selon l'origine
+const getApiBaseUrl = () => {
+  // Si une URL est définie dans .env, l'utiliser
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  
+  // Sinon, utiliser la même adresse que le frontend (localhost ou IP réseau)
+  const hostname = window.location.hostname;
+  return `http://${hostname}:8000/api`;
+};
+
 // Configuration de base d'Axios
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/api',
+  baseURL: getApiBaseUrl(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
