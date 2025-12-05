@@ -213,13 +213,27 @@ export const productService = {
     return response.data;
   },
 
-  updateStock: async (id, stockData) => {
-    const response = await api.post(`/products/${id}/update-stock/`, stockData);
+  // Ajuster le stock d'un produit
+  ajusterStock: async (id, data) => {
+    const response = await api.post(`/products/${id}/ajuster-stock/`, data);
     return response.data;
   },
 
+  // Obtenir les mouvements de stock d'un produit
   getStockMovements: async (id) => {
-    const response = await api.get(`/products/${id}/movements/`);
+    const response = await api.get(`/products/${id}/mouvements/`);
+    return response.data;
+  },
+
+  // Obtenir tous les mouvements de stock
+  getAllStockMovements: async (params = {}) => {
+    const response = await api.get('/products/mouvements/', { params });
+    return response.data;
+  },
+
+  // Créer un mouvement de stock
+  createStockMovement: async (data) => {
+    const response = await api.post('/products/mouvements/create/', data);
     return response.data;
   },
 

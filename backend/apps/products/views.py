@@ -1,8 +1,11 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Produit
-from .serializers import ProduitSerializer
+from rest_framework.views import APIView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+from .models import Produit, MouvementStock
+from .serializers import ProduitSerializer, MouvementStockSerializer, MouvementStockCreateSerializer
 from apps.logs.utils import create_log, LogTimer
 
 
@@ -130,3 +133,147 @@ class ProduitDetailView(generics.RetrieveUpdateDestroyAPIView):
                 )
             
             return response
+
+
+class MouvementStockListView(generics.ListAPIView):
+    """
+    Vue pour lister les mouvements de stock
+    """
+    queryset = MouvementStock.objects.all().select_related('produit', 'utilisateur')
+    serializer_class = MouvementStockSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['produit', 'type_mouvement']
+    search_fields = ['produit__nom', 'motif', 'numero_document']
+    ordering_fields = ['date_creation', 'quantite']
+    ordering = ['-date_creation']
+
+
+class MouvementStockCreateView(generics.CreateAPIView):
+    """
+    Vue pour créer un mouvement de stock
+    """
+    queryset = MouvementStock.objects.all()
+    serializer_class = MouvementStockCreateSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def create(self, request, *args, **kwargs):
+        with LogTimer() as timer:
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            mouvement = serializer.save()
+            
+            # Créer un log pour le mouvement de stock
+            create_log(
+                log_type='success' if mouvement.type_mouvement == 'entree' else 'info',
+                message=f"Mouvement de stock: {mouvement.get_type_mouvement_display()}",
+                details=f"{mouvement.produit.nom} - {mouvement.quantite} unités - {mouvement.motif}",
+                user=request.user,
+                module='products',
+                request=request,
+                metadata={
+                    'mouvementId': mouvement.id,
+                    'productId': mouvement.produit.id,
+                    'productName': mouvement.produit.nom,
+                    'movementType': mouvement.type_mouvement,
+                    'quantity': mouvement.quantite,
+                    'stockBefore': mouvement.stock_avant,
+                    'stockAfter': mouvement.stock_apres,
+                    'reason': mouvement.motif
+                },
+                status_code=201,
+                response_time=timer.elapsed
+            )
+            
+            # Retourner avec le serializer de lecture
+            response_serializer = MouvementStockSerializer(mouvement)
+            return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+
+class MouvementStockByProductView(generics.ListAPIView):
+    """
+    Vue pour lister les mouvements de stock d'un produit spécifique
+    """
+    serializer_class = MouvementStockSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        produit_id = self.kwargs.get('produit_id')
+        return MouvementStock.objects.filter(produit_id=produit_id).select_related('produit', 'utilisateur')
+
+
+class StockAjustementView(APIView):
+    """
+    Vue pour ajuster le stock d'un produit
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, pk):
+        try:
+            produit = Produit.objects.get(pk=pk)
+        except Produit.DoesNotExist:
+            return Response(
+                {'error': 'Produit non trouvé'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        nouveau_stock = request.data.get('nouveau_stock')
+        motif = request.data.get('motif', 'Ajustement de stock')
+        
+        if nouveau_stock is None:
+            return Response(
+                {'error': 'nouveau_stock est requis'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            nouveau_stock = int(nouveau_stock)
+            if nouveau_stock < 0:
+                raise ValueError("Le stock ne peut pas être négatif")
+        except (ValueError, TypeError) as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        stock_avant = produit.stock_actuel
+        difference = nouveau_stock - stock_avant
+        
+        # Créer le mouvement
+        mouvement = MouvementStock.objects.create(
+            produit=produit,
+            type_mouvement='ajustement',
+            quantite=abs(difference),
+            stock_avant=stock_avant,
+            stock_apres=nouveau_stock,
+            motif=motif,
+            utilisateur=request.user
+        )
+        
+        # Mettre à jour le stock
+        produit.stock_actuel = nouveau_stock
+        produit.save()
+        
+        # Log
+        create_log(
+            log_type='info',
+            message=f"Ajustement de stock: {produit.nom}",
+            details=f"Stock ajusté de {stock_avant} à {nouveau_stock} - {motif}",
+            user=request.user,
+            module='products',
+            request=request,
+            metadata={
+                'productId': produit.id,
+                'productName': produit.nom,
+                'previousStock': stock_avant,
+                'newStock': nouveau_stock,
+                'difference': difference,
+                'reason': motif
+            }
+        )
+        
+        return Response({
+            'message': 'Stock ajusté avec succès',
+            'produit': ProduitSerializer(produit).data,
+            'mouvement': MouvementStockSerializer(mouvement).data
+        })
