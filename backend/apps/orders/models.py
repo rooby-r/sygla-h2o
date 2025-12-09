@@ -75,7 +75,7 @@ class Commande(models.Model):
         decimal_places=2,
         default=0,
         verbose_name='Frais de livraison (HTG)',
-        help_text='15% du montant pour livraison à domicile, 0 pour retrait en magasin'
+        help_text='Frais de livraison saisis manuellement'
     )
     montant_total = models.DecimalField(
         max_digits=12,
@@ -256,23 +256,14 @@ class Commande(models.Model):
         Calcule le montant total de la commande avec frais de livraison
         
         Args:
-            recalculer_frais_livraison: Si True, recalcule les frais de livraison à 15%.
-                                        Si False, conserve les frais actuels (entrée manuelle).
+            recalculer_frais_livraison: Non utilisé - les frais sont toujours manuels.
         """
         # Calculer le montant des produits
         montant_produits = sum(item.sous_total for item in self.items.all())
         self.montant_produits = montant_produits
         
-        # Calculer les frais de livraison SEULEMENT si demandé explicitement
-        # ou si les frais sont à 0 et c'est une livraison à domicile (première fois)
-        if recalculer_frais_livraison:
-            if self.type_livraison == 'livraison_domicile':
-                # 15% du montant des produits pour livraison à domicile
-                self.frais_livraison = montant_produits * Decimal('0.15')
-            else:
-                # Gratuit pour retrait en magasin
-                self.frais_livraison = Decimal('0.00')
-        # Sinon, on garde les frais actuels (ils ont peut-être été définis manuellement)
+        # Les frais de livraison sont toujours saisis manuellement
+        # Pas de calcul automatique - on garde les frais actuels
         
         # Calculer le montant total
         self.montant_total = self.montant_produits + self.frais_livraison
@@ -284,7 +275,7 @@ class Commande(models.Model):
         if self.type_livraison == 'retrait_magasin':
             return "Retrait en magasin (Gratuit)"
         else:
-            return f"Livraison à domicile (+15% = {self.frais_livraison} HTG)"
+            return f"Livraison à domicile ({self.frais_livraison} HTG)"
     
     def livraison_necessite_date(self):
         """Vérifie si le type de livraison nécessite une date"""

@@ -45,7 +45,7 @@ const CreateOrderPage = () => {
     type_livraison: 'retrait_magasin',
     statut: 'attente', // Corriger pour correspondre au backend
     notes: '',
-    frais_livraison: '',  // Frais de livraison manuels (vide = auto 15%)
+    frais_livraison: 0,  // Frais de livraison manuels obligatoires
     items: []
   });
 
@@ -167,18 +167,12 @@ const CreateOrderPage = () => {
     }, 0);
   };
 
-  // Calculer les frais de livraison (manuel ou 15% pour livraison à domicile)
+  // Calculer les frais de livraison (manuels uniquement)
   const calculateDeliveryFees = () => {
     if (formData.type_livraison !== 'livraison_domicile') return 0;
     
-    // Si l'utilisateur a saisi des frais manuels, utiliser cette valeur
-    if (formData.frais_livraison !== '' && formData.frais_livraison !== null) {
-      return parseFloat(formData.frais_livraison) || 0;
-    }
-    
-    // Sinon, calculer 15% automatiquement
-    const productsTotal = calculateProductsTotal();
-    return productsTotal * 0.15;
+    // Utiliser les frais saisis manuellement
+    return parseFloat(formData.frais_livraison) || 0;
   };
 
   // Calculer le montant total (produits + livraison)
@@ -558,7 +552,6 @@ const CreateOrderPage = () => {
                       />
                       <div>
                         <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Livraison à domicile</div>
-                        <div className="text-yellow-400 text-sm font-medium">+15% du montant</div>
                         <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livraison directement chez vous</div>
                       </div>
                     </label>
@@ -570,12 +563,11 @@ const CreateOrderPage = () => {
                         <AlertCircle size={16} />
                         <span className="text-sm font-medium">
                           Frais de livraison : {formatHTG(calculateDeliveryFees())}
-                          {formData.frais_livraison === '' && ' (15% automatique)'}
                         </span>
                       </div>
                       <div>
                         <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
-                          Frais de livraison personnalisés (HTG)
+                          Frais de livraison (HTG) *
                         </label>
                         <input
                           type="number"
@@ -583,12 +575,10 @@ const CreateOrderPage = () => {
                           min="0"
                           value={formData.frais_livraison}
                           onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
-                          placeholder={`Auto: ${formatHTG(calculateProductsTotal() * 0.15)} (15%)`}
+                          placeholder="Entrez les frais de livraison"
                           className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-dark-400'}`}
+                          required
                         />
-                        <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
-                          Laissez vide pour appliquer automatiquement 15% du montant des produits
-                        </p>
                       </div>
                     </div>
                   )}
@@ -856,7 +846,7 @@ const CreateOrderPage = () => {
                     <div className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                       {formData.type_livraison === 'retrait_magasin' ? 
                         'Retrait en magasin (Gratuit)' : 
-                        'Livraison à domicile (+15%)'
+                        'Livraison à domicile'
                       }
                     </div>
                   </div>
@@ -904,7 +894,7 @@ const CreateOrderPage = () => {
                         <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Frais de livraison</span>
                         <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                           {formData.type_livraison === 'livraison_domicile' ? 
-                            `${formatHTG(calculateDeliveryFees())} ${formData.frais_livraison === '' ? '(15%)' : '(personnalisé)'}` : 
+                            formatHTG(calculateDeliveryFees()) : 
                             'Gratuit'
                           }
                         </span>
