@@ -19,11 +19,13 @@ import Button from '../../components/ui/Button.js';
 import Modal from '../../components/ui/Modal.js';
 import { clientService } from '../../services/api';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { formatHTG } from '../../utils/currency';
 
 const ClientsPage = () => {
   const navigate = useNavigate();
   const { onClientDeleted, triggerDashboardUpdate } = useDataUpdate();
+  const { theme } = useTheme();
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -113,11 +115,11 @@ const ClientsPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2 flex items-center">
+          <h2 className={`text-3xl font-bold mb-2 flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
             <UsersIcon className="w-8 h-8 mr-3 text-primary-400" />
             Gestion des Clients
           </h2>
-          <p className="text-dark-300">
+          <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
             Gérez vos clients et leurs informations
           </p>
         </div>
@@ -132,7 +134,7 @@ const ClientsPage = () => {
         <motion.div variants={itemVariants} className="stat-card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Total Clients</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>Total Clients</h3>
               <p className="text-3xl font-bold text-primary-400">{clients.length}</p>
             </div>
             <UsersIcon className="w-8 h-8 text-primary-400/50" />
@@ -142,7 +144,7 @@ const ClientsPage = () => {
         <motion.div variants={itemVariants} className="stat-card">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Clients Actifs</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>Clients Actifs</h3>
               <p className="text-3xl font-bold text-green-400">
                 {clients.filter(c => c.is_active).length}
               </p>
@@ -177,49 +179,49 @@ const ClientsPage = () => {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-dark-700">
-                <th className="text-left py-3 text-dark-300 font-medium">Client</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Contact</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Actions</th>
+              <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Client</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Contact</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="4" className="text-center py-8 text-dark-400">
+                  <td colSpan="4" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Chargement...
                   </td>
                 </tr>
               ) : filteredClients.length === 0 ? (
                 <tr>
-                  <td colSpan="4" className="text-center py-8 text-dark-400">
+                  <td colSpan="4" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Aucun client trouvé
                   </td>
                 </tr>
               ) : (
                 filteredClients.map((client) => (
-                  <tr key={client.id} className="border-b border-dark-800 hover:bg-dark-800/50">
+                  <tr key={client.id} className={`border-b ${theme === 'light' ? 'border-slate-100 hover:bg-slate-50' : 'border-dark-800 hover:bg-dark-800/50'}`}>
                     <td className="py-4">
                       <div>
-                        <p className="text-white font-medium">
+                        <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                           {client.nom_commercial || 'Nom non défini'}
                         </p>
-                        <p className="text-dark-400 text-sm">{client.adresse || 'Adresse non définie'}</p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{client.adresse || 'Adresse non définie'}</p>
                       </div>
                     </td>
                     <td className="py-4">
                       <div>
-                        <p className="text-white text-sm">{client.contact || 'Contact non défini'}</p>
-                        <p className="text-dark-400 text-xs">{client.email || 'Email non défini'}</p>
-                        <p className="text-dark-400 text-xs">{client.telephone || 'Téléphone non défini'}</p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{client.contact || 'Contact non défini'}</p>
+                        <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{client.email || 'Email non défini'}</p>
+                        <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{client.telephone || 'Téléphone non défini'}</p>
                       </div>
                     </td>
                     <td className="py-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         client.is_active 
-                          ? 'bg-green-400/20 text-green-400'
-                          : 'bg-red-400/20 text-red-400'
+                          ? 'bg-green-400/20 text-green-600'
+                          : 'bg-red-400/20 text-red-600'
                       }`}>
                         {client.is_active ? 'Actif' : 'Inactif'}
                       </span>
@@ -228,19 +230,19 @@ const ClientsPage = () => {
                       <div className="flex space-x-2">
                         <button
                           onClick={() => handleViewClient(client)}
-                          className="p-2 text-blue-400 hover:bg-blue-400/20 rounded-lg transition-colors"
+                          className="p-2 text-blue-500 hover:bg-blue-400/20 rounded-lg transition-colors"
                         >
                           <Eye className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleEditClient(client)}
-                          className="p-2 text-yellow-400 hover:bg-yellow-400/20 rounded-lg transition-colors"
+                          className="p-2 text-yellow-500 hover:bg-yellow-400/20 rounded-lg transition-colors"
                         >
                           <Edit3 className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => handleDeleteClient(client.id)}
-                          className="p-2 text-red-400 hover:bg-red-400/20 rounded-lg transition-colors"
+                          className="p-2 text-red-500 hover:bg-red-400/20 rounded-lg transition-colors"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>

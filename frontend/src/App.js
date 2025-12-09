@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { DataUpdateProvider } from './contexts/DataUpdateContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 // Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -55,13 +56,14 @@ const queryClient = new QueryClient({
 // Composant principal
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <DataUpdateProvider>
-        <AuthProvider>
-          <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
-            <div className="min-h-screen bg-dark-900 text-white">
-              {/* Fond avec effet de grille cyber */}
-              <div className="fixed inset-0 bg-cyber-grid opacity-20 pointer-events-none" />
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <DataUpdateProvider>
+          <AuthProvider>
+            <Router future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
+              <div className="min-h-screen bg-dark-900 dark:bg-dark-900 text-white dark:text-white">
+                {/* Fond avec effet de grille cyber */}
+                <div className="fixed inset-0 bg-cyber-grid opacity-20 pointer-events-none dark:opacity-20" />
               
               <Routes>
                 {/* Route de connexion */}
@@ -259,11 +261,12 @@ function App() {
                 },
               }}
             />
-          </div>
-        </Router>
-      </AuthProvider>
-    </DataUpdateProvider>
-    </QueryClientProvider>
+            </div>
+          </Router>
+        </AuthProvider>
+      </DataUpdateProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

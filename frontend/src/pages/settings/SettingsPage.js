@@ -3,10 +3,12 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Clock, Shield, Bell, User, Database, FileText, Users } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { theme } = useTheme();
 
   const settingsOptions = [
     {
@@ -91,8 +93,8 @@ const SettingsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Paramètres</h2>
-        <p className="text-dark-300">
+        <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Paramètres</h2>
+        <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
           Configurez les options du système selon vos besoins
         </p>
       </div>
@@ -110,17 +112,17 @@ const SettingsPage = () => {
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -5 }}
               onClick={() => navigate(option.path)}
-              className="card p-6 cursor-pointer hover:border-primary-500/50 transition-all group"
+              className={`card p-6 cursor-pointer hover:border-primary-500/50 transition-all group ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
             >
               <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${option.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                 <Icon className="w-6 h-6 text-white" />
               </div>
               
-              <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-primary-400 transition-colors">
+              <h3 className={`text-xl font-semibold mb-2 group-hover:text-primary-400 transition-colors ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                 {option.title}
               </h3>
               
-              <p className="text-dark-400 text-sm leading-relaxed">
+              <p className={`text-sm leading-relaxed ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>
                 {option.description}
               </p>
               

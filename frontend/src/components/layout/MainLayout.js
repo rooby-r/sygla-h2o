@@ -3,12 +3,14 @@ import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const { theme } = useTheme();
 
   // Gérer le state responsive avec breakpoints
   useEffect(() => {
@@ -30,7 +32,7 @@ const MainLayout = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-dark-900'}`}>
       {/* Sidebar */}
       <Sidebar 
         isOpen={isSidebarOpen} 

@@ -15,8 +15,10 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const ConnectedUsersPage = () => {
+  const { theme } = useTheme();
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -125,7 +127,7 @@ const ConnectedUsersPage = () => {
       <div className="flex items-center justify-center h-screen">
         <div className="flex flex-col items-center space-y-4">
           <RefreshCw className="w-8 h-8 text-blue-400 animate-spin" />
-          <p className="text-dark-400">Chargement...</p>
+          <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Chargement...</p>
         </div>
       </div>
     );
@@ -136,11 +138,11 @@ const ConnectedUsersPage = () => {
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white flex items-center space-x-3">
+          <h1 className={`text-3xl font-bold flex items-center space-x-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
             <Users className="w-8 h-8 text-blue-400" />
             <span>Utilisateurs Connectés</span>
           </h1>
-          <p className="text-dark-400 mt-2">
+          <p className={`mt-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
             {connectedUsers.length} utilisateur(s) actif(s) sur le système
           </p>
         </div>
@@ -162,12 +164,12 @@ const ConnectedUsersPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-dark-800 border border-dark-700 rounded-xl p-6"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-dark-400 text-sm">Total en ligne</p>
-              <p className="text-3xl font-bold text-white mt-1">
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Total en ligne</p>
+              <p className={`text-3xl font-bold mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 {connectedUsers.length}
               </p>
             </div>
@@ -179,12 +181,12 @@ const ConnectedUsersPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-dark-800 border border-dark-700 rounded-xl p-6"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-dark-400 text-sm">Administrateurs</p>
-              <p className="text-3xl font-bold text-white mt-1">
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Administrateurs</p>
+              <p className={`text-3xl font-bold mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 {connectedUsers.filter(u => u.role === 'admin').length}
               </p>
             </div>
@@ -196,12 +198,12 @@ const ConnectedUsersPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-dark-800 border border-dark-700 rounded-xl p-6"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-dark-400 text-sm">Vendeurs</p>
-              <p className="text-3xl font-bold text-white mt-1">
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Vendeurs</p>
+              <p className={`text-3xl font-bold mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 {connectedUsers.filter(u => u.role === 'vendeur').length}
               </p>
             </div>
@@ -213,12 +215,12 @@ const ConnectedUsersPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-dark-800 border border-dark-700 rounded-xl p-6"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-dark-400 text-sm">Autres</p>
-              <p className="text-3xl font-bold text-white mt-1">
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Autres</p>
+              <p className={`text-3xl font-bold mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 {connectedUsers.filter(u => u.role !== 'admin' && u.role !== 'vendeur').length}
               </p>
             </div>
@@ -231,19 +233,19 @@ const ConnectedUsersPage = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden"
+        className={`rounded-xl overflow-hidden border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
       >
-        <div className="p-6 border-b border-dark-700">
-          <h2 className="text-xl font-semibold text-white">Sessions Actives</h2>
+        <div className={`p-6 border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+          <h2 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Sessions Actives</h2>
         </div>
 
         {connectedUsers.length === 0 ? (
           <div className="p-12 text-center">
-            <AlertCircle className="w-16 h-16 text-dark-400 mx-auto mb-4" />
-            <p className="text-dark-400">Aucun utilisateur connecté</p>
+            <AlertCircle className={`w-16 h-16 mx-auto mb-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Aucun utilisateur connecté</p>
           </div>
         ) : (
-          <div className="divide-y divide-dark-700">
+          <div className={`divide-y ${theme === 'light' ? 'divide-slate-100' : 'divide-dark-700'}`}>
             {connectedUsers.map((user, index) => {
               const DeviceIcon = getDeviceIcon(user.session?.device_info);
               
@@ -253,7 +255,7 @@ const ConnectedUsersPage = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="p-6 hover:bg-dark-700/50 transition-colors"
+                  className={`p-6 transition-colors ${theme === 'light' ? 'hover:bg-slate-50' : 'hover:bg-dark-700/50'}`}
                 >
                   <div className="flex items-center justify-between">
                     {/* Info utilisateur */}
@@ -266,14 +268,14 @@ const ConnectedUsersPage = () => {
 
                       <div className="flex-1">
                         <div className="flex items-center space-x-3">
-                          <h3 className="text-white font-medium">
+                          <h3 className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                             {user.full_name || user.username}
                           </h3>
                           <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getRoleColor(user.role)}`}>
                             {user.role_display}
                           </span>
                         </div>
-                        <p className="text-dark-400 text-sm mt-1">{user.email}</p>
+                        <p className={`text-sm mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{user.email}</p>
                       </div>
                     </div>
 
@@ -285,7 +287,7 @@ const ConnectedUsersPage = () => {
                       </div>
 
                       {/* Appareil */}
-                      <div className="flex items-center space-x-2 text-dark-300">
+                      <div className={`flex items-center space-x-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                         <DeviceIcon className="w-5 h-5" />
                         <span className="text-sm">
                           {user.session?.device_info || 'Navigateur Web'}
@@ -294,7 +296,7 @@ const ConnectedUsersPage = () => {
 
                       {/* IP */}
                       {user.session?.ip_address && (
-                        <div className="flex items-center space-x-2 text-dark-300">
+                        <div className={`flex items-center space-x-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                           <MapPin className="w-5 h-5" />
                           <span className="text-sm font-mono">
                             {user.session.ip_address}
@@ -303,7 +305,7 @@ const ConnectedUsersPage = () => {
                       )}
 
                       {/* Durée */}
-                      <div className="flex items-center space-x-2 text-dark-300">
+                      <div className={`flex items-center space-x-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                         <Clock className="w-5 h-5" />
                         <span className="text-sm">
                           {formatDuration(user.session?.login_time)}
@@ -323,10 +325,10 @@ const ConnectedUsersPage = () => {
                   </div>
 
                   {/* Informations détaillées */}
-                  <div className="mt-4 pt-4 border-t border-dark-700 grid grid-cols-3 gap-4 text-sm">
+                  <div className={`mt-4 pt-4 border-t grid grid-cols-3 gap-4 text-sm ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
                     <div>
-                      <p className="text-dark-400">Connexion</p>
-                      <p className="text-white mt-1">
+                      <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Connexion</p>
+                      <p className={`mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                         {new Date(user.session?.login_time).toLocaleString('fr-FR', {
                           day: '2-digit',
                           month: '2-digit',
@@ -337,8 +339,8 @@ const ConnectedUsersPage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-dark-400">Dernière activité</p>
-                      <p className="text-white mt-1">
+                      <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Dernière activité</p>
+                      <p className={`mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                         {new Date(user.session?.last_activity).toLocaleString('fr-FR', {
                           day: '2-digit',
                           month: '2-digit',
@@ -349,8 +351,8 @@ const ConnectedUsersPage = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="text-dark-400">Durée de session</p>
-                      <p className="text-white mt-1">
+                      <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Durée de session</p>
+                      <p className={`mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                         {formatDuration(user.session?.login_time)}
                       </p>
                     </div>

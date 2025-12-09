@@ -14,9 +14,11 @@ import {
 import { toast } from 'react-hot-toast';
 import { deliveryService } from '../../services/api.js';
 import { useAuth } from '../../context/AuthContext.js';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const DeliveriesPage = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -209,11 +211,11 @@ const DeliveriesPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2 flex items-center">
+          <h2 className={`text-3xl font-bold mb-2 flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
             <Truck className="w-8 h-8 mr-3 text-primary-400" />
             Gestion des Livraisons
           </h2>
-          <p className="text-dark-300">
+          <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
             Suivez et gérez toutes vos livraisons en temps réel
           </p>
           {/* Badge pour les livreurs connectés */}
@@ -233,30 +235,30 @@ const DeliveriesPage = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Total Livraisons</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Total Livraisons</h3>
               <p className="text-3xl font-bold text-primary-400">{stats.total}</p>
             </div>
             <Truck className="w-8 h-8 text-primary-400/50" />
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">En Cours</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>En Cours</h3>
               <p className="text-3xl font-bold text-orange-400">{stats.en_cours}</p>
             </div>
             <Navigation className="w-8 h-8 text-orange-400/50" />
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Livrées</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Livrées</h3>
               <p className="text-3xl font-bold text-green-400">{stats.livrees}</p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-400/50" />
@@ -265,22 +267,22 @@ const DeliveriesPage = () => {
       </div>
 
       {/* Search and Filters */}
-      <motion.div variants={itemVariants} className="card p-6">
+      <motion.div variants={itemVariants} className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
             <input
               type="text"
               placeholder="Rechercher une livraison..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10 w-full"
+              className={`input pl-10 w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
             />
           </div>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="input w-48"
+            className={`input w-48 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
           >
             <option value="all">Tous les statuts</option>
             <option value="en_cours">En cours</option>
@@ -291,30 +293,30 @@ const DeliveriesPage = () => {
       </motion.div>
 
       {/* Deliveries Table */}
-      <motion.div variants={itemVariants} className="card p-6">
+      <motion.div variants={itemVariants} className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-dark-700">
-                <th className="text-left py-3 text-dark-300 font-medium">Livraison</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Client</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Livreur</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Date/Heure</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Adresse</th>
-                <th className="text-center py-3 text-dark-300 font-medium">Actions</th>
+              <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Livraison</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Client</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Livreur</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Date/Heure</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Adresse</th>
+                <th className={`text-center py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-8 text-dark-400">
+                  <td colSpan="7" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Chargement...
                   </td>
                 </tr>
               ) : filteredDeliveries.length === 0 ? (
                 <tr>
-                  <td colSpan="7" className="text-center py-8 text-dark-400">
+                  <td colSpan="7" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Aucune livraison trouvée
                   </td>
                 </tr>
@@ -325,24 +327,26 @@ const DeliveriesPage = () => {
                   return (
                     <tr 
                       key={delivery.id} 
-                      className={`border-b border-dark-800 hover:bg-dark-800/50 transition-colors ${
-                        delivery.isPrioritaire ? 'bg-green-500/5' : ''
+                      className={`border-b transition-colors ${
+                        theme === 'light'
+                          ? `border-slate-100 hover:bg-slate-50 ${delivery.isPrioritaire ? 'bg-green-50' : ''}`
+                          : `border-dark-800 hover:bg-dark-800/50 ${delivery.isPrioritaire ? 'bg-green-500/5' : ''}`
                       }`}
                       style={{ animationDelay: `${index * 0.05}s` }}
                     >
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium flex items-center">
+                          <p className={`font-medium flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                             {delivery.isPrioritaire && <span className="mr-2">🎯</span>}
                             {delivery.numero_livraison}
                           </p>
-                          <p className="text-dark-400 text-sm">{delivery.commande.numero_commande}</p>
+                          <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{delivery.commande.numero_commande}</p>
                         </div>
                       </td>
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium">{delivery.commande.client.nom}</p>
-                          <p className="text-dark-400 text-sm flex items-center">
+                          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{delivery.commande.client.nom}</p>
+                          <p className={`text-sm flex items-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                             <MapPin className="w-3 h-3 mr-1" />
                             {delivery.commande.client.adresse.split(',')[0]}
                           </p>
@@ -350,16 +354,16 @@ const DeliveriesPage = () => {
                       </td>
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium">{delivery.livreur}</p>
-                          <p className="text-dark-400 text-sm">{delivery.vehicule}</p>
+                          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{delivery.livreur}</p>
+                          <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{delivery.vehicule}</p>
                         </div>
                       </td>
                       <td className="py-4">
                         <div>
-                          <p className="text-white text-sm">
+                          <p className={`text-sm ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                             {new Date(delivery.date_livraison).toLocaleDateString('fr-FR')}
                           </p>
-                          <p className="text-dark-400 text-sm">
+                          <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                             {new Date(delivery.date_livraison).toLocaleTimeString('fr-FR', { 
                               hour: '2-digit', 
                               minute: '2-digit' 
@@ -381,7 +385,7 @@ const DeliveriesPage = () => {
                           )}
                         </div>
                       </td>
-                      <td className="py-4 text-dark-300 max-w-xs truncate" title={delivery.adresse}>
+                      <td className={`py-4 max-w-xs truncate ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`} title={delivery.adresse}>
                         {delivery.adresse}
                       </td>
                       <td className="py-4">

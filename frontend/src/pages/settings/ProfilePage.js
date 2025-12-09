@@ -4,9 +4,11 @@ import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, Camera, X } from 'l
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
+  const { theme } = useTheme();
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -100,20 +102,28 @@ const ProfilePage = () => {
   const handlePhotoUpload = async (file) => {
     try {
       setUploadingPhoto(true);
+      console.log('📸 Début upload photo:', file.name, file.type, file.size);
+      
       const formData = new FormData();
       formData.append('photo', file);
       
+      console.log('📤 Envoi de la requête...');
+      // Supprimer explicitement le Content-Type pour que axios utilise multipart/form-data
       const response = await api.put('/auth/profile/', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': undefined
         }
       });
       
+      console.log('✅ Réponse:', response.data);
       updateUser(response.data);
       toast.success('Photo de profil mise à jour avec succès');
     } catch (error) {
-      console.error('Erreur lors de l\'upload de la photo:', error);
-      toast.error(error.response?.data?.error || 'Erreur lors de l\'upload de la photo');
+      console.error('❌ Erreur lors de l\'upload de la photo:', error);
+      console.error('❌ Response:', error.response);
+      console.error('❌ Response data:', error.response?.data);
+      console.error('❌ Response status:', error.response?.status);
+      toast.error(error.response?.data?.error || error.response?.data?.detail || 'Erreur lors de l\'upload de la photo');
       // Revenir à l'ancienne photo en cas d'erreur
       if (user?.photo_url) {
         setPhotoPreview(user.photo_url);
@@ -151,12 +161,19 @@ const ProfilePage = () => {
   const handleSaveProfile = async () => {
     try {
       setSavingProfile(true);
-      const response = await api.put('/auth/profile/', profileData);
+      // Exclure photo_url qui est en lecture seule et nettoyer le téléphone
+      const { photo_url, ...dataToSend } = profileData;
+      // Nettoyer le numéro de téléphone (retirer espaces, tirets, parenthèses)
+      if (dataToSend.telephone) {
+        dataToSend.telephone = dataToSend.telephone.replace(/[\s\-\(\)]/g, '');
+      }
+      const response = await api.put('/auth/profile/', dataToSend);
       updateUser(response.data);
       toast.success('Profil mis à jour avec succès');
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
-      toast.error(error.response?.data?.error || 'Erreur lors de la sauvegarde');
+      console.error('Détails:', error.response?.data);
+      toast.error(error.response?.data?.error || error.response?.data?.email?.[0] || error.response?.data?.telephone?.[0] || 'Erreur lors de la sauvegarde');
     } finally {
       setSavingProfile(false);
     }
@@ -182,8 +199,9 @@ const ProfilePage = () => {
     try {
       setSavingPassword(true);
       await api.post('/auth/change-password/', {
-        old_password: passwordData.old_password,
-        new_password: passwordData.new_password
+        current_password: passwordData.old_password,
+        new_password: passwordData.new_password,
+        confirm_password: passwordData.confirm_password
       });
       
       toast.success('Mot de passe modifié avec succès');
@@ -206,8 +224,8 @@ const ProfilePage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Mon Profil</h2>
-        <p className="text-dark-300">
+        <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Mon Profil</h2>
+        <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
           Gérez vos informations personnelles et votre mot de passe
         </p>
       </div>
@@ -217,7 +235,7 @@ const ProfilePage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="card p-6 lg:col-span-1"
+          className={`card p-6 lg:col-span-1 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
         >
           <div className="text-center">
             {/* Photo de profil avec upload */}
@@ -271,18 +289,18 @@ const ProfilePage = () => {
               />
             </div>
             
-            <h3 className="text-xl font-semibold text-white mb-1">
+            <h3 className={`text-xl font-semibold mb-1 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
               {user?.first_name && user?.last_name 
                 ? `${user.first_name} ${user.last_name}`
                 : user?.email
               }
             </h3>
-            <p className="text-dark-400 capitalize mb-4">
+            <p className={`capitalize mb-4 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
               {user?.role || 'Utilisateur'}
             </p>
-            <div className="pt-4 border-t border-dark-700">
-              <div className="text-sm text-dark-400 mb-2">Membre depuis</div>
-              <div className="text-white font-medium">
+            <div className={`pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+              <div className={`text-sm mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Membre depuis</div>
+              <div className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                 {user?.date_creation ? new Date(user.date_creation).toLocaleDateString('fr-FR') : 'N/A'}
               </div>
             </div>
@@ -294,15 +312,15 @@ const ProfilePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="card p-6 lg:col-span-2"
+          className={`card p-6 lg:col-span-2 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-blue-500/10 rounded-lg">
               <User className="w-6 h-6 text-blue-400" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-white">Informations Personnelles</h3>
-              <p className="text-sm text-dark-400">Vos données de profil</p>
+              <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Informations Personnelles</h3>
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Vos données de profil</p>
             </div>
           </div>
 
@@ -310,26 +328,26 @@ const ProfilePage = () => {
             {/* Prénom et Nom */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-dark-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                   Prénom
                 </label>
                 <input
                   type="text"
                   value={profileData.first_name}
                   onChange={(e) => handleProfileChange('first_name', e.target.value)}
-                  className="input"
+                  className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                   placeholder="Votre prénom"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-dark-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                   Nom
                 </label>
                 <input
                   type="text"
                   value={profileData.last_name}
                   onChange={(e) => handleProfileChange('last_name', e.target.value)}
-                  className="input"
+                  className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                   placeholder="Votre nom"
                 />
               </div>
@@ -337,7 +355,7 @@ const ProfilePage = () => {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-dark-300 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                 <Mail className="w-4 h-4 inline mr-2" />
                 Email
               </label>
@@ -345,14 +363,14 @@ const ProfilePage = () => {
                 type="email"
                 value={profileData.email}
                 onChange={(e) => handleProfileChange('email', e.target.value)}
-                className="input"
+                className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                 placeholder="votre@email.com"
               />
             </div>
 
             {/* Téléphone */}
             <div>
-              <label className="block text-sm font-medium text-dark-300 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                 <Phone className="w-4 h-4 inline mr-2" />
                 Téléphone
               </label>
@@ -360,21 +378,21 @@ const ProfilePage = () => {
                 type="tel"
                 value={profileData.telephone}
                 onChange={(e) => handleProfileChange('telephone', e.target.value)}
-                className="input"
+                className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                 placeholder="+33 6 12 34 56 78"
               />
             </div>
 
             {/* Adresse */}
             <div>
-              <label className="block text-sm font-medium text-dark-300 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                 <MapPin className="w-4 h-4 inline mr-2" />
                 Adresse
               </label>
               <textarea
                 value={profileData.adresse}
                 onChange={(e) => handleProfileChange('adresse', e.target.value)}
-                className="input min-h-[80px]"
+                className={`input min-h-[80px] ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                 placeholder="Votre adresse complète"
               />
             </div>
@@ -410,22 +428,22 @@ const ProfilePage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="card p-6"
+        className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
       >
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2 bg-purple-500/10 rounded-lg">
             <Lock className="w-6 h-6 text-purple-400" />
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-white">Changer le Mot de Passe</h3>
-            <p className="text-sm text-dark-400">Modifiez votre mot de passe de connexion</p>
+            <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Changer le Mot de Passe</h3>
+            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Modifiez votre mot de passe de connexion</p>
           </div>
         </div>
 
         <div className="max-w-2xl space-y-4">
           {/* Ancien mot de passe */}
           <div>
-            <label className="block text-sm font-medium text-dark-300 mb-2">
+            <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
               Mot de passe actuel
             </label>
             <div className="relative">
@@ -433,13 +451,13 @@ const ProfilePage = () => {
                 type={showPasswords.old ? 'text' : 'password'}
                 value={passwordData.old_password}
                 onChange={(e) => handlePasswordChange('old_password', e.target.value)}
-                className="input pr-12"
+                className={`input pr-12 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                 placeholder="Votre mot de passe actuel"
               />
               <button
                 type="button"
                 onClick={() => togglePasswordVisibility('old')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white transition"
+                className={`absolute right-3 top-1/2 -translate-y-1/2 transition ${theme === 'light' ? 'text-slate-400 hover:text-slate-600' : 'text-dark-400 hover:text-white'}`}
               >
                 {showPasswords.old ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -448,7 +466,7 @@ const ProfilePage = () => {
 
           {/* Nouveau mot de passe */}
           <div>
-            <label className="block text-sm font-medium text-dark-300 mb-2">
+            <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
               Nouveau mot de passe
             </label>
             <div className="relative">
@@ -456,25 +474,25 @@ const ProfilePage = () => {
                 type={showPasswords.new ? 'text' : 'password'}
                 value={passwordData.new_password}
                 onChange={(e) => handlePasswordChange('new_password', e.target.value)}
-                className="input pr-12"
+                className={`input pr-12 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                 placeholder="Votre nouveau mot de passe"
               />
               <button
                 type="button"
                 onClick={() => togglePasswordVisibility('new')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white transition"
+                className={`absolute right-3 top-1/2 -translate-y-1/2 transition ${theme === 'light' ? 'text-slate-400 hover:text-slate-600' : 'text-dark-400 hover:text-white'}`}
               >
                 {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
-            <p className="text-xs text-dark-400 mt-1">
+            <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
               Au moins 8 caractères recommandés
             </p>
           </div>
 
           {/* Confirmer mot de passe */}
           <div>
-            <label className="block text-sm font-medium text-dark-300 mb-2">
+            <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
               Confirmer le nouveau mot de passe
             </label>
             <div className="relative">
@@ -482,13 +500,13 @@ const ProfilePage = () => {
                 type={showPasswords.confirm ? 'text' : 'password'}
                 value={passwordData.confirm_password}
                 onChange={(e) => handlePasswordChange('confirm_password', e.target.value)}
-                className="input pr-12"
+                className={`input pr-12 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
                 placeholder="Confirmez votre nouveau mot de passe"
               />
               <button
                 type="button"
                 onClick={() => togglePasswordVisibility('confirm')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-dark-400 hover:text-white transition"
+                className={`absolute right-3 top-1/2 -translate-y-1/2 transition ${theme === 'light' ? 'text-slate-400 hover:text-slate-600' : 'text-dark-400 hover:text-white'}`}
               >
                 {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>

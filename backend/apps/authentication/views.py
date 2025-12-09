@@ -269,6 +269,11 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         
+        # Debug logging
+        print(f"📸 ProfileView.update - request.FILES: {request.FILES}")
+        print(f"📸 ProfileView.update - request.data: {request.data}")
+        print(f"📸 ProfileView.update - Content-Type: {request.content_type}")
+        
         # Gérer la suppression de photo en premier
         if request.data.get('remove_photo') == 'true' or request.data.get('remove_photo') is True:
             if instance.photo:

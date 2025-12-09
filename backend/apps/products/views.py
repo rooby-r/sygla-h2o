@@ -62,7 +62,7 @@ class ProduitDetailView(generics.RetrieveUpdateDestroyAPIView):
     
     def update(self, request, *args, **kwargs):
         """
-        Mettre à jour un produit avec logging
+        Mettre à jour un produit avec logging et création de mouvement de stock si changement
         """
         with LogTimer() as timer:
             partial = kwargs.pop('partial', False)
@@ -74,6 +74,25 @@ class ProduitDetailView(generics.RetrieveUpdateDestroyAPIView):
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
             self.perform_update(serializer)
+            
+            # Recharger l'instance pour avoir les nouvelles valeurs
+            instance.refresh_from_db()
+            new_stock = instance.stock_actuel
+            
+            # Créer un mouvement de stock si le stock a changé
+            if old_stock != new_stock:
+                difference = new_stock - old_stock
+                type_mouvement = 'entree' if difference > 0 else 'sortie'
+                
+                MouvementStock.objects.create(
+                    produit=instance,
+                    type_mouvement=type_mouvement,
+                    quantite=abs(difference),
+                    stock_avant=old_stock,
+                    stock_apres=new_stock,
+                    motif='Modification du produit',
+                    utilisateur=request.user
+                )
             
             response = Response(serializer.data)
             
@@ -93,7 +112,7 @@ class ProduitDetailView(generics.RetrieveUpdateDestroyAPIView):
                         'previousPrice': float(old_price),
                         'newPrice': float(instance.prix_unitaire),
                         'previousStock': old_stock,
-                        'newStock': instance.stock_actuel
+                        'newStock': new_stock
                     },
                     status_code=200,
                     response_time=timer.elapsed
@@ -111,7 +130,23 @@ class ProduitDetailView(generics.RetrieveUpdateDestroyAPIView):
             product_id = instance.id
             product_price = instance.prix_unitaire
             
-            self.perform_destroy(instance)
+            # Vérifier si le produit est utilisé dans des commandes
+            from apps.orders.models import ItemCommande
+            items_count = ItemCommande.objects.filter(produit=instance).count()
+            if items_count > 0:
+                return Response(
+                    {'error': f'Impossible de supprimer ce produit. Il est utilisé dans {items_count} commande(s).'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            try:
+                self.perform_destroy(instance)
+            except Exception as e:
+                return Response(
+                    {'error': f'Impossible de supprimer ce produit: {str(e)}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
             response = Response(status=status.HTTP_204_NO_CONTENT)
             
             # Créer un log pour la suppression
@@ -196,10 +231,11 @@ class MouvementStockByProductView(generics.ListAPIView):
     """
     serializer_class = MouvementStockSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = None  # Désactiver la pagination pour afficher tous les mouvements
     
     def get_queryset(self):
         produit_id = self.kwargs.get('produit_id')
-        return MouvementStock.objects.filter(produit_id=produit_id).select_related('produit', 'utilisateur')
+        return MouvementStock.objects.filter(produit_id=produit_id).select_related('produit', 'utilisateur').order_by('-date_creation')
 
 
 class StockAjustementView(APIView):

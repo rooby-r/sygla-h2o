@@ -23,9 +23,11 @@ import Button from '../../components/ui/Button.js';
 import { orderService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const { triggerDashboardUpdate, onOrderDeleted } = useDataUpdate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -297,11 +299,11 @@ const OrdersPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2 flex items-center">
+          <h2 className={`text-3xl font-bold mb-2 flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
             <ShoppingCart className="w-8 h-8 mr-3 text-primary-400" />
             Gestion des Commandes
           </h2>
-          <p className="text-dark-300">
+          <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
             Suivez et gérez toutes vos commandes
           </p>
         </div>
@@ -309,40 +311,40 @@ const OrdersPage = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Total Commandes</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Total Commandes</h3>
               <p className="text-3xl font-bold text-primary-400">{totalOrders}</p>
             </div>
             <ShoppingCart className="w-8 h-8 text-primary-400/50" />
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">En Attente</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>En Attente</h3>
               <p className="text-3xl font-bold text-yellow-400">{pendingOrders}</p>
             </div>
             <Clock className="w-8 h-8 text-yellow-400/50" />
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">Livrées</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Livrées</h3>
               <p className="text-3xl font-bold text-green-400">{completedOrders}</p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-400/50" />
           </div>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="stat-card">
+        <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-semibold text-dark-200 mb-1">CA Total</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>CA Total</h3>
               <p className="text-3xl font-bold text-blue-400">
                 {formatHTG(totalRevenue)}
               </p>
@@ -353,22 +355,22 @@ const OrdersPage = () => {
       </div>
 
       {/* Search and Filters */}
-      <motion.div variants={itemVariants} className="card p-6">
+      <motion.div variants={itemVariants} className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
             <input
               type="text"
               placeholder="Rechercher une commande..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10 w-full"
+              className={`input pl-10 w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
             />
           </div>
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="input w-48"
+            className={`input w-48 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
           >
             <option value="all">Tous les statuts</option>
             <option value="en_attente">En attente</option>
@@ -382,31 +384,31 @@ const OrdersPage = () => {
       </motion.div>
 
       {/* Orders Table */}
-      <motion.div variants={itemVariants} className="card p-6">
+      <motion.div variants={itemVariants} className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-dark-700">
-                <th className="text-left py-3 text-dark-300 font-medium">Commande</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Client</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Date</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Livraison</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Paiement</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Total</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Actions</th>
+              <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Commande</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Client</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Date</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Livraison</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Paiement</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Total</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-8 text-dark-400">
+                  <td colSpan="8" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Chargement...
                   </td>
                 </tr>
               ) : filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-8 text-dark-400">
+                  <td colSpan="8" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Aucune commande trouvée
                   </td>
                 </tr>
@@ -415,23 +417,23 @@ const OrdersPage = () => {
                   const StatusIcon = getStatusIcon(order.statut);
                   
                   return (
-                    <tr key={order.id} className="border-b border-dark-800 hover:bg-dark-800/50">
+                    <tr key={order.id} className={`border-b ${theme === 'light' ? 'border-slate-100 hover:bg-slate-50' : 'border-dark-800 hover:bg-dark-800/50'}`}>
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium">{order.numero_commande}</p>
-                            <p className="text-dark-400 text-sm">{(order.items?.length || 0)} articles</p>
+                          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{order.numero_commande}</p>
+                            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{(order.items?.length || 0)} articles</p>
                         </div>
                       </td>
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium">{order.client?.raison_sociale || order.client?.nom || 'Client non défini'}</p>
-                          <p className="text-dark-400 text-sm">{order.client?.contact || 'Contact non défini'}</p>
+                          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{order.client?.raison_sociale || order.client?.nom || 'Client non défini'}</p>
+                          <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{order.client?.contact || 'Contact non défini'}</p>
                         </div>
                       </td>
-                      <td className="py-4 text-dark-300">
+                      <td className={`py-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                         {order.date_creation ? new Date(order.date_creation).toLocaleDateString('fr-FR') : 'Invalid Date'}
                       </td>
-                      <td className="py-4 text-dark-300">
+                      <td className={`py-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                         {/* Pour livraison à domicile, utiliser date_livraison_prevue, sinon utiliser date_creation */}
                         {(() => {
                           const dateToShow = order.date_livraison_prevue || order.date_creation;
@@ -456,13 +458,13 @@ const OrdersPage = () => {
                                order.statut_paiement === 'paye_partiel' ? 'Partiel' : 'Impayé'}
                             </span>
                             {order.montant_paye > 0 && order.statut_paiement !== 'paye' && (
-                              <p className="text-xs text-dark-400 mt-1">
+                              <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                                 {formatHTG(order.montant_paye)} / {formatHTG(order.montant_total)}
                               </p>
                             )}
                           </div>
                         ) : (
-                          <span className="text-dark-400 text-sm">N/A</span>
+                          <span className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>N/A</span>
                         )}
                       </td>
                       <td className="py-4 text-green-400 font-medium">

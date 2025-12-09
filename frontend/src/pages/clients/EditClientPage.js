@@ -16,11 +16,13 @@ import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import { clientService } from '../../services/api';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const EditClientPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { triggerDashboardUpdate } = useDataUpdate();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [client, setClient] = useState(null);
@@ -90,6 +92,8 @@ const EditClientPage = () => {
 
     if (!formData.adresse.trim()) {
       newErrors.adresse = 'L\'adresse est requise';
+    } else if (/^[\d\s,]+$/.test(formData.adresse.trim())) {
+      newErrors.adresse = 'L\'adresse doit contenir au moins une lettre';
     }
 
     setErrors(newErrors);
@@ -145,7 +149,7 @@ const EditClientPage = () => {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Client non trouvé</h2>
+          <h2 className={`text-2xl font-bold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Client non trouvé</h2>
           <Button onClick={() => navigate('/clients')}>
             Retour aux clients
           </Button>
@@ -173,8 +177,8 @@ const EditClientPage = () => {
             <span>Retour</span>
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-white">Modifier Client</h1>
-            <p className="text-gray-400">{client.raison_sociale}</p>
+            <h1 className={`text-3xl font-bold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Modifier Client</h1>
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-gray-400'}>{client.raison_sociale}</p>
           </div>
         </div>
       </motion.div>
@@ -184,14 +188,14 @@ const EditClientPage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-dark-800 rounded-xl border border-dark-700 overflow-hidden"
+        className={`rounded-xl border overflow-hidden ${theme === 'light' ? 'bg-white border-slate-200 shadow-lg' : 'bg-dark-800 border-dark-700'}`}
       >
         <div className="p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Informations principales */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   <Building className="w-4 h-4 inline mr-2" />
                   Nom commercial
                 </label>
@@ -200,13 +204,13 @@ const EditClientPage = () => {
                   name="nom_commercial"
                   value={formData.nom_commercial}
                   onChange={handleInputChange}
-                  className="w-full bg-dark-700 border border-dark-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
                   placeholder="Nom sous lequel l'entreprise est connue"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   <Mail className="w-4 h-4 inline mr-2" />
                   Email *
                 </label>
@@ -215,9 +219,7 @@ const EditClientPage = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  className={`w-full bg-dark-700 border ${
-                    errors.email ? 'border-red-500' : 'border-dark-600'
-                  } rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent`}
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${errors.email ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
                   placeholder="email@entreprise.com"
                 />
                 {errors.email && (
@@ -226,7 +228,7 @@ const EditClientPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   <Phone className="w-4 h-4 inline mr-2" />
                   Téléphone *
                 </label>
@@ -235,9 +237,7 @@ const EditClientPage = () => {
                   name="telephone"
                   value={formData.telephone}
                   onChange={handleInputChange}
-                  className={`w-full bg-dark-700 border ${
-                    errors.telephone ? 'border-red-500' : 'border-dark-600'
-                  } rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent`}
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${errors.telephone ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
                   placeholder="+509 XXXX-XXXX"
                 />
                 {errors.telephone && (
@@ -246,7 +246,7 @@ const EditClientPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   <User className="w-4 h-4 inline mr-2" />
                   Personne de contact
                 </label>
@@ -254,8 +254,12 @@ const EditClientPage = () => {
                   type="text"
                   name="contact"
                   value={formData.contact}
-                  onChange={handleInputChange}
-                  className="w-full bg-dark-700 border border-dark-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                  onChange={(e) => {
+                    // N'accepter que les lettres, espaces, tirets et apostrophes
+                    const value = e.target.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '');
+                    setFormData({ ...formData, contact: value });
+                  }}
+                  className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
                   placeholder="Nom du responsable"
                 />
               </div>
@@ -263,18 +267,25 @@ const EditClientPage = () => {
 
             {/* Adresse */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 <MapPin className="w-4 h-4 inline mr-2" />
                 Adresse *
               </label>
               <textarea
                 name="adresse"
                 value={formData.adresse}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFormData({ ...formData, adresse: value });
+                  // Vérifier si l'adresse contient uniquement des chiffres, espaces et virgules
+                  if (/^[\d\s,]+$/.test(value.trim()) && value.trim().length > 0) {
+                    setErrors({ ...errors, adresse: 'L\'adresse doit contenir au moins une lettre' });
+                  } else {
+                    setErrors({ ...errors, adresse: '' });
+                  }
+                }}
                 rows={3}
-                className={`w-full bg-dark-700 border ${
-                  errors.adresse ? 'border-red-500' : 'border-dark-600'
-                } rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent`}
+                className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${errors.adresse ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
                 placeholder="Adresse complète de l'entreprise"
               />
               {errors.adresse && (
@@ -284,7 +295,7 @@ const EditClientPage = () => {
 
             {/* Notes */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 <FileText className="w-4 h-4 inline mr-2" />
                 Notes
               </label>
@@ -293,7 +304,7 @@ const EditClientPage = () => {
                 value={formData.notes}
                 onChange={handleInputChange}
                 rows={4}
-                className="w-full bg-dark-700 border border-dark-600 rounded-lg px-4 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
                 placeholder="Notes supplémentaires sur le client..."
               />
             </div>

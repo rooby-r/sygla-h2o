@@ -21,11 +21,13 @@ import {
 import { toast } from 'react-hot-toast';
 import { deliveryService } from '../../services/api.js';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const DeliveryDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [delivery, setDelivery] = useState(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -584,10 +586,10 @@ SYGLA-H2O`;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-slate-50' : 'bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-400 mx-auto mb-4"></div>
-          <p className="text-dark-300">Chargement des détails...</p>
+          <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>Chargement des détails...</p>
         </div>
       </div>
     );
@@ -595,11 +597,11 @@ SYGLA-H2O`;
 
   if (!delivery) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-slate-50' : 'bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900'}`}>
         <div className="text-center">
           <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Livraison non trouvée</h2>
-          <p className="text-dark-300 mb-4">Cette livraison n'existe pas ou a été supprimée.</p>
+          <h2 className={`text-xl font-semibold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Livraison non trouvée</h2>
+          <p className={`mb-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Cette livraison n'existe pas ou a été supprimée.</p>
           <button
             onClick={() => navigate('/deliveries')}
             className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
@@ -614,7 +616,7 @@ SYGLA-H2O`;
   const canModify = canModifyStatus();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900 p-6">
+    <div className={`min-h-screen p-6 ${theme === 'light' ? 'bg-slate-50' : 'bg-gradient-to-br from-dark-900 via-dark-800 to-primary-900'}`}>
       <div className="max-w-4xl mx-auto">
         {/* En-tête avec bouton retour */}
         <motion.div
@@ -625,16 +627,16 @@ SYGLA-H2O`;
           <div className="flex items-center">
             <button
               onClick={() => navigate('/deliveries')}
-              className="p-2 text-dark-300 hover:text-white hover:bg-dark-700 rounded-lg transition-colors mr-4"
+              className={`p-2 rounded-lg transition-colors mr-4 ${theme === 'light' ? 'text-slate-600 hover:text-slate-800 hover:bg-slate-200' : 'text-dark-300 hover:text-white hover:bg-dark-700'}`}
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-white flex items-center">
+              <h1 className={`text-3xl font-bold flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <Truck className="w-8 h-8 mr-3 text-primary-400" />
                 Détails de la Livraison
               </h1>
-              <p className="text-dark-300 mt-1">{delivery.numero_livraison}</p>
+              <p className={`mt-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>{delivery.numero_livraison}</p>
             </div>
           </div>
           
@@ -651,31 +653,31 @@ SYGLA-H2O`;
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-6 border border-dark-700"
+              className={`backdrop-blur-sm rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800/50 border-dark-700'}`}
             >
-              <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h2 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <Package className="w-5 h-5 mr-2 text-primary-400" />
                 Informations de la Commande
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-dark-300 text-sm">Numéro de commande</label>
-                  <p className="text-white font-medium">{delivery.numero_commande}</p>
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Numéro de commande</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.numero_commande}</p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm">Type de livraison</label>
-                  <p className="text-white font-medium">
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Type de livraison</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {delivery.type_livraison === 'livraison_domicile' ? 'Livraison à domicile' : 'Retrait en magasin'}
                   </p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm">Vendeur</label>
-                  <p className="text-white font-medium">{delivery.vendeur_nom}</p>
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Vendeur</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.vendeur_nom}</p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm">Montant total</label>
-                  <p className="text-white font-medium">{delivery.total.toLocaleString()} HTG</p>
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Montant total</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.total.toLocaleString()} HTG</p>
                 </div>
               </div>
             </motion.div>
@@ -685,42 +687,42 @@ SYGLA-H2O`;
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-6 border border-dark-700"
+              className={`backdrop-blur-sm rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800/50 border-dark-700'}`}
             >
-              <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h2 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <User className="w-5 h-5 mr-2 text-primary-400" />
                 Informations Client
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-dark-300 text-sm">Nom du client</label>
-                  <p className="text-white font-medium">{delivery.client.nom}</p>
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Nom du client</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.client.nom}</p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm">Contact</label>
-                  <p className="text-white font-medium">{delivery.client.contact}</p>
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Contact</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.client.contact}</p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm flex items-center">
+                  <label className={`text-sm flex items-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                     <Phone className="w-4 h-4 mr-1" />
                     Téléphone
                   </label>
-                  <p className="text-white font-medium">{delivery.client.telephone}</p>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.client.telephone}</p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm flex items-center">
+                  <label className={`text-sm flex items-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                     <Mail className="w-4 h-4 mr-1" />
                     Email
                   </label>
-                  <p className="text-white font-medium">{delivery.client.email}</p>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.client.email}</p>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="text-dark-300 text-sm flex items-center">
+                  <label className={`text-sm flex items-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                     <MapPin className="w-4 h-4 mr-1" />
                     Adresse de livraison
                   </label>
-                  <p className="text-white font-medium">{delivery.adresse}</p>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.adresse}</p>
                 </div>
               </div>
             </motion.div>
@@ -730,9 +732,9 @@ SYGLA-H2O`;
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-6 border border-dark-700"
+              className={`backdrop-blur-sm rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800/50 border-dark-700'}`}
             >
-              <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h2 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <Package className="w-5 h-5 mr-2 text-primary-400" />
                 Articles Commandés
               </h2>
@@ -740,20 +742,20 @@ SYGLA-H2O`;
               {delivery.items && delivery.items.length > 0 ? (
                 <div className="space-y-3">
                   {delivery.items.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-dark-700/50 rounded-lg">
+                    <div key={index} className={`flex justify-between items-center p-3 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-700/50'}`}>
                       <div>
-                        <p className="text-white font-medium">{item.produit_nom || 'Produit'}</p>
-                        <p className="text-dark-300 text-sm">Quantité: {item.quantite}</p>
+                        <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{item.produit_nom || 'Produit'}</p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Quantité: {item.quantite}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-white font-medium">{item.prix_unitaire} HTG/unité</p>
+                        <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{item.prix_unitaire} HTG/unité</p>
                         <p className="text-primary-400 font-semibold">{item.sous_total} HTG</p>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-dark-300 text-center py-4">Aucun article disponible</p>
+                <p className={`text-center py-4 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Aucun article disponible</p>
               )}
             </motion.div>
 
@@ -763,10 +765,10 @@ SYGLA-H2O`;
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-6 border border-dark-700"
+                className={`backdrop-blur-sm rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800/50 border-dark-700'}`}
               >
-                <h2 className="text-xl font-semibold text-white mb-4">Notes</h2>
-                <p className="text-dark-300">{delivery.notes}</p>
+                <h2 className={`text-xl font-semibold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Notes</h2>
+                <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>{delivery.notes}</p>
               </motion.div>
             )}
           </div>
@@ -778,34 +780,34 @@ SYGLA-H2O`;
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-6 border border-dark-700"
+              className={`backdrop-blur-sm rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800/50 border-dark-700'}`}
             >
-              <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h2 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <Navigation className="w-5 h-5 mr-2 text-primary-400" />
                 Livraison
               </h2>
               
               <div className="space-y-4">
                 <div>
-                  <label className="text-dark-300 text-sm">Livreur</label>
-                  <p className="text-white font-medium">{delivery.livreur}</p>
+                  <label className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livreur</label>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{delivery.livreur}</p>
                 </div>
                 
                 <div>
-                  <label className="text-dark-300 text-sm flex items-center">
+                  <label className={`text-sm flex items-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                     <Calendar className="w-4 h-4 mr-1" />
                     Date prévue
                   </label>
-                  <p className="text-white font-medium">{formatDate(delivery.date_livraison)}</p>
+                  <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatDate(delivery.date_livraison)}</p>
                 </div>
                 
                 {delivery.date_livraison_effective && (
                   <div>
-                    <label className="text-dark-300 text-sm flex items-center">
+                    <label className={`text-sm flex items-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                       <CheckCircle className="w-4 h-4 mr-1" />
                       Date effective
                     </label>
-                    <p className="text-white font-medium">{formatDate(delivery.date_livraison_effective)}</p>
+                    <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatDate(delivery.date_livraison_effective)}</p>
                   </div>
                 )}
               </div>
@@ -816,9 +818,9 @@ SYGLA-H2O`;
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-dark-800/50 backdrop-blur-sm rounded-xl p-6 border border-dark-700"
+              className={`backdrop-blur-sm rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800/50 border-dark-700'}`}
             >
-              <h2 className="text-xl font-semibold text-white mb-4">Actions</h2>
+              <h2 className={`text-xl font-semibold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Actions</h2>
               
               <div className="space-y-3">
                 {/* Bouton Imprimer le reçu - seulement si livraison effectuée */}

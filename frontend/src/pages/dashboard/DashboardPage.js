@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { reportService, orderService, deliveryService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { rolePermissions, hasPermission } from '../../config/permissions';
@@ -21,6 +22,7 @@ const DashboardPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { dashboardUpdateTrigger } = useDataUpdate();
+  const { theme } = useTheme();
   const [stats, setStats] = useState({
     clients: 0,
     orders: 0,
@@ -211,7 +213,7 @@ const DashboardPage = () => {
     >
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-dark-200 mb-1">{title}</h3>
+          <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>{title}</h3>
           <p className={`text-3xl font-bold ${color}`}>
             {loading ? '--' : value}
           </p>
@@ -220,7 +222,7 @@ const DashboardPage = () => {
           <Icon className={`w-6 h-6 ${color}`} />
         </div>
       </div>
-      <p className="text-sm text-dark-400">{subtitle}</p>
+      <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{subtitle}</p>
       {trend !== undefined && trend !== 0 && (
         <div className="flex items-center mt-2">
           <TrendingUp className={`w-4 h-4 mr-1 ${trend > 0 ? 'text-green-400' : 'text-red-400 transform rotate-180'}`} />
@@ -242,10 +244,10 @@ const DashboardPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2">
+          <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
             Bienvenue, {user?.first_name || user?.username}
           </h2>
-          <p className="text-dark-300 flex items-center">
+          <p className={`flex items-center ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
             {user?.role && rolePermissions[user.role] && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-500/20 text-primary-400 mr-3">
                 {rolePermissions[user.role].name}
@@ -255,8 +257,8 @@ const DashboardPage = () => {
           </p>
         </div>
         <div className="text-right">
-          <p className="text-sm text-dark-400">Dernière actualisation</p>
-          <p className="text-white font-medium">
+          <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Dernière actualisation</p>
+          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
             {new Date().toLocaleTimeString('fr-FR', { 
               hour: '2-digit', 
               minute: '2-digit' 
@@ -312,7 +314,7 @@ const DashboardPage = () => {
         <motion.div variants={itemVariants} className="lg:col-span-2">
           <div className="card p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-semibold text-white flex items-center">
+              <h3 className={`text-xl font-semibold flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                 <DollarSign className="w-6 h-6 mr-2 text-green-400" />
                 Chiffre d'Affaires
               </h3>
@@ -329,19 +331,19 @@ const DashboardPage = () => {
             <div className="text-4xl font-bold text-green-400 mb-2">
               {loading ? '--' : formatHTG(stats.revenue)}
             </div>
-            <p className="text-dark-300">Revenus générés (30 derniers jours)</p>
+            <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>Revenus générés (30 derniers jours)</p>
             
             {/* Enhanced Bar Chart */}
-            <div className="mt-6 bg-dark-800 rounded-lg p-6">
+            <div className={`mt-6 rounded-lg p-6 ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800'}`}>
               {loading ? (
                 <div className="flex items-center justify-center h-40">
-                  <Activity className="w-8 h-8 text-dark-600 animate-pulse" />
+                  <Activity className={`w-8 h-8 animate-pulse ${theme === 'light' ? 'text-slate-300' : 'text-dark-600'}`} />
                 </div>
               ) : salesChartData.length > 0 ? (
                 <div className="space-y-4">
                   {/* Chart Header */}
                   <div className="flex justify-between items-center text-sm">
-                    <span className="text-dark-400">Ventes des 7 derniers jours</span>
+                    <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Ventes des 7 derniers jours</span>
                     <span className="text-green-400 font-medium">
                       Total: {formatHTG(salesChartData.reduce((sum, day) => sum + day.revenue, 0))}
                     </span>
@@ -352,7 +354,7 @@ const DashboardPage = () => {
                     {/* Horizontal grid lines */}
                     <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
                       {[0, 1, 2, 3, 4].map((i) => (
-                        <div key={i} className="border-t border-dark-700 w-full"></div>
+                        <div key={i} className={`border-t w-full ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}></div>
                       ))}
                     </div>
                     
@@ -366,8 +368,10 @@ const DashboardPage = () => {
                         return (
                           <div key={index} className="flex-1 flex flex-col items-center justify-end group relative">
                             {/* Tooltip */}
-                            <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-dark-900 border border-dark-600 px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-10 shadow-xl">
-                              <div className="text-xs font-medium text-white whitespace-nowrap">
+                            <div className={`absolute -top-16 left-1/2 transform -translate-x-1/2 px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-10 shadow-xl ${
+                              theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-900 border border-dark-600'
+                            }`}>
+                              <div className={`text-xs font-medium whitespace-nowrap ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                                 {day.day}
                               </div>
                               <div className="text-sm font-bold text-green-400 mt-1">
@@ -396,7 +400,7 @@ const DashboardPage = () => {
                             {/* Day label */}
                             <div className="mt-2 text-center">
                               <span className={`text-xs font-medium ${
-                                isToday ? 'text-blue-400' : 'text-dark-400'
+                                isToday ? 'text-blue-400' : theme === 'light' ? 'text-slate-500' : 'text-dark-400'
                               }`}>
                                 {day.day}
                               </span>
@@ -408,19 +412,19 @@ const DashboardPage = () => {
                   </div>
                   
                   {/* Legend */}
-                  <div className="flex items-center justify-center gap-4 text-xs pt-2 border-t border-dark-700">
+                  <div className={`flex items-center justify-center gap-4 text-xs pt-2 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 bg-gradient-to-t from-green-500 to-green-400 rounded"></div>
-                      <span className="text-dark-400">Jours précédents</span>
+                      <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Jours précédents</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 bg-gradient-to-t from-blue-500 to-blue-400 rounded"></div>
-                      <span className="text-dark-400">Aujourd'hui</span>
+                      <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Aujourd'hui</span>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center h-40 text-dark-500">
+                <div className={`flex flex-col items-center justify-center h-40 ${theme === 'light' ? 'text-slate-400' : 'text-dark-500'}`}>
                   <Activity className="w-8 h-8 mb-2" />
                   <span>Aucune vente à afficher</span>
                 </div>
@@ -431,7 +435,7 @@ const DashboardPage = () => {
 
         <motion.div variants={itemVariants}>
           <div className="card p-6">
-            <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+            <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
               <AlertTriangle className="w-6 h-6 mr-2 text-yellow-400" />
               Alertes
             </h3>
@@ -440,8 +444,8 @@ const DashboardPage = () => {
                 <div className="flex items-center p-3 bg-yellow-400/20 rounded-lg">
                   <AlertTriangle className="w-5 h-5 text-yellow-400 mr-3" />
                   <div>
-                    <p className="text-white text-sm font-medium">Stock faible</p>
-                    <p className="text-yellow-300 text-xs">
+                    <p className={`text-sm font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Stock faible</p>
+                    <p className="text-yellow-600 text-xs">
                       {stats.lowStock} produit(s) en rupture
                     </p>
                   </div>
@@ -450,8 +454,8 @@ const DashboardPage = () => {
               <div className="flex items-center p-3 bg-blue-400/20 rounded-lg">
                 <Activity className="w-5 h-5 text-blue-400 mr-3" />
                 <div>
-                  <p className="text-white text-sm font-medium">Système actif</p>
-                  <p className="text-blue-300 text-xs">
+                  <p className={`text-sm font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Système actif</p>
+                  <p className="text-blue-600 text-xs">
                     Tous les services fonctionnent
                   </p>
                 </div>
@@ -465,22 +469,22 @@ const DashboardPage = () => {
       {isLivreur ? (
         /* Livraisons Récentes pour les livreurs */
         <motion.div variants={itemVariants} className="card p-6">
-          <h3 className="text-xl font-semibold text-white mb-6">Mes Livraisons Récentes</h3>
+          <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Mes Livraisons Récentes</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-dark-700">
-                  <th className="text-left py-3 text-dark-300 font-medium">Livraison</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Client</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Adresse</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Date prévue</th>
+                <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Livraison</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Client</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Adresse</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Date prévue</th>
                 </tr>
               </thead>
               <tbody>
                 {recentDeliveries.length === 0 ? (
                   <tr>
-                    <td colSpan="5" className="text-center py-8 text-dark-400">
+                    <td colSpan="5" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                       Aucune livraison récente
                     </td>
                   </tr>
@@ -488,33 +492,33 @@ const DashboardPage = () => {
                   recentDeliveries.map((delivery) => (
                     <tr 
                       key={delivery.id} 
-                      className="border-b border-dark-800 hover:bg-dark-800/50 cursor-pointer"
+                      className={`border-b cursor-pointer ${theme === 'light' ? 'border-slate-100 hover:bg-slate-50' : 'border-dark-800 hover:bg-dark-800/50'}`}
                       onClick={() => navigate(`/deliveries/${delivery.id}`)}
                     >
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium">{delivery.numeroLivraison}</p>
-                          <p className="text-dark-400 text-xs">{delivery.numeroCommande}</p>
+                          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{delivery.numeroLivraison}</p>
+                          <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{delivery.numeroCommande}</p>
                         </div>
                       </td>
-                      <td className="py-4 text-white">{delivery.client}</td>
-                      <td className="py-4 text-dark-300 max-w-xs truncate">{delivery.adresse}</td>
+                      <td className={`py-4 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{delivery.client}</td>
+                      <td className={`py-4 max-w-xs truncate ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>{delivery.adresse}</td>
                       <td className="py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           delivery.status === 'Livrée' 
-                            ? 'bg-green-400/20 text-green-400'
+                            ? 'bg-green-400/20 text-green-600'
                             : delivery.status === 'En livraison'
-                            ? 'bg-orange-400/20 text-orange-400'
+                            ? 'bg-orange-400/20 text-orange-600'
                             : delivery.status === 'En préparation'
-                            ? 'bg-purple-400/20 text-purple-400'
+                            ? 'bg-purple-400/20 text-purple-600'
                             : delivery.status === 'Annulée'
-                            ? 'bg-red-400/20 text-red-400'
-                            : 'bg-yellow-400/20 text-yellow-400'
+                            ? 'bg-red-400/20 text-red-600'
+                            : 'bg-yellow-400/20 text-yellow-600'
                         }`}>
                           {delivery.status}
                         </span>
                       </td>
-                      <td className="py-4 text-dark-300">
+                      <td className={`py-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                         {new Date(delivery.date).toLocaleDateString('fr-FR', {
                           day: '2-digit',
                           month: '2-digit',
@@ -533,58 +537,58 @@ const DashboardPage = () => {
       ) : (
         /* Commandes Récentes pour les autres rôles */
         <motion.div variants={itemVariants} className="card p-6">
-          <h3 className="text-xl font-semibold text-white mb-6">Commandes Récentes</h3>
+          <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Commandes Récentes</h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-dark-700">
-                  <th className="text-left py-3 text-dark-300 font-medium">Commande</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Client</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Montant</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                  <th className="text-left py-3 text-dark-300 font-medium">Date</th>
+                <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Commande</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Client</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Montant</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                  <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Date</th>
                 </tr>
               </thead>
               <tbody>
                 {recentOrders.length === 0 ? (
                   <tr>
-                    <td colSpan="5" className="text-center py-8 text-dark-400">
+                    <td colSpan="5" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                       Aucune commande récente
                     </td>
                   </tr>
                 ) : (
                   recentOrders.map((order) => (
-                    <tr key={order.id} className="border-b border-dark-800 hover:bg-dark-800/50">
+                    <tr key={order.id} className={`border-b ${theme === 'light' ? 'border-slate-100 hover:bg-slate-50' : 'border-dark-800 hover:bg-dark-800/50'}`}>
                       <td className="py-4">
                         <div>
-                          <p className="text-white font-medium">{order.numeroCommande}</p>
-                          <p className="text-dark-400 text-xs">#{order.id}</p>
+                          <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{order.numeroCommande}</p>
+                          <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>#{order.id}</p>
                         </div>
                       </td>
-                      <td className="py-4 text-white">{order.client}</td>
-                      <td className="py-4 text-green-400 font-medium">
+                      <td className={`py-4 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{order.client}</td>
+                      <td className="py-4 text-green-500 font-medium">
                         {formatHTG(order.amount)}
                       </td>
                       <td className="py-4">
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           order.status === 'Livrée' 
-                            ? 'bg-green-400/20 text-green-400'
+                            ? 'bg-green-400/20 text-green-600'
                             : order.status === 'Validée'
-                            ? 'bg-cyan-400/20 text-cyan-400'
+                            ? 'bg-cyan-400/20 text-cyan-600'
                             : order.status === 'Confirmée'
-                            ? 'bg-blue-400/20 text-blue-400'
+                            ? 'bg-blue-400/20 text-blue-600'
                             : order.status === 'En préparation'
-                            ? 'bg-purple-400/20 text-purple-400'
+                            ? 'bg-purple-400/20 text-purple-600'
                             : order.status === 'En livraison'
-                            ? 'bg-orange-400/20 text-orange-400'
+                            ? 'bg-orange-400/20 text-orange-600'
                             : order.status === 'Annulée'
-                            ? 'bg-red-400/20 text-red-400'
-                            : 'bg-yellow-400/20 text-yellow-400'
+                            ? 'bg-red-400/20 text-red-600'
+                            : 'bg-yellow-400/20 text-yellow-600'
                         }`}>
                           {order.status}
                         </span>
                       </td>
-                      <td className="py-4 text-dark-300">
+                      <td className={`py-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                         {new Date(order.date).toLocaleDateString('fr-FR', {
                           day: '2-digit',
                           month: '2-digit',
@@ -605,7 +609,7 @@ const DashboardPage = () => {
       {/* Quick Actions - Masqué pour les livreurs et gestionnaires de stock */}
       {user?.role !== 'livreur' && user?.role !== 'stock' && (
         <motion.div variants={itemVariants} className="card p-6">
-          <h3 className="text-xl font-semibold text-white mb-6">Actions Rapides</h3>
+          <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Actions Rapides</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <button 
               onClick={() => navigate('/clients/create')}

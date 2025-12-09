@@ -15,10 +15,13 @@ import {
   ChevronRight,
   Droplets,
   LayoutDashboard,
-  FileText
+  FileText,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 import { toast } from 'react-hot-toast';
 import { clientService, productService, orderService } from '../../services/api';
 import venteService from '../../services/venteService';
@@ -29,6 +32,7 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { dashboardUpdateTrigger } = useDataUpdate();
+  const { theme, toggleTheme } = useTheme();
   const [hoveredItem, setHoveredItem] = useState(null);
   
   // States pour les counts réels de la base de données
@@ -184,14 +188,14 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
         animate={isOpen ? 'open' : 'closed'}
         className={`${
           isDesktop 
-            ? 'fixed left-0 top-0 h-full w-80 bg-dark-900/95 backdrop-blur-xl border-r border-dark-700 z-40' 
+            ? `fixed left-0 top-0 h-full w-80 backdrop-blur-xl z-40 ${theme === 'light' ? 'bg-white/95 border-r border-gray-200' : 'bg-dark-900/95 border-r border-dark-700'}` 
             : isMobile
-            ? 'fixed left-0 top-0 h-full w-full sm:w-80 bg-dark-900/95 backdrop-blur-xl border-r border-dark-700 z-50'
-            : 'fixed left-0 top-0 h-full w-80 bg-dark-900/95 backdrop-blur-xl border-r border-dark-700 z-50'
+            ? `fixed left-0 top-0 h-full w-full sm:w-80 backdrop-blur-xl z-50 ${theme === 'light' ? 'bg-white/95 border-r border-gray-200' : 'bg-dark-900/95 border-r border-dark-700'}`
+            : `fixed left-0 top-0 h-full w-80 backdrop-blur-xl z-50 ${theme === 'light' ? 'bg-white/95 border-r border-gray-200' : 'bg-dark-900/95 border-r border-dark-700'}`
         } flex flex-col shadow-2xl`}
       >
         {/* Header - Responsive padding */}
-        <div className="p-4 sm:p-6 border-b border-dark-700">
+        <div className={`p-4 sm:p-6 border-b ${theme === 'light' ? 'border-gray-200' : 'border-dark-700'}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 sm:space-x-3">
               <div className="p-1.5 sm:p-2 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500">
@@ -199,21 +203,21 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
               </div>
               <div>
                 <h1 className="text-lg sm:text-xl font-bold text-gradient">SYGLA-H2O</h1>
-                <p className="text-xs text-dark-400">Gestion Eau & Glace</p>
+                <p className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-dark-400'}`}>Gestion Eau & Glace</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className={`p-2 hover:bg-dark-700 rounded-lg transition-colors ${isDesktop ? 'hidden' : ''}`}
+              className={`p-2 rounded-lg transition-colors ${isDesktop ? 'hidden' : ''} ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-dark-700'}`}
               aria-label="Fermer le menu"
             >
-              <X className="w-5 h-5 text-dark-400" />
+              <X className={`w-5 h-5 ${theme === 'light' ? 'text-gray-500' : 'text-dark-400'}`} />
             </button>
           </div>
         </div>
 
         {/* User Info - Responsive padding */}
-        <div className="p-4 sm:p-6 border-b border-dark-700">
+        <div className={`p-4 sm:p-6 border-b ${theme === 'light' ? 'border-gray-200' : 'border-dark-700'}`}>
           <div className="flex items-center space-x-3">
             {user?.photo_url ? (
               <img
@@ -229,10 +233,10 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <p className="text-white font-medium truncate text-sm sm:text-base">
+              <p className={`font-medium truncate text-sm sm:text-base ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                 {user?.email || 'Administrateur'}
               </p>
-              <p className="text-dark-400 text-xs sm:text-sm capitalize">
+              <p className={`text-xs sm:text-sm capitalize ${theme === 'light' ? 'text-gray-500' : 'text-dark-400'}`}>
                 {user?.role || 'admin'}
               </p>
             </div>
@@ -261,13 +265,15 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
                     className={({ isActive }) =>
                       `group relative flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl transition-all duration-200 ${
                         isActive
-                          ? 'bg-gradient-to-r from-primary-500/20 to-secondary-500/20 text-white border border-primary-500/30'
-                          : 'text-dark-300 hover:text-white hover:bg-dark-800'
+                          ? `bg-gradient-to-r from-primary-500/20 to-secondary-500/20 border border-primary-500/30 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`
+                          : theme === 'light' 
+                            ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                            : 'text-dark-300 hover:text-white hover:bg-dark-800'
                       }`
                     }
                     onClick={() => !isDesktop && setIsOpen(false)}
                   >
-                    <Icon className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${isActive ? item.color : 'text-dark-400 group-hover:text-white'}`} />
+                    <Icon className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${isActive ? item.color : theme === 'light' ? 'text-gray-400 group-hover:text-gray-700' : 'text-dark-400 group-hover:text-white'}`} />
                     
                     <div className="flex-1 flex items-center justify-between min-w-0">
                       <span className="font-medium text-sm sm:text-base truncate">{item.label}</span>
@@ -275,7 +281,9 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
                         <span className={`px-2 py-0.5 sm:py-1 text-xs rounded-full flex-shrink-0 ml-2 ${
                           isActive 
                             ? 'bg-primary-500/30 text-primary-200' 
-                            : 'bg-dark-700 text-dark-300 group-hover:bg-dark-600'
+                            : theme === 'light'
+                              ? 'bg-gray-200 text-gray-600 group-hover:bg-gray-300'
+                              : 'bg-dark-700 text-dark-300 group-hover:bg-dark-600'
                         }`}>
                           {item.count}
                         </span>
@@ -298,7 +306,7 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
                         animate={{ opacity: 1, x: 0 }}
                         className="absolute right-3"
                       >
-                        <ChevronRight className="w-4 h-4 text-dark-400" />
+                        <ChevronRight className={`w-4 h-4 ${theme === 'light' ? 'text-gray-400' : 'text-dark-400'}`} />
                       </motion.div>
                     )}
                   </NavLink>
@@ -309,10 +317,57 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-dark-700 space-y-2">
+        <div className={`p-4 border-t space-y-2 ${theme === 'light' ? 'border-gray-200' : 'border-dark-700'}`}>
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 ${
+              theme === 'light' 
+                ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100' 
+                : 'text-dark-300 hover:text-white hover:bg-dark-800'
+            }`}
+            aria-label={theme === 'dark' ? 'Activer le thème clair' : 'Activer le thème sombre'}
+          >
+            <div className="flex items-center space-x-3">
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-yellow-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-indigo-400" />
+              )}
+              <span className="font-medium">
+                {theme === 'dark' ? 'Thème Clair' : 'Thème Sombre'}
+              </span>
+            </div>
+            <motion.div
+              initial={false}
+              animate={{ rotate: theme === 'dark' ? 0 : 180 }}
+              transition={{ duration: 0.3 }}
+            >
+              {theme === 'dark' ? (
+                <div className="w-8 h-4 bg-dark-600 rounded-full flex items-center px-0.5">
+                  <motion.div 
+                    className="w-3 h-3 bg-yellow-400 rounded-full"
+                    animate={{ x: 0 }}
+                  />
+                </div>
+              ) : (
+                <div className="w-8 h-4 bg-primary-500 rounded-full flex items-center justify-end px-0.5">
+                  <motion.div 
+                    className="w-3 h-3 bg-white rounded-full"
+                    animate={{ x: 0 }}
+                  />
+                </div>
+              )}
+            </motion.div>
+          </button>
+
           <NavLink
             to="/settings"
-            className="flex items-center space-x-3 px-4 py-3 rounded-xl text-dark-300 hover:text-white hover:bg-dark-800 transition-all duration-200"
+            className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              theme === 'light'
+                ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                : 'text-dark-300 hover:text-white hover:bg-dark-800'
+            }`}
           >
             <Settings className="w-5 h-5" />
             <span className="font-medium">Paramètres</span>
@@ -320,7 +375,11 @@ const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
           
           <button
             onClick={handleLogout}
-            className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-dark-300 hover:text-red-400 hover:bg-red-400/10 transition-all duration-200"
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+              theme === 'light'
+                ? 'text-gray-600 hover:text-red-500 hover:bg-red-50'
+                : 'text-dark-300 hover:text-red-400 hover:bg-red-400/10'
+            }`}
           >
             <LogOut className="w-5 h-5" />
             <span className="font-medium">Déconnexion</span>

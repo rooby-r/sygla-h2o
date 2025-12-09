@@ -13,12 +13,14 @@ import {
   Clock
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../contexts/ThemeContext';
 import { hasPermission } from '../../config/permissions';
 import { logService } from '../../services/api';
 import { toast } from 'react-hot-toast';
 
 const LogsPage = () => {
   const { user } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const [logs, setLogs] = useState([]);
   const [filteredLogs, setFilteredLogs] = useState([]);
@@ -234,8 +236,8 @@ const LogsPage = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2">Journal des Logs</h2>
-          <p className="text-dark-300">
+          <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Journal des Logs</h2>
+          <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
             Historique des activités et événements du système
           </p>
         </div>
@@ -266,18 +268,18 @@ const LogsPage = () => {
       </div>
 
       {/* Filtres */}
-      <div className="card p-6">
+      <div className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}>
         <div className="flex flex-col md:flex-row gap-4">
           {/* Recherche */}
           <div className="flex-1">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
+              <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
               <input
                 type="text"
                 placeholder="Rechercher dans les logs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="input pl-10 w-full"
+                className={`w-full pl-10 pr-4 py-3 rounded-lg border focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border-dark-600 text-white placeholder-dark-400'}`}
               />
             </div>
           </div>
@@ -289,7 +291,7 @@ const LogsPage = () => {
               className={`px-4 py-2 rounded-lg transition-all ${
                 filterType === 'all'
                   ? 'bg-primary-500 text-white'
-                  : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
+                  : theme === 'light' ? 'bg-slate-200 text-slate-600 hover:bg-slate-300' : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
               }`}
             >
               Tous
@@ -303,7 +305,7 @@ const LogsPage = () => {
                   className={`px-4 py-2 rounded-lg transition-all flex items-center ${
                     filterType === type
                       ? `${config.bg} ${config.color}`
-                      : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
+                      : theme === 'light' ? 'bg-slate-200 text-slate-600 hover:bg-slate-300' : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
                   }`}
                 >
                   <Icon className="w-4 h-4 mr-2" />
@@ -316,18 +318,18 @@ const LogsPage = () => {
       </div>
 
       {/* Liste des logs */}
-      <div className="card">
+      <div className={`rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}>
         {loading ? (
           <div className="p-12 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto"></div>
           </div>
         ) : filteredLogs.length === 0 ? (
-          <div className="p-12 text-center text-dark-400">
+          <div className={`p-12 text-center ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
             <FileText className="w-12 h-12 mx-auto mb-4 opacity-50" />
             <p>Aucun log trouvé</p>
           </div>
         ) : (
-          <div className="divide-y divide-dark-700">
+          <div className={`divide-y ${theme === 'light' ? 'divide-slate-100' : 'divide-dark-700'}`}>
             {filteredLogs.map((log) => {
               const config = logTypes[log.type];
               const Icon = config.icon;
@@ -338,7 +340,7 @@ const LogsPage = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   onClick={() => navigate(`/logs/${log.id}`)}
-                  className="p-6 hover:bg-dark-800/30 transition-colors cursor-pointer"
+                  className={`p-6 transition-colors cursor-pointer ${theme === 'light' ? 'hover:bg-slate-50' : 'hover:bg-dark-800/30'}`}
                 >
                   <div className="flex items-start gap-4">
                     {/* Icône */}
@@ -350,9 +352,9 @@ const LogsPage = () => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <h3 className="text-white font-medium mb-1">{log.message}</h3>
-                          <p className="text-sm text-dark-400 mb-2">{log.details}</p>
-                          <div className="flex flex-wrap items-center gap-4 text-xs text-dark-500">
+                          <h3 className={`font-medium mb-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{log.message}</h3>
+                          <p className={`text-sm mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{log.details}</p>
+                          <div className={`flex flex-wrap items-center gap-4 text-xs ${theme === 'light' ? 'text-slate-400' : 'text-dark-500'}`}>
                             <span className="flex items-center">
                               <Clock className="w-3 h-3 mr-1" />
                               {formatTimestamp(log.timestamp)}
@@ -382,10 +384,10 @@ const LogsPage = () => {
             const Icon = config.icon;
             
             return (
-              <div key={type} className={`card p-4 ${config.bg}`}>
+              <div key={type} className={`p-4 rounded-xl border ${config.bg} ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-dark-400 mb-1">{config.label}</p>
+                    <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{config.label}</p>
                     <p className={`text-2xl font-bold ${config.color}`}>{count}</p>
                   </div>
                   <Icon className={`w-8 h-8 ${config.color} opacity-50`} />

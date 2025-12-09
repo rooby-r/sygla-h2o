@@ -19,9 +19,11 @@ import Button from '../../components/ui/Button';
 import { formatCurrency } from '../../utils/currency';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const VentesPage = () => {
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [ventes, setVentes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -121,8 +123,8 @@ const VentesPage = () => {
       {/* En-tête */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gradient mb-2">Ventes 🎯</h1>
-          <p className="text-dark-400">Transactions prioritaires - 100% payées</p>
+          <h1 className={`text-3xl font-bold text-gradient mb-2 ${theme === 'light' ? 'text-slate-900' : ''}`}>Ventes 🎯</h1>
+          <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-400'}>Transactions prioritaires - 100% payées</p>
         </div>
         <Button
           onClick={() => navigate('/sales/create')}
@@ -138,14 +140,14 @@ const VentesPage = () => {
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <motion.div
-            className="card p-6"
+            className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-dark-400 text-sm mb-1">Total Ventes</p>
-                <p className="text-2xl font-bold text-white">{stats.total_ventes}</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Total Ventes</p>
+                <p className={`text-2xl font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{stats.total_ventes}</p>
               </div>
               <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center">
                 <TrendingUp className="w-6 h-6 text-primary-500" />
@@ -154,19 +156,19 @@ const VentesPage = () => {
           </motion.div>
 
           <motion.div
-            className="card p-6"
+            className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-dark-400 text-sm mb-1">Chiffre d'Affaires Total</p>
-                <p className="text-2xl font-bold text-white">
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Chiffre d'Affaires Total</p>
+                <p className={`text-2xl font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                   {formatCurrency(stats.chiffre_affaires_encaisse)}
                 </p>
                 {stats.montant_paye_commandes > 0 && (
-                  <p className="text-xs text-dark-400 mt-1">
+                  <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     + {formatCurrency(stats.montant_paye_commandes)} HTG (commandes)
                   </p>
                 )}
@@ -178,14 +180,14 @@ const VentesPage = () => {
           </motion.div>
 
           <motion.div
-            className="card p-6"
+            className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-dark-400 text-sm mb-1">Montant Payé</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Montant Payé</p>
                 <p className="text-2xl font-bold text-green-400">
                   {formatCurrency(stats.montant_paye_ventes)}
                 </p>
@@ -197,19 +199,19 @@ const VentesPage = () => {
           </motion.div>
 
           <motion.div
-            className="card p-6"
+            className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-dark-400 text-sm mb-1">Montant Restant</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Montant Restant</p>
                 <p className="text-2xl font-bold text-warning-400">
                   {formatCurrency(stats.montant_restant_commandes)}
                 </p>
                 {stats.montant_restant_commandes > 0 && (
-                  <p className="text-xs text-dark-400 mt-1">
+                  <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     {formatCurrency(stats.montant_restant_commandes)} HTG (commandes)
                   </p>
                 )}
@@ -223,25 +225,25 @@ const VentesPage = () => {
       )}
 
       {/* Filtres et Recherche */}
-      <div className="card p-6 mb-6">
+      <div className={`card p-6 mb-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
             <input
               type="text"
               placeholder="Rechercher par numéro ou client..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input pl-10 w-full"
+              className={`input pl-10 w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
             />
           </div>
 
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+            <Filter className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
             <select
               value={filterStatut}
               onChange={(e) => setFilterStatut(e.target.value)}
-              className="input pl-10 w-full"
+              className={`input pl-10 w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
             >
               <option value="">Tous les statuts</option>
               <option value="paye">Payé</option>
@@ -266,14 +268,14 @@ const VentesPage = () => {
       </div>
 
       {/* Liste des ventes */}
-      <div className="card overflow-hidden">
+      <div className={`card overflow-hidden ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
           </div>
         ) : filteredVentes.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-dark-400 mb-4">Aucune vente trouvée</p>
+            <p className={`mb-4 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Aucune vente trouvée</p>
             <Button
               onClick={() => navigate('/sales/create')}
               variant="primary"
@@ -286,23 +288,25 @@ const VentesPage = () => {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-dark-700">
-                  <th className="text-left p-4 text-dark-300 font-medium">Numéro</th>
-                  <th className="text-left p-4 text-dark-300 font-medium">Client</th>
-                  <th className="text-left p-4 text-dark-300 font-medium">Vendeur</th>
-                  <th className="text-left p-4 text-dark-300 font-medium">Date</th>
-                  <th className="text-right p-4 text-dark-300 font-medium">Montant Total</th>
-                  <th className="text-right p-4 text-dark-300 font-medium">Montant Payé</th>
-                  <th className="text-center p-4 text-dark-300 font-medium">Statut</th>
-                  <th className="text-center p-4 text-dark-300 font-medium">Actions</th>
+                <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                  <th className={`text-left p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Numéro</th>
+                  <th className={`text-left p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Client</th>
+                  <th className={`text-left p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Vendeur</th>
+                  <th className={`text-left p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Date</th>
+                  <th className={`text-right p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Montant Total</th>
+                  <th className={`text-right p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Montant Payé</th>
+                  <th className={`text-center p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                  <th className={`text-center p-4 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredVentes.map((vente, index) => (
                   <motion.tr
                     key={vente.id}
-                    className={`border-b border-dark-700/50 hover:bg-dark-800/50 transition-colors ${
-                      vente.statut_paiement === 'paye' ? 'bg-green-500/5' : ''
+                    className={`border-b transition-colors ${
+                      theme === 'light' 
+                        ? `border-slate-100 hover:bg-slate-50 ${vente.statut_paiement === 'paye' ? 'bg-green-50' : ''}`
+                        : `border-dark-700/50 hover:bg-dark-800/50 ${vente.statut_paiement === 'paye' ? 'bg-green-500/5' : ''}`
                     }`}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -316,12 +320,12 @@ const VentesPage = () => {
                         <span className="font-mono text-primary-400">{vente.numero_vente}</span>
                       </div>
                     </td>
-                    <td className="p-4 text-dark-200">{vente.client_nom}</td>
-                    <td className="p-4 text-dark-300">{vente.vendeur_nom}</td>
-                    <td className="p-4 text-dark-300">
+                    <td className={`p-4 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>{vente.client_nom}</td>
+                    <td className={`p-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>{vente.vendeur_nom}</td>
+                    <td className={`p-4 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       {format(new Date(vente.date_vente), 'dd MMM yyyy', { locale: fr })}
                     </td>
-                    <td className="p-4 text-right font-semibold">
+                    <td className={`p-4 text-right font-semibold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                       {formatCurrency(vente.montant_total)}
                     </td>
                     <td className="p-4 text-right text-green-400">
@@ -334,14 +338,14 @@ const VentesPage = () => {
                       <div className="flex items-center justify-center space-x-2">
                         <button
                           onClick={() => navigate(`/sales/${vente.id}`)}
-                          className="p-2 hover:bg-dark-700 rounded-lg transition-colors"
+                          className={`p-2 rounded-lg transition-colors ${theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-dark-700'}`}
                           title="Voir détails"
                         >
                           <Eye className="w-4 h-4 text-primary-400" />
                         </button>
                         <button
                           onClick={() => handleDelete(vente.id)}
-                          className="p-2 hover:bg-dark-700 rounded-lg transition-colors"
+                          className={`p-2 rounded-lg transition-colors ${theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-dark-700'}`}
                           title="Supprimer"
                         >
                           <Trash2 className="w-4 h-4 text-red-400" />

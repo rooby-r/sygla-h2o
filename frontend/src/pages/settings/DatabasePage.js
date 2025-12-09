@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Database, Download, Upload, Trash2, AlertTriangle, HardDrive, FileText, Users, Package, ShoppingCart, Truck, FileJson, FileSpreadsheet } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const DatabasePage = () => {
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState(null);
   const [backups, setBackups] = useState([]);
@@ -124,16 +126,16 @@ const DatabasePage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Base de Données</h2>
-        <p className="text-dark-300">
+        <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Base de Données</h2>
+        <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
           Gestion, sauvegarde et restauration de la base de données
         </p>
       </div>
 
       {/* Alerte de sécurité */}
-      <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3">
+      <div className={`p-4 rounded-lg flex items-start gap-3 ${theme === 'light' ? 'bg-red-50 border border-red-200' : 'bg-red-500/10 border border-red-500/20'}`}>
         <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-        <div className="text-sm text-red-300">
+        <div className={`text-sm ${theme === 'light' ? 'text-red-600' : 'text-red-300'}`}>
           <p className="font-medium mb-1">⚠️ Zone sensible - Admin uniquement</p>
           <p>Les opérations de sauvegarde et restauration affectent l'ensemble du système. Utilisez avec précaution.</p>
         </div>
@@ -145,15 +147,15 @@ const DatabasePage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="card p-6"
+          className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-blue-500/10 rounded-lg">
               <HardDrive className="w-6 h-6 text-blue-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Taille de la Base</h3>
-              <p className="text-sm text-dark-400">Espace disque utilisé</p>
+              <h3 className={`text-lg font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Taille de la Base</h3>
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Espace disque utilisé</p>
             </div>
           </div>
           <div className="text-3xl font-bold text-primary-400">
@@ -166,15 +168,15 @@ const DatabasePage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="card p-6"
+          className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 bg-green-500/10 rounded-lg">
               <Database className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Total Enregistrements</h3>
-              <p className="text-sm text-dark-400">Nombre total d'entrées</p>
+              <h3 className={`text-lg font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Total Enregistrements</h3>
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Nombre total d'entrées</p>
             </div>
           </div>
           <div className="text-3xl font-bold text-green-400">
@@ -188,9 +190,9 @@ const DatabasePage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="card p-6"
+        className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
       >
-        <h3 className="text-xl font-semibold text-white mb-6">Répartition des Données</h3>
+        <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Répartition des Données</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {dataStats.map((stat, index) => {
             const Icon = stat.icon;
@@ -208,10 +210,10 @@ const DatabasePage = () => {
                 <div className={`w-12 h-12 mx-auto mb-3 rounded-lg ${colorClasses[stat.color]} flex items-center justify-center`}>
                   <Icon className="w-6 h-6" />
                 </div>
-                <div className="text-2xl font-bold text-white mb-1">
+                <div className={`text-2xl font-bold mb-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   {stat.value.toLocaleString()}
                 </div>
-                <div className="text-sm text-dark-400">{stat.label}</div>
+                <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{stat.label}</div>
               </div>
             );
           })}
@@ -223,7 +225,7 @@ const DatabasePage = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="card p-6"
+        className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
@@ -231,8 +233,8 @@ const DatabasePage = () => {
               <Download className="w-6 h-6 text-primary-400" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-white">Sauvegardes</h3>
-              <p className="text-sm text-dark-400">Gérer les sauvegardes de la base</p>
+              <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Sauvegardes</h3>
+              <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Gérer les sauvegardes de la base</p>
             </div>
           </div>
           <motion.button
@@ -258,7 +260,7 @@ const DatabasePage = () => {
 
         {/* Liste des sauvegardes */}
         {backups.length === 0 ? (
-          <div className="text-center py-8 text-dark-400">
+          <div className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
             <Database className="w-12 h-12 mx-auto mb-3 opacity-50" />
             <p>Aucune sauvegarde disponible</p>
             <p className="text-sm mt-1">Créez votre première sauvegarde ci-dessus</p>
@@ -271,15 +273,15 @@ const DatabasePage = () => {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="p-4 bg-dark-800 rounded-lg hover:bg-dark-700 transition"
+                className={`p-4 rounded-lg transition ${theme === 'light' ? 'bg-slate-100 hover:bg-slate-200' : 'bg-dark-800 hover:bg-dark-700'}`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <Database className="w-5 h-5 text-primary-400" />
-                      <p className="font-medium text-white">Sauvegarde du {backup.created_formatted}</p>
+                      <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Sauvegarde du {backup.created_formatted}</p>
                     </div>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-dark-400">
+                    <div className={`flex flex-wrap items-center gap-4 text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                       {backup.json_file && (
                         <div className="flex items-center gap-2">
                           <FileJson className="w-4 h-4 text-blue-400" />
@@ -304,7 +306,7 @@ const DatabasePage = () => {
                           </button>
                         </div>
                       )}
-                      <div className="text-dark-500">•</div>
+                      <div className={theme === 'light' ? 'text-slate-400' : 'text-dark-500'}>•</div>
                       <div>Total: {backup.total_size_mb} MB</div>
                     </div>
                   </div>
@@ -329,8 +331,8 @@ const DatabasePage = () => {
         )}
 
         {stats?.last_backup && (
-          <div className="mt-6 pt-4 border-t border-dark-700">
-            <p className="text-sm text-dark-400">
+          <div className={`mt-6 pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
               <span className="font-medium">Dernière sauvegarde:</span> {stats.last_backup} 
               {stats.last_backup_size_mb && ` (${stats.last_backup_size_mb} MB)`}
             </p>

@@ -14,10 +14,12 @@ import { toast } from 'react-hot-toast';
 import Button from '../../components/ui/Button.js';
 import { clientService } from '../../services/api';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const CreateClientPage = () => {
   const navigate = useNavigate();
   const { triggerDashboardUpdate } = useDataUpdate();
+  const { theme } = useTheme();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     nom_commercial: '',
@@ -35,6 +37,14 @@ const CreateClientPage = () => {
     // Validation des champs requis
     if (!formData.telephone || !formData.adresse || !formData.contact) {
       toast.error('Veuillez remplir tous les champs obligatoires (Téléphone, Adresse, Contact)');
+      return;
+    }
+    
+    // Validation: l'adresse ne doit pas contenir uniquement des chiffres, espaces et virgules
+    const adresseTrimmed = formData.adresse.trim();
+    const onlyDigitsSpacesCommas = /^[\d\s,]+$/.test(adresseTrimmed);
+    if (onlyDigitsSpacesCommas) {
+      toast.error('L\'adresse doit contenir au moins une lettre');
       return;
     }
     
@@ -134,11 +144,11 @@ const CreateClientPage = () => {
             <span>Retour</span>
           </Button>
           <div>
-            <h2 className="text-3xl font-bold text-white mb-2 flex items-center">
+            <h2 className={`text-3xl font-bold mb-2 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Building className="w-8 h-8 mr-3 text-primary-400" />
               Nouveau Client
             </h2>
-            <p className="text-dark-300">
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
               Créer un nouveau client dans le système
             </p>
           </div>
@@ -146,23 +156,23 @@ const CreateClientPage = () => {
       </div>
 
       {/* Formulaire principal */}
-      <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
+      <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-lg' : 'bg-dark-800/80 border border-dark-600'}`}>
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Section 1: Informations de base */}
-          <div className="bg-dark-800/50 p-6 rounded-lg border border-dark-600">
-            <h4 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`p-6 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800/50 border border-dark-600'}`}>
+            <h4 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Building className="w-6 h-6 mr-3 text-primary-400" />
               Informations de l'entreprise
             </h4>
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300">
+              <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 Nom commercial <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
                 value={formData.nom_commercial || ''}
                 onChange={(e) => setFormData({ ...formData, nom_commercial: e.target.value })}
-                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all"
+                className={`w-full px-4 py-3 rounded-lg transition-all focus:ring-2 focus:ring-primary-500/20 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-primary-500' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400 focus:border-primary-500'}`}
                 required
                 placeholder="Nom sous lequel l'entreprise est connue"
               />
@@ -170,33 +180,33 @@ const CreateClientPage = () => {
           </div>
 
           {/* Section 2: Contact */}
-          <div className="bg-dark-800/50 p-6 rounded-lg border border-dark-600">
-            <h4 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`p-6 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800/50 border border-dark-600'}`}>
+            <h4 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Mail className="w-6 h-6 mr-3 text-secondary-400" />
               Informations de contact
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">
+                <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Email
                 </label>
                 <input
                   type="email"
                   value={formData.email || ''}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all"
+                  className={`w-full px-4 py-3 rounded-lg transition-all focus:ring-2 focus:ring-primary-500/20 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-primary-500' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400 focus:border-primary-500'}`}
                   placeholder="contact@entreprise.com"
                 />
               </div>
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-300">
+                <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Téléphone <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.telephone || ''}
                   onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all"
+                  className={`w-full px-4 py-3 rounded-lg transition-all focus:ring-2 focus:ring-primary-500/20 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-primary-500' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400 focus:border-primary-500'}`}
                   required
                   placeholder="+509 1234 5678"
                 />
@@ -204,14 +214,18 @@ const CreateClientPage = () => {
             </div>
             
             <div className="mt-6 space-y-2">
-              <label className="block text-sm font-medium text-gray-300">
+              <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 Personne de contact <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
                 value={formData.contact || ''}
-                onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all"
+                onChange={(e) => {
+                  // N'accepter que les lettres, espaces, tirets et apostrophes
+                  const value = e.target.value.replace(/[^a-zA-ZÀ-ÿ\s'-]/g, '');
+                  setFormData({ ...formData, contact: value });
+                }}
+                className={`w-full px-4 py-3 rounded-lg transition-all focus:ring-2 focus:ring-primary-500/20 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-primary-500' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400 focus:border-primary-500'}`}
                 required
                 placeholder="Nom de la personne à contacter"
               />
@@ -219,19 +233,19 @@ const CreateClientPage = () => {
           </div>
 
           {/* Section 3: Adresse */}
-          <div className="bg-dark-800/50 p-6 rounded-lg border border-dark-600">
-            <h4 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`p-6 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800/50 border border-dark-600'}`}>
+            <h4 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <MapPin className="w-6 h-6 mr-3 text-accent-400" />
               Adresse
             </h4>
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300">
+              <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 Adresse complète <span className="text-red-400">*</span>
               </label>
               <textarea
                 value={formData.adresse || ''}
                 onChange={(e) => setFormData({ ...formData, adresse: e.target.value })}
-                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all resize-none"
+                className={`w-full px-4 py-3 rounded-lg transition-all resize-none focus:ring-2 focus:ring-primary-500/20 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-primary-500' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400 focus:border-primary-500'}`}
                 required
                 placeholder="Adresse complète de l'entreprise"
                 rows="4"
@@ -240,19 +254,19 @@ const CreateClientPage = () => {
           </div>
 
           {/* Section 4: Notes */}
-          <div className="bg-dark-800/50 p-6 rounded-lg border border-dark-600">
-            <h4 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`p-6 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800/50 border border-dark-600'}`}>
+            <h4 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <FileText className="w-6 h-6 mr-3 text-yellow-400" />
               Notes additionnelles
             </h4>
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-300">
+              <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 Commentaires et notes
               </label>
               <textarea
                 value={formData.notes || ''}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-gray-400 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all resize-none"
+                className={`w-full px-4 py-3 rounded-lg transition-all resize-none focus:ring-2 focus:ring-primary-500/20 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-primary-500' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400 focus:border-primary-500'}`}
                 placeholder="Informations complémentaires..."
                 rows="4"
               />
@@ -260,7 +274,7 @@ const CreateClientPage = () => {
           </div>
 
           {/* Boutons d'action */}
-          <div className="flex justify-end space-x-4 pt-6 border-t border-dark-600">
+          <div className={`flex justify-end space-x-4 pt-6 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
             <Button
               type="button"
               variant="secondary"

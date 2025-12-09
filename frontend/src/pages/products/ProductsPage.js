@@ -19,10 +19,12 @@ import Button from '../../components/ui/Button.js';
 import { productService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const ProductsPage = () => {
   const navigate = useNavigate();
   const { dashboardUpdateTrigger, onProductDeleted, triggerDashboardUpdate } = useDataUpdate();
+  const { theme } = useTheme();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -84,7 +86,7 @@ const ProductsPage = () => {
         toast.success('Produit supprimé avec succès');
       } catch (error) {
         console.error('Erreur lors de la suppression:', error);
-        toast.error('Erreur lors de la suppression du produit');
+        toast.error(error.response?.data?.error || 'Erreur lors de la suppression du produit');
       }
     }
   };
@@ -132,11 +134,11 @@ const ProductsPage = () => {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2 flex items-center">
+          <h2 className={`text-3xl font-bold mb-2 flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
             <Package className="w-8 h-8 mr-3 text-primary-400" />
             Gestion des Produits
           </h2>
-          <p className="text-dark-300">
+          <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
             Gérez votre inventaire d'eau et de glace
           </p>
         </div>
@@ -154,17 +156,17 @@ const ProductsPage = () => {
             <motion.div key={index} variants={itemVariants} className="stat-card animate-pulse">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="h-4 bg-dark-600 rounded mb-2"></div>
-                  <div className="h-8 bg-dark-600 rounded w-3/4"></div>
+                  <div className={`h-4 rounded mb-2 ${theme === 'light' ? 'bg-slate-200' : 'bg-dark-600'}`}></div>
+                  <div className={`h-8 rounded w-3/4 ${theme === 'light' ? 'bg-slate-200' : 'bg-dark-600'}`}></div>
                 </div>
-                <div className="w-8 h-8 bg-dark-600 rounded"></div>
+                <div className={`w-8 h-8 rounded ${theme === 'light' ? 'bg-slate-200' : 'bg-dark-600'}`}></div>
               </div>
             </motion.div>
           ))
         ) : filteredProducts.length === 0 ? (
           <motion.div variants={itemVariants} className="col-span-full text-center py-12">
-            <Package className="w-16 h-16 text-dark-600 mx-auto mb-4" />
-            <p className="text-dark-400 text-lg">Aucun produit trouvé</p>
+            <Package className={`w-16 h-16 mx-auto mb-4 ${theme === 'light' ? 'text-slate-300' : 'text-dark-600'}`} />
+            <p className={`text-lg ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Aucun produit trouvé</p>
             <Button onClick={handleCreateProduct} className="mt-4">
               <Plus className="w-4 h-4 mr-2" />
               Créer votre premier produit
@@ -179,17 +181,17 @@ const ProductsPage = () => {
               <motion.div 
                 key={product.id} 
                 variants={itemVariants} 
-                className="stat-card cursor-pointer hover:scale-105 transition-transform duration-200"
+                className={`stat-card cursor-pointer hover:scale-105 transition-transform duration-200 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
                 onClick={() => handleViewProduct(product)}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-dark-200 mb-1 truncate" title={product.nom}>
+                    <h3 className={`text-lg font-semibold mb-1 truncate ${theme === 'light' ? 'text-slate-800' : 'text-dark-200'}`} title={product.nom}>
                       {product.nom}
                     </h3>
                     <p className="text-3xl font-bold text-primary-400">
                       {product.stock_actuel}
-                      <span className="text-sm text-dark-400 ml-1">{product.unite_mesure}</span>
+                      <span className={`text-sm ml-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{product.unite_mesure}</span>
                     </p>
                   </div>
                   <div className={`p-3 rounded-lg ${
@@ -206,7 +208,7 @@ const ProductsPage = () => {
                 {/* Stock Status Bar */}
                 <div className="mb-3">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-xs text-dark-400">Stock</span>
+                    <span className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Stock</span>
                     <span className={`text-xs font-medium ${
                       stockStatus.color === 'red' ? 'text-red-400' :
                       stockStatus.color === 'orange' ? 'text-orange-400' :
@@ -215,7 +217,7 @@ const ProductsPage = () => {
                       {stockStatus.status}
                     </span>
                   </div>
-                  <div className="w-full bg-dark-700 rounded-full h-2">
+                  <div className={`w-full rounded-full h-2 ${theme === 'light' ? 'bg-slate-200' : 'bg-dark-700'}`}>
                     <div 
                       className={`h-2 rounded-full transition-all duration-300 ${
                         stockStatus.color === 'red' ? 'bg-red-400' :
@@ -269,10 +271,10 @@ const ProductsPage = () => {
       )}
 
       {/* Search and Filters */}
-      <motion.div variants={itemVariants} className="card p-6">
+      <motion.div variants={itemVariants} className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400 pointer-events-none" />
+            <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
             <input
               type="text"
               placeholder="Rechercher un produit..."
@@ -289,30 +291,30 @@ const ProductsPage = () => {
       </motion.div>
 
       {/* Products Table */}
-      <motion.div variants={itemVariants} className="card p-6">
+      <motion.div variants={itemVariants} className={`card p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-dark-700">
-                <th className="text-left py-3 text-dark-300 font-medium">Produit</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Type</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Prix</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Stock Actuel</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Stock Min/Max</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Statut</th>
-                <th className="text-left py-3 text-dark-300 font-medium">Actions</th>
+              <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Produit</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Type</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Prix</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Stock Actuel</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Stock Min/Max</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Statut</th>
+                <th className={`text-left py-3 font-medium ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-8 text-dark-400">
+                  <td colSpan="8" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Chargement...
                   </td>
                 </tr>
               ) : filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan="8" className="text-center py-8 text-dark-400">
+                  <td colSpan="8" className={`text-center py-8 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                     Aucun produit trouvé
                   </td>
                 </tr>
@@ -322,15 +324,15 @@ const ProductsPage = () => {
                   const ProductIcon = getProductIcon(product.type_produit);
                   
                   return (
-                    <tr key={product.id} className="border-b border-dark-800 hover:bg-dark-800/50">
+                    <tr key={product.id} className={`border-b ${theme === 'light' ? 'border-slate-100 hover:bg-slate-50' : 'border-dark-800 hover:bg-dark-800/50'}`}>
                       <td className="py-4">
                         <div className="flex items-center">
                           <ProductIcon className={`w-8 h-8 mr-3 ${
                             product.type_produit === 'eau' ? 'text-blue-400' : 'text-cyan-400'
                           }`} />
                           <div>
-                            <p className="text-white font-medium">{product.nom}</p>
-                            <p className="text-dark-400 text-sm">{product.description}</p>
+                            <p className={`font-medium ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{product.nom}</p>
+                            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{product.description}</p>
                           </div>
                         </div>
                       </td>
@@ -349,12 +351,12 @@ const ProductsPage = () => {
                       <td className="py-4">
                         <div className="flex items-center space-x-3">
                           <div>
-                            <p className="text-white font-bold text-lg">
+                            <p className={`font-bold text-lg ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                               {product.stock_actuel}
                             </p>
-                            <p className="text-dark-400 text-xs">{product.unite_mesure}</p>
+                            <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{product.unite_mesure}</p>
                           </div>
-                          <div className="w-24 bg-dark-700 rounded-full h-2.5">
+                          <div className={`w-24 rounded-full h-2.5 ${theme === 'light' ? 'bg-slate-200' : 'bg-dark-700'}`}>
                             <div 
                               className={`h-2.5 rounded-full ${
                                 stockStatus.color === 'red' ? 'bg-red-400' :
@@ -372,12 +374,12 @@ const ProductsPage = () => {
                         <div className="text-sm">
                           <div className="flex items-center space-x-2 mb-1">
                             <span className="text-orange-400 font-medium">Min:</span>
-                            <span className="text-white">{product.stock_minimal}</span>
+                            <span className={theme === 'light' ? 'text-slate-700' : 'text-white'}>{product.stock_minimal}</span>
                           </div>
                           {product.stock_maximum && (
                             <div className="flex items-center space-x-2">
                               <span className="text-green-400 font-medium">Max:</span>
-                              <span className="text-white">{product.stock_maximum}</span>
+                              <span className={theme === 'light' ? 'text-slate-700' : 'text-white'}>{product.stock_maximum}</span>
                             </div>
                           )}
                         </div>

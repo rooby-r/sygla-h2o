@@ -18,8 +18,10 @@ import {
 import { toast } from 'react-hot-toast';
 import { userService } from '../../services/api';
 import Button from '../../components/ui/Button';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const UsersManagementPage = () => {
+  const { theme } = useTheme();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -245,11 +247,11 @@ const UsersManagementPage = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-white mb-2 flex items-center gap-3">
+          <h2 className={`text-3xl font-bold mb-2 flex items-center gap-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
             <Users className="w-8 h-8 text-primary-400" />
             Gestion des Utilisateurs
           </h2>
-          <p className="text-dark-300">
+          <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
             Créer et gérer les comptes utilisateurs du système
           </p>
         </div>
@@ -264,15 +266,15 @@ const UsersManagementPage = () => {
       </div>
 
       {/* Barre de recherche */}
-      <div className="card p-4">
+      <div className={`rounded-xl p-4 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}>
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 w-5 h-5 pointer-events-none" />
+          <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
           <input
             type="text"
             placeholder="Rechercher un utilisateur..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:border-primary-500"
+            className={`w-full pl-12 pr-4 py-3 rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-dark-400'}`}
           />
         </div>
       </div>
@@ -282,12 +284,12 @@ const UsersManagementPage = () => {
         {loading && users.length === 0 ? (
           <div className="col-span-full text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-500 border-t-transparent"></div>
-            <p className="text-dark-400 mt-4">Chargement...</p>
+            <p className={`mt-4 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Chargement...</p>
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="col-span-full text-center py-12">
-            <Users className="w-16 h-16 text-dark-600 mx-auto mb-4" />
-            <p className="text-dark-400">Aucun utilisateur trouvé</p>
+            <Users className={`w-16 h-16 mx-auto mb-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-600'}`} />
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Aucun utilisateur trouvé</p>
           </div>
         ) : (
           filteredUsers.map((user, index) => {
@@ -300,7 +302,7 @@ const UsersManagementPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="card p-6 hover:border-primary-500/50 transition-all"
+                className={`p-6 rounded-xl border transition-all ${theme === 'light' ? 'bg-white border-slate-200 shadow-md hover:border-primary-400' : 'bg-dark-800 border-dark-700 hover:border-primary-500/50'}`}
               >
                 {/* Avatar et rôle */}
                 <div className="flex items-start justify-between mb-4">
@@ -329,7 +331,7 @@ const UsersManagementPage = () => {
                       </div>
                     )}
                     <div>
-                      <h3 className="text-lg font-semibold text-white">
+                      <h3 className={`text-lg font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                         {user.first_name && user.last_name
                           ? `${user.first_name} ${user.last_name}`
                           : user.username}
@@ -350,26 +352,26 @@ const UsersManagementPage = () => {
 
                 {/* Informations */}
                 <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-sm text-dark-300">
-                    <User className="w-4 h-4 text-dark-400" />
+                  <div className={`flex items-center gap-2 text-sm ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
+                    <User className={`w-4 h-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                     <span>{user.username}</span>
                   </div>
                   {user.email && (
-                    <div className="flex items-center gap-2 text-sm text-dark-300">
-                      <Mail className="w-4 h-4 text-dark-400" />
+                    <div className={`flex items-center gap-2 text-sm ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
+                      <Mail className={`w-4 h-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                       <span className="truncate">{user.email}</span>
                     </div>
                   )}
                   {user.telephone && (
-                    <div className="flex items-center gap-2 text-sm text-dark-300">
-                      <Phone className="w-4 h-4 text-dark-400" />
+                    <div className={`flex items-center gap-2 text-sm ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
+                      <Phone className={`w-4 h-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                       <span>{user.telephone}</span>
                     </div>
                   )}
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-2 pt-4 border-t border-dark-700">
+                <div className={`flex gap-2 pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
                   <button
                     onClick={() => handleOpenModal(user)}
                     className="flex-1 px-3 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors flex items-center justify-center gap-2"
@@ -398,32 +400,32 @@ const UsersManagementPage = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-dark-800 rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-dark-700"
+            className={`rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border ${theme === 'light' ? 'bg-white border-slate-200 shadow-xl' : 'bg-dark-800 border-dark-700'}`}
           >
-            <div className="sticky top-0 bg-dark-800 border-b border-dark-700 p-6 flex items-center justify-between">
-              <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+            <div className={`sticky top-0 border-b p-6 flex items-center justify-between ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-dark-800 border-dark-700'}`}>
+              <h3 className={`text-2xl font-bold flex items-center gap-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 {editingUser ? <Edit3 className="w-6 h-6 text-blue-400" /> : <UserPlus className="w-6 h-6 text-green-400" />}
                 {editingUser ? 'Modifier l\'utilisateur' : 'Nouvel utilisateur'}
               </h3>
               <button
                 onClick={handleCloseModal}
-                className="p-2 hover:bg-dark-700 rounded-lg transition-colors"
+                className={`p-2 rounded-lg transition-colors ${theme === 'light' ? 'hover:bg-slate-100' : 'hover:bg-dark-700'}`}
               >
-                <X className="w-6 h-6 text-dark-400" />
+                <X className={theme === 'light' ? 'w-6 h-6 text-slate-400' : 'w-6 h-6 text-dark-400'} />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               {/* Nom d'utilisateur */}
               <div>
-                <label className="block text-sm font-medium text-dark-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                   Nom d'utilisateur <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.username}
                   onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                   placeholder="johndoe"
                   required
                 />
@@ -432,26 +434,26 @@ const UsersManagementPage = () => {
               {/* Prénom et Nom */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Prénom
                   </label>
                   <input
                     type="text"
                     value={formData.first_name}
                     onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                     placeholder="John"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Nom
                   </label>
                   <input
                     type="text"
                     value={formData.last_name}
                     onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                     placeholder="Doe"
                   />
                 </div>
@@ -460,27 +462,27 @@ const UsersManagementPage = () => {
               {/* Email et Téléphone */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Email <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                     placeholder="john@example.com"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Téléphone
                   </label>
                   <input
                     type="tel"
                     value={formData.telephone}
                     onChange={(e) => setFormData({ ...formData, telephone: e.target.value })}
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                     placeholder="509 XXXX XXXX"
                   />
                 </div>
@@ -488,13 +490,13 @@ const UsersManagementPage = () => {
 
               {/* Rôle */}
               <div>
-                <label className="block text-sm font-medium text-dark-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                   Rôle <span className="text-red-400">*</span>
                 </label>
                 <select
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                  className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                   required
                 >
                   {roles.map(role => (
@@ -508,37 +510,37 @@ const UsersManagementPage = () => {
               {/* Mot de passe */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Mot de passe {!editingUser && <span className="text-red-400">*</span>}
-                    {editingUser && <span className="text-xs text-dark-400 ml-2">(laisser vide pour ne pas changer)</span>}
+                    {editingUser && <span className={`text-xs ml-2 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>(laisser vide pour ne pas changer)</span>}
                   </label>
                   <div className="relative">
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500 pr-12"
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 pr-12 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                       placeholder="••••••••"
                       required={!editingUser}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-dark-400 hover:text-white transition-colors"
+                      className={`absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors ${theme === 'light' ? 'text-slate-400 hover:text-slate-600' : 'text-dark-400 hover:text-white'}`}
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Confirmer mot de passe {!editingUser && <span className="text-red-400">*</span>}
                   </label>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={formData.confirm_password}
                     onChange={(e) => setFormData({ ...formData, confirm_password: e.target.value })}
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:border-primary-500"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                     placeholder="••••••••"
                     required={!editingUser}
                   />
@@ -546,7 +548,7 @@ const UsersManagementPage = () => {
               </div>
 
               {/* Boutons */}
-              <div className="flex gap-3 pt-4 border-t border-dark-700">
+              <div className={`flex gap-3 pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
                 <Button
                   type="button"
                   onClick={handleCloseModal}

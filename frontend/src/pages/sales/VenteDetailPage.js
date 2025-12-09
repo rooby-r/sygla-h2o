@@ -21,10 +21,12 @@ import Button from '../../components/ui/Button';
 import { formatHTG } from '../../utils/currency';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const VenteDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [vente, setVente] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPaiementModal, setShowPaiementModal] = useState(false);
@@ -462,13 +464,13 @@ const VenteDetailPage = () => {
         <div className="flex items-center">
           <button
             onClick={() => navigate('/sales')}
-            className="mr-4 p-2 hover:bg-dark-700 rounded-lg transition-colors"
+            className={`mr-4 p-2 rounded-lg transition-colors ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-dark-700'}`}
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <h1 className="text-3xl font-bold text-gradient">Vente {vente.numero_vente}</h1>
-            <p className="text-dark-400">Détails de la vente</p>
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Détails de la vente</p>
           </div>
         </div>
         
@@ -501,20 +503,20 @@ const VenteDetailPage = () => {
             <h2 className="text-xl font-semibold mb-4">Informations Client</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-dark-400 text-sm mb-1">Client</p>
-                <p className="text-white font-medium">{vente.client_details?.nom_commercial || vente.client_details?.raison_sociale || vente.client_details?.contact}</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Client</p>
+                <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{vente.client_details?.nom_commercial || vente.client_details?.raison_sociale || vente.client_details?.contact}</p>
               </div>
               <div>
-                <p className="text-dark-400 text-sm mb-1">Téléphone</p>
-                <p className="text-white">{vente.client_details?.telephone || 'N/A'}</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Téléphone</p>
+                <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{vente.client_details?.telephone || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-dark-400 text-sm mb-1">Email</p>
-                <p className="text-white">{vente.client_details?.email || 'N/A'}</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Email</p>
+                <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{vente.client_details?.email || 'N/A'}</p>
               </div>
               <div>
-                <p className="text-dark-400 text-sm mb-1">Adresse</p>
-                <p className="text-white">{vente.client_details?.adresse || 'N/A'}</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Adresse</p>
+                <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{vente.client_details?.adresse || 'N/A'}</p>
               </div>
             </div>
           </div>
@@ -525,19 +527,19 @@ const VenteDetailPage = () => {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-dark-700">
-                    <th className="text-left p-3 text-dark-300">Produit</th>
-                    <th className="text-center p-3 text-dark-300">Quantité</th>
-                    <th className="text-right p-3 text-dark-300">Prix unitaire</th>
-                    <th className="text-right p-3 text-dark-300">Montant</th>
+                  <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                    <th className={`text-left p-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Produit</th>
+                    <th className={`text-center p-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Quantité</th>
+                    <th className={`text-right p-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Prix unitaire</th>
+                    <th className={`text-right p-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Montant</th>
                   </tr>
                 </thead>
                 <tbody>
                   {vente.lignes?.map((ligne) => (
-                    <tr key={ligne.id} className="border-b border-dark-700/50">
-                      <td className="p-3 text-white">{ligne.produit_details?.nom}</td>
-                      <td className="p-3 text-center text-dark-200">{ligne.quantite}</td>
-                      <td className="p-3 text-right text-dark-200">{formatHTG(ligne.prix_unitaire)}</td>
+                    <tr key={ligne.id} className={`border-b ${theme === 'light' ? 'border-slate-100' : 'border-dark-700/50'}`}>
+                      <td className={`p-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{ligne.produit_details?.nom}</td>
+                      <td className={`p-3 text-center ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>{ligne.quantite}</td>
+                      <td className={`p-3 text-right ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>{formatHTG(ligne.prix_unitaire)}</td>
                       <td className="p-3 text-right font-semibold">{formatHTG(ligne.montant)}</td>
                     </tr>
                   ))}
@@ -552,22 +554,22 @@ const VenteDetailPage = () => {
               <h2 className="text-xl font-semibold mb-4">Historique des Paiements</h2>
               <div className="space-y-3">
                 {vente.paiements.map((paiement) => (
-                  <div key={paiement.id} className="flex items-center justify-between p-4 bg-dark-800 rounded-lg">
+                  <div key={paiement.id} className={`flex items-center justify-between p-4 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800'}`}>
                     <div className="flex items-center space-x-3">
                       <div className="w-10 h-10 bg-green-500/20 rounded-lg flex items-center justify-center">
                         <CreditCard className="w-5 h-5 text-green-500" />
                       </div>
                       <div>
-                        <p className="text-white font-medium">{formatHTG(paiement.montant)}</p>
-                        <p className="text-dark-400 text-sm">
+                        <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatHTG(paiement.montant)}</p>
+                        <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                           {format(new Date(paiement.date_paiement), 'dd MMM yyyy à HH:mm', { locale: fr })}
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-dark-300 text-sm">{paiement.methode}</p>
+                      <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>{paiement.methode}</p>
                       {paiement.reference && (
-                        <p className="text-dark-400 text-xs">Réf: {paiement.reference}</p>
+                        <p className={`text-xs ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>Réf: {paiement.reference}</p>
                       )}
                     </div>
                   </div>
@@ -580,7 +582,7 @@ const VenteDetailPage = () => {
           {vente.notes && (
             <div className="card p-6">
               <h2 className="text-xl font-semibold mb-4">Notes</h2>
-              <p className="text-dark-300 whitespace-pre-wrap">{vente.notes}</p>
+              <p className={`whitespace-pre-wrap ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>{vente.notes}</p>
             </div>
           )}
         </div>
@@ -592,25 +594,25 @@ const VenteDetailPage = () => {
             <h2 className="text-xl font-semibold mb-4">Résumé</h2>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-dark-400">Montant total:</span>
+                <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Montant total:</span>
                 <span className="font-semibold">{formatHTG(vente.montant_total)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-dark-400">Montant payé:</span>
+                <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Montant payé:</span>
                 <span className="font-semibold text-green-400">{formatHTG(vente.montant_paye)}</span>
               </div>
-              <div className="flex justify-between border-t border-dark-700 pt-3">
-                <span className="text-dark-400">Montant restant:</span>
+              <div className={`flex justify-between border-t pt-3 ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Montant restant:</span>
                 <span className="font-bold text-warning-400 text-lg">{formatHTG(vente.montant_restant)}</span>
               </div>
               
               {/* Barre de progression */}
               <div className="pt-3">
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-dark-400">Progression</span>
+                  <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Progression</span>
                   <span className="text-primary-400">{vente.taux_paiement?.toFixed(1)}%</span>
                 </div>
-                <div className="w-full bg-dark-700 rounded-full h-2">
+                <div className={`w-full rounded-full h-2 ${theme === 'light' ? 'bg-slate-200' : 'bg-dark-700'}`}>
                   <div
                     className="bg-gradient-to-r from-primary-600 to-secondary-600 h-2 rounded-full transition-all"
                     style={{ width: `${vente.taux_paiement}%` }}
@@ -624,26 +626,26 @@ const VenteDetailPage = () => {
           <div className="card p-6">
             <h2 className="text-xl font-semibold mb-4">Informations</h2>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3 text-dark-300">
+              <div className={`flex items-center space-x-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                 <Calendar className="w-5 h-5" />
                 <div>
-                  <p className="text-xs text-dark-400">Date de vente</p>
-                  <p className="text-sm text-white">
+                  <p className={`text-xs ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>Date de vente</p>
+                  <p className={`text-sm ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {format(new Date(vente.date_vente), 'dd MMMM yyyy', { locale: fr })}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-3 text-dark-300">
+              <div className={`flex items-center space-x-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                 <User className="w-5 h-5" />
                 <div>
-                  <p className="text-xs text-dark-400">Vendeur</p>
-                  <p className="text-sm text-white">{vente.vendeur_details?.full_name || vente.vendeur_details?.email}</p>
+                  <p className={`text-xs ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>Vendeur</p>
+                  <p className={`text-sm ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{vente.vendeur_details?.full_name || vente.vendeur_details?.email}</p>
                 </div>
               </div>
               
               {vente.methode_paiement && (
-                <div className="flex items-center space-x-3 text-dark-300">
+                <div className={`flex items-center space-x-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                   <CreditCard className="w-5 h-5" />
                   <div>
                     <p className="text-xs text-dark-400">Méthode de paiement</p>

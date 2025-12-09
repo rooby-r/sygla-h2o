@@ -20,10 +20,12 @@ import Button from '../../components/ui/Button.js';
 import { orderService, clientService, productService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const CreateOrderPage = () => {
   const navigate = useNavigate();
   const { triggerDashboardUpdate } = useDataUpdate();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [clients, setClients] = useState([]);
@@ -403,11 +405,11 @@ const CreateOrderPage = () => {
               <span>Retour</span>
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-white flex items-center space-x-3">
+              <h1 className={`text-3xl font-bold flex items-center space-x-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <ShoppingCart className="text-primary-400" size={32} />
                 <span>Nouvelle Commande</span>
               </h1>
-              <p className="text-dark-300 mt-1">Créer une nouvelle commande client</p>
+              <p className={`mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Créer une nouvelle commande client</p>
             </div>
           </div>
         </div>
@@ -421,20 +423,20 @@ const CreateOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6"
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
               >
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <User className="text-primary-400" size={20} />
                   <span>Informations Client</span>
                 </h3>
 
                 <div className="space-y-4">
                   <div ref={clientSearchRef}>
-                    <label className="block text-sm font-medium text-dark-200 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                       Rechercher un client
                     </label>
                     <div className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 pointer-events-none" size={20} />
+                      <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} size={20} />
                       <input
                         type="text"
                         value={clientSearch}
@@ -453,13 +455,13 @@ const CreateOrderPage = () => {
                           setTimeout(() => setClientInputFocused(false), 200);
                         }}
                         placeholder="Nom, contact, téléphone ou email..."
-                        className="w-full pl-10 pr-4 py-3 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white placeholder-dark-400"
+                        className={`w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-dark-400'}`}
                       />
                     </div>
                   </div>
 
                   {showClientList && (
-                    <div className="border border-dark-600 bg-dark-700 rounded-lg max-h-48 overflow-y-auto">
+                    <div className={`rounded-lg max-h-48 overflow-y-auto ${theme === 'light' ? 'border border-slate-200 bg-white' : 'border border-dark-600 bg-dark-700'}`}>
                       {filteredClients.length > 0 ? (
                         filteredClients.map((client) => (
                           <div
@@ -482,15 +484,15 @@ const CreateOrderPage = () => {
                               e.preventDefault();
                               e.stopPropagation();
                             }}
-                            className="p-3 hover:bg-dark-600 cursor-pointer border-b border-dark-600 last:border-b-0 transition-colors select-none"
+                            className={`p-3 cursor-pointer last:border-b-0 transition-colors select-none ${theme === 'light' ? 'hover:bg-slate-100 border-b border-slate-200' : 'hover:bg-dark-600 border-b border-dark-600'}`}
                           >
-                            <div className="font-medium text-white">{client.nom_commercial}</div>
-                            <div className="text-sm text-dark-300">{client.contact || client.contact_principal}</div>
-                            <div className="text-sm text-dark-400">{client.telephone} • {client.email}</div>
+                            <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{client.nom_commercial}</div>
+                            <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>{client.contact || client.contact_principal}</div>
+                            <div className={`text-sm ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>{client.telephone} • {client.email}</div>
                           </div>
                         ))
                       ) : (
-                        <div className="p-3 text-center text-dark-400">
+                        <div className={`p-3 text-center ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
                           {clientSearch ? 'Aucun client trouvé' : 'Aucun client enregistré'}
                         </div>
                       )}
@@ -498,13 +500,13 @@ const CreateOrderPage = () => {
                   )}
 
                   {selectedClient && (
-                    <div className="bg-primary-900/20 border border-primary-700 rounded-lg p-4">
+                    <div className={`rounded-lg p-4 ${theme === 'light' ? 'bg-primary-50 border border-primary-200' : 'bg-primary-900/20 border border-primary-700'}`}>
                       <h4 className="font-medium text-primary-300 mb-2">Client sélectionné</h4>
                       <div className="space-y-1 text-sm">
-                        <div><span className="font-medium text-dark-200">Entreprise:</span> <span className="text-white">{selectedClient.nom_commercial}</span></div>
-                        <div><span className="font-medium text-dark-200">Contact:</span> <span className="text-white">{selectedClient.contact || selectedClient.contact_principal}</span></div>
-                        <div><span className="font-medium text-dark-200">Téléphone:</span> <span className="text-white">{selectedClient.telephone}</span></div>
-                        <div><span className="font-medium text-dark-200">Email:</span> <span className="text-white">{selectedClient.email}</span></div>
+                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Entreprise:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.nom_commercial}</span></div>
+                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Contact:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.contact || selectedClient.contact_principal}</span></div>
+                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Téléphone:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.telephone}</span></div>
+                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Email:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.email}</span></div>
                       </div>
                     </div>
                   )}
@@ -516,16 +518,16 @@ const CreateOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6"
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
               >
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <Package className="text-accent-400" size={20} />
                   <span>Type de livraison</span>
                 </h3>
 
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <label className="flex items-center p-4 border-2 border-dark-600 rounded-lg cursor-pointer hover:bg-dark-700/50 transition-colors">
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'border-slate-200 hover:bg-slate-50' : 'border-dark-600 hover:bg-dark-700/50'}`}>
                       <input
                         type="radio"
                         name="type_livraison"
@@ -539,13 +541,13 @@ const CreateOrderPage = () => {
                         className="mr-3 text-green-400"
                       />
                       <div>
-                        <div className="text-white font-medium">Retrait en magasin</div>
+                        <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Retrait en magasin</div>
                         <div className="text-green-400 text-sm font-medium">Gratuit</div>
-                        <div className="text-dark-300 text-sm">Récupérer votre commande sur place</div>
+                        <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Récupérer votre commande sur place</div>
                       </div>
                     </label>
 
-                    <label className="flex items-center p-4 border-2 border-dark-600 rounded-lg cursor-pointer hover:bg-dark-700/50 transition-colors">
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'border-slate-200 hover:bg-slate-50' : 'border-dark-600 hover:bg-dark-700/50'}`}>
                       <input
                         type="radio"
                         name="type_livraison"
@@ -555,9 +557,9 @@ const CreateOrderPage = () => {
                         className="mr-3 text-primary-400"
                       />
                       <div>
-                        <div className="text-white font-medium">Livraison à domicile</div>
+                        <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Livraison à domicile</div>
                         <div className="text-yellow-400 text-sm font-medium">+15% du montant</div>
-                        <div className="text-dark-300 text-sm">Livraison directement chez vous</div>
+                        <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livraison directement chez vous</div>
                       </div>
                     </label>
                   </div>
@@ -572,7 +574,7 @@ const CreateOrderPage = () => {
                         </span>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-dark-200 mb-2">
+                        <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                           Frais de livraison personnalisés (HTG)
                         </label>
                         <input
@@ -582,9 +584,9 @@ const CreateOrderPage = () => {
                           value={formData.frais_livraison}
                           onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
                           placeholder={`Auto: ${formatHTG(calculateProductsTotal() * 0.15)} (15%)`}
-                          className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white placeholder-dark-400"
+                          className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-dark-400'}`}
                         />
-                        <p className="text-xs text-dark-400 mt-1">
+                        <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
                           Laissez vide pour appliquer automatiquement 15% du montant des produits
                         </p>
                       </div>
@@ -598,29 +600,29 @@ const CreateOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6"
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
               >
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <Calendar className="text-primary-400" size={20} />
                   <span>Dates</span>
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-dark-200 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                       Date de commande
                     </label>
                     <input
                       type="date"
                       value={formData.date_commande}
                       onChange={(e) => setFormData(prev => ({ ...prev, date_commande: e.target.value }))}
-                      className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-dark-200 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                       Date de livraison prévue {formData.type_livraison === 'livraison_domicile' ? '*' : '(optionnelle)'}
                     </label>
                     <input
@@ -628,19 +630,19 @@ const CreateOrderPage = () => {
                       value={formData.date_livraison_prevue}
                       onChange={(e) => setFormData(prev => ({ ...prev, date_livraison_prevue: e.target.value }))}
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
                       required={formData.type_livraison === 'livraison_domicile'}
                       disabled={formData.type_livraison === 'retrait_magasin'}
                     />
                     {formData.type_livraison === 'retrait_magasin' && (
-                      <p className="text-xs text-dark-400 mt-1">
+                      <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
                         Pas de date nécessaire pour le retrait en magasin
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-dark-200 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                       Date d'échéance (optionnelle)
                     </label>
                     <input
@@ -648,9 +650,9 @@ const CreateOrderPage = () => {
                       value={formData.date_echeance}
                       onChange={(e) => setFormData(prev => ({ ...prev, date_echeance: e.target.value }))}
                       min={new Date().toISOString().split('T')[0]}
-                      className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
                     />
-                    <p className="text-xs text-dark-400 mt-1">
+                    <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
                       Date limite pour le paiement complet
                     </p>
                   </div>
@@ -662,10 +664,10 @@ const CreateOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6"
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center space-x-2">
+                  <h3 className={`text-lg font-semibold flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     <Package className="text-primary-400" size={20} />
                     <span>Produits</span>
                   </h3>
@@ -681,9 +683,9 @@ const CreateOrderPage = () => {
 
                 {/* Sélecteur de produits */}
                 {showProductSelector && (
-                  <div className="mb-6 p-4 bg-dark-700/50 rounded-lg border border-dark-600">
+                  <div className={`mb-6 p-4 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-700/50 border border-dark-600'}`}>
                     <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-medium text-white">Sélectionner un produit</h4>
+                      <h4 className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Sélectionner un produit</h4>
                       <Button
                         type="button"
                         variant="outline"
@@ -698,13 +700,13 @@ const CreateOrderPage = () => {
                     </div>
                     
                     <div className="relative mb-3">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-dark-400 pointer-events-none" size={16} />
+                      <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 pointer-events-none ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} size={16} />
                       <input
                         type="text"
                         value={productSearch}
                         onChange={(e) => setProductSearch(e.target.value)}
                         placeholder="Rechercher un produit..."
-                        className="w-full pl-10 pr-4 py-2 bg-dark-600 border border-dark-500 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white placeholder-dark-400"
+                        className={`w-full pl-10 pr-4 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-600 border border-dark-500 text-white placeholder-dark-400'}`}
                       />
                     </div>
 
@@ -713,16 +715,16 @@ const CreateOrderPage = () => {
                         <div
                           key={product.id}
                           onClick={() => addProduct(product)}
-                          className="p-3 bg-dark-600 border border-dark-500 rounded-lg hover:bg-primary-900/20 hover:border-primary-600 cursor-pointer transition-colors"
+                          className={`p-3 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'bg-white border border-slate-200 hover:bg-primary-50 hover:border-primary-300' : 'bg-dark-600 border border-dark-500 hover:bg-primary-900/20 hover:border-primary-600'}`}
                         >
                           <div className="flex justify-between items-start">
                             <div>
-                              <div className="font-medium text-white">{product.nom}</div>
-                              <div className="text-sm text-dark-300">{product.type_produit}</div>
+                              <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{product.nom}</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>{product.type_produit}</div>
                             </div>
                             <div className="text-right">
-                              <div className="font-medium text-white">{formatHTG(product.prix_unitaire)}</div>
-                              <div className="text-sm text-dark-300">Stock: {product.stock_actuel}</div>
+                              <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatHTG(product.prix_unitaire)}</div>
+                              <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Stock: {product.stock_actuel}</div>
                             </div>
                           </div>
                         </div>
@@ -733,8 +735,8 @@ const CreateOrderPage = () => {
 
                 {/* Liste des produits ajoutés */}
                 {formData.items.length === 0 ? (
-                  <div className="text-center py-8 text-dark-400">
-                    <Package size={48} className="mx-auto mb-3 text-dark-600" />
+                  <div className={`text-center py-8 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
+                    <Package size={48} className={`mx-auto mb-3 ${theme === 'light' ? 'text-slate-300' : 'text-dark-600'}`} />
                     <p>Aucun produit ajouté à la commande</p>
                     <p className="text-sm">Cliquez sur "Ajouter produit" pour commencer</p>
                   </div>
@@ -743,11 +745,11 @@ const CreateOrderPage = () => {
                     {formData.items.map((item) => (
                       <div
                         key={item.produit_id}
-                        className="flex items-center justify-between p-4 bg-dark-700/50 rounded-lg border border-dark-600"
+                        className={`flex items-center justify-between p-4 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-700/50 border border-dark-600'}`}
                       >
                         <div className="flex-1">
-                          <div className="font-medium text-white">{item.nom_produit}</div>
-                          <div className="text-sm text-dark-300">
+                          <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{item.nom_produit}</div>
+                          <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                             {formatHTG(item.prix_unitaire)} / {item.unite_mesure}
                           </div>
                           {item.quantite > item.stock_disponible && (
@@ -763,7 +765,7 @@ const CreateOrderPage = () => {
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.produit_id, item.quantite - 1)}
-                              className="w-8 h-8 rounded-full bg-dark-600 border border-dark-500 flex items-center justify-center hover:bg-dark-500 text-dark-300"
+                              className={`w-8 h-8 rounded-full flex items-center justify-center ${theme === 'light' ? 'bg-slate-100 border border-slate-300 hover:bg-slate-200 text-slate-600' : 'bg-dark-600 border border-dark-500 hover:bg-dark-500 text-dark-300'}`}
                             >
                               -
                             </button>
@@ -773,19 +775,19 @@ const CreateOrderPage = () => {
                               max={item.stock_disponible}
                               value={item.quantite}
                               onChange={(e) => updateQuantity(item.produit_id, parseInt(e.target.value) || 1)}
-                              className="w-16 text-center py-1 bg-dark-600 border border-dark-500 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                              className={`w-16 text-center py-1 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-600 border border-dark-500 text-white'}`}
                             />
                             <button
                               type="button"
                               onClick={() => updateQuantity(item.produit_id, item.quantite + 1)}
-                              className="w-8 h-8 rounded-full bg-dark-600 border border-dark-500 flex items-center justify-center hover:bg-dark-500 text-dark-300"
+                              className={`w-8 h-8 rounded-full flex items-center justify-center ${theme === 'light' ? 'bg-slate-100 border border-slate-300 hover:bg-slate-200 text-slate-600' : 'bg-dark-600 border border-dark-500 hover:bg-dark-500 text-dark-300'}`}
                             >
                               +
                             </button>
                           </div>
 
                           <div className="text-right min-w-[80px]">
-                            <div className="font-medium text-white">
+                            <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                               {formatHTG(item.quantite * item.prix_unitaire)}
                             </div>
                           </div>
@@ -809,9 +811,9 @@ const CreateOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6"
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
               >
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <FileText className="text-primary-400" size={20} />
                   <span>Notes et Instructions</span>
                 </h3>
@@ -821,7 +823,7 @@ const CreateOrderPage = () => {
                   onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                   placeholder="Instructions spéciales, notes pour la livraison..."
                   rows={4}
-                  className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent resize-none text-white placeholder-dark-400"
+                  className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent resize-none ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-dark-400'}`}
                 />
               </motion.div>
             </div>
@@ -832,9 +834,9 @@ const CreateOrderPage = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-dark-800/50 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6 sticky top-6"
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 sticky top-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
               >
-                <h3 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <Calculator className="text-primary-400" size={20} />
                   <span>Résumé de la commande</span>
                 </h3>
@@ -842,16 +844,16 @@ const CreateOrderPage = () => {
                 <div className="space-y-4">
                   {/* Client */}
                   <div>
-                    <div className="text-sm font-medium text-dark-200">Client</div>
-                    <div className="text-white">
+                    <div className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Client</div>
+                    <div className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                       {selectedClient ? selectedClient.nom_commercial : 'Aucun client sélectionné'}
                     </div>
                   </div>
 
                   {/* Type de livraison */}
                   <div>
-                    <div className="text-sm font-medium text-dark-200">Type de livraison</div>
-                    <div className="text-white">
+                    <div className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Type de livraison</div>
+                    <div className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                       {formData.type_livraison === 'retrait_magasin' ? 
                         'Retrait en magasin (Gratuit)' : 
                         'Livraison à domicile (+15%)'
@@ -862,8 +864,8 @@ const CreateOrderPage = () => {
                   {/* Date de livraison */}
                   {formData.date_livraison_prevue && (
                     <div>
-                      <div className="text-sm font-medium text-dark-200">Livraison prévue</div>
-                      <div className="text-white">
+                      <div className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Livraison prévue</div>
+                      <div className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                         {new Date(formData.date_livraison_prevue).toLocaleDateString('fr-FR')}
                       </div>
                     </div>
@@ -871,18 +873,18 @@ const CreateOrderPage = () => {
 
                   {/* Articles */}
                   <div>
-                    <div className="text-sm font-medium text-dark-200 mb-2">Articles</div>
+                    <div className={`text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Articles</div>
                     {formData.items.length === 0 ? (
-                      <div className="text-dark-400 text-sm">Aucun article</div>
+                      <div className={`text-sm ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>Aucun article</div>
                     ) : (
                       <div className="space-y-2">
                         {formData.items.map((item) => (
                           <div key={item.produit_id} className="flex justify-between text-sm">
                             <div className="flex-1">
-                              <div className="text-white">{item.nom_produit}</div>
-                              <div className="text-dark-300">{item.quantite} × {formatHTG(item.prix_unitaire)}</div>
+                              <div className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{item.nom_produit}</div>
+                              <div className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>{item.quantite} × {formatHTG(item.prix_unitaire)}</div>
                             </div>
-                            <div className="font-medium text-white">
+                            <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                               {formatHTG(item.quantite * item.prix_unitaire)}
                             </div>
                           </div>
@@ -892,23 +894,23 @@ const CreateOrderPage = () => {
                   </div>
 
                   {/* Calculs */}
-                  <div className="pt-4 border-t border-dark-600">
+                  <div className={`pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-dark-300">Sous-total produits</span>
-                        <span className="text-white">{formatHTG(calculateProductsTotal())}</span>
+                        <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Sous-total produits</span>
+                        <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{formatHTG(calculateProductsTotal())}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-dark-300">Frais de livraison</span>
-                        <span className="text-white">
+                        <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Frais de livraison</span>
+                        <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                           {formData.type_livraison === 'livraison_domicile' ? 
                             `${formatHTG(calculateDeliveryFees())} ${formData.frais_livraison === '' ? '(15%)' : '(personnalisé)'}` : 
                             'Gratuit'
                           }
                         </span>
                       </div>
-                      <div className="flex justify-between text-lg font-semibold pt-2 border-t border-dark-600">
-                        <span className="text-white">Total</span>
+                      <div className={`flex justify-between text-lg font-semibold pt-2 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
+                        <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>Total</span>
                         <span className="text-primary-400">{formatHTG(calculateTotal())}</span>
                       </div>
                     </div>

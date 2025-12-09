@@ -7,33 +7,125 @@
     box-sizing: border-box;
   }
   
+  /* Thème sombre (par défaut) */
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-card: rgba(30, 41, 59, 0.5);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: rgba(51, 65, 85, 0.5);
+    --input-bg: rgba(30, 41, 59, 0.5);
+  }
+  
+  .light {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --border-color: #e2e8f0;
+    --input-bg: #ffffff;
+  }
+  
   body {
-    @apply bg-dark-900 text-white font-inter;
     font-feature-settings: "cv11", "ss01";
     font-variation-settings: "opsz" 32;
-    /* Prevent horizontal scroll on mobile */
     overflow-x: hidden;
+    @apply transition-colors duration-300;
+  }
+  
+  .dark body {
+    @apply bg-dark-900 text-white font-inter;
+  }
+  
+  .light body {
+    @apply bg-slate-50 text-slate-900 font-inter;
   }
 
   html {
     scroll-behavior: smooth;
-    /* Prevent horizontal scroll */
     overflow-x: hidden;
   }
   
-  /* Mobile touch optimization */
   @media (max-width: 768px) {
     body {
       -webkit-tap-highlight-color: transparent;
       -webkit-touch-callout: none;
     }
   }
+
+  /* ====== THEME CLASSES ====== */
+  
+  /* Textes adaptatifs */
+  .theme-text-primary {
+    @apply text-white;
+  }
+  .light .theme-text-primary {
+    @apply text-slate-900;
+  }
+  
+  .theme-text-secondary {
+    @apply text-dark-300;
+  }
+  .light .theme-text-secondary {
+    @apply text-slate-600;
+  }
+  
+  .theme-text-muted {
+    @apply text-dark-400;
+  }
+  .light .theme-text-muted {
+    @apply text-slate-500;
+  }
+  
+  /* Backgrounds adaptatifs */
+  .theme-bg-primary {
+    @apply bg-dark-900;
+  }
+  .light .theme-bg-primary {
+    @apply bg-slate-50;
+  }
+  
+  .theme-bg-secondary {
+    @apply bg-dark-800;
+  }
+  .light .theme-bg-secondary {
+    @apply bg-white;
+  }
+  
+  .theme-bg-tertiary {
+    @apply bg-dark-700;
+  }
+  .light .theme-bg-tertiary {
+    @apply bg-slate-100;
+  }
+  
+  /* Bordures adaptatives */
+  .theme-border {
+    @apply border-dark-700;
+  }
+  .light .theme-border {
+    @apply border-slate-200;
+  }
 }
 
 @layer components {
   /* Boutons futuristes - Responsive */
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-900;
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .dark .btn {
+    @apply focus:ring-offset-dark-900;
+  }
+  
+  .light .btn {
+    @apply focus:ring-offset-white;
   }
 
   .btn-primary {
@@ -45,11 +137,27 @@
   }
 
   .btn-outline {
-    @apply border border-dark-600 text-dark-300 hover:bg-dark-800 hover:text-white focus:ring-dark-500;
+    @apply border focus:ring-dark-500;
+  }
+  
+  .dark .btn-outline {
+    @apply border-dark-600 text-dark-300 hover:bg-dark-800 hover:text-white;
+  }
+  
+  .light .btn-outline {
+    @apply border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-900;
   }
 
   .btn-ghost {
-    @apply text-dark-300 hover:bg-dark-800 hover:text-white focus:ring-dark-500;
+    @apply focus:ring-dark-500;
+  }
+  
+  .dark .btn-ghost {
+    @apply text-dark-300 hover:bg-dark-800 hover:text-white;
+  }
+  
+  .light .btn-ghost {
+    @apply text-gray-600 hover:bg-gray-100 hover:text-gray-900;
   }
 
   .btn-sm {
@@ -66,33 +174,73 @@
 
   /* Cards futuristes */
   .card {
-    @apply bg-dark-800/50 backdrop-blur-sm border border-dark-700/50 rounded-xl shadow-xl;
+    @apply rounded-xl shadow-xl transition-colors duration-300;
+  }
+  
+  .dark .card {
+    @apply bg-dark-800/50 backdrop-blur-sm border border-dark-700/50;
+  }
+  
+  .light .card {
+    @apply bg-white border border-gray-200 shadow-md;
   }
 
   .card-hover {
-    @apply hover:bg-dark-800/70 hover:border-primary-500/30 hover:shadow-2xl hover:shadow-primary-500/10 transition-all duration-300;
+    @apply transition-all duration-300;
+  }
+  
+  .dark .card-hover {
+    @apply hover:bg-dark-800/70 hover:border-primary-500/30 hover:shadow-2xl hover:shadow-primary-500/10;
+  }
+  
+  .light .card-hover {
+    @apply hover:bg-gray-50 hover:border-primary-400/50 hover:shadow-lg;
   }
 
   /* Inputs futuristes */
   .input {
-    @apply block w-full rounded-lg border border-dark-600 bg-dark-800/50 px-3 py-2 text-white placeholder-dark-400 shadow-sm backdrop-blur-sm transition-all duration-200 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500;
+    @apply block w-full rounded-lg border px-3 py-2 shadow-sm transition-all duration-200 focus:outline-none focus:ring-1;
+  }
+  
+  .dark .input {
+    @apply border-dark-600 bg-dark-800/50 text-white placeholder-dark-400 backdrop-blur-sm focus:border-primary-500 focus:ring-primary-500;
     caret-color: white;
     color: white !important;
   }
   
-  .input:focus {
+  .light .input {
+    @apply border-gray-300 bg-white text-gray-900 placeholder-gray-400 focus:border-primary-500 focus:ring-primary-500;
+    caret-color: #1f2937;
+    color: #1f2937 !important;
+  }
+  
+  .dark .input:focus {
     color: white !important;
   }
   
+  .light .input:focus {
+    color: #1f2937 !important;
+  }
+  
   /* Fix pour les selects */
-  select.input {
+  .dark select.input {
     color: white !important;
     background-color: rgba(30, 41, 59, 0.5) !important;
   }
   
-  select.input option {
+  .dark select.input option {
     background-color: #1e293b;
     color: white;
+  }
+  
+  .light select.input {
+    color: #1f2937 !important;
+    background-color: white !important;
+  }
+  
+  .light select.input option {
+    background-color: white;
+    color: #1f2937;
   }
 
   .input-error {
@@ -101,7 +249,15 @@
 
   /* Navigation */
   .nav-link {
-    @apply flex items-center px-3 py-2 rounded-lg text-sm font-medium text-dark-300 hover:text-white hover:bg-dark-800 transition-all duration-200;
+    @apply flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200;
+  }
+  
+  .dark .nav-link {
+    @apply text-dark-300 hover:text-white hover:bg-dark-800;
+  }
+  
+  .light .nav-link {
+    @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100;
   }
 
   .nav-link-active {
@@ -110,7 +266,15 @@
 
   /* Dashboard cards - Responsive */
   .stat-card {
-    @apply bg-gradient-to-br from-dark-800/80 to-dark-900/80 backdrop-blur-sm border border-dark-700/50 rounded-xl p-4 sm:p-6 hover:border-primary-500/30 transition-all duration-300;
+    @apply rounded-xl p-4 sm:p-6 transition-all duration-300;
+  }
+  
+  .dark .stat-card {
+    @apply bg-gradient-to-br from-dark-800/80 to-dark-900/80 backdrop-blur-sm border border-dark-700/50 hover:border-primary-500/30;
+  }
+  
+  .light .stat-card {
+    @apply bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-primary-400/50;
   }
 
   /* Animations cyber */
@@ -137,23 +301,63 @@
 
   /* Table futuriste - Responsive */
   .table {
-    @apply w-full text-sm text-left text-dark-300;
+    @apply w-full text-sm text-left;
+  }
+  
+  .dark .table {
+    @apply text-dark-300;
+  }
+  
+  .light .table {
+    @apply text-slate-600;
   }
 
   .table thead tr {
-    @apply border-b border-dark-700 bg-dark-800/50;
+    @apply border-b;
+  }
+  
+  .dark .table thead tr {
+    @apply border-dark-700 bg-dark-800/50;
+  }
+  
+  .light .table thead tr {
+    @apply border-slate-200 bg-slate-50;
   }
 
   .table th {
-    @apply px-3 sm:px-4 md:px-6 py-3 sm:py-4 font-medium text-dark-200 uppercase tracking-wider text-xs sm:text-sm;
+    @apply px-3 sm:px-4 md:px-6 py-3 sm:py-4 font-medium uppercase tracking-wider text-xs sm:text-sm;
+  }
+  
+  .dark .table th {
+    @apply text-dark-200;
+  }
+  
+  .light .table th {
+    @apply text-slate-700;
   }
 
   .table td {
-    @apply px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-b border-dark-800/50 text-xs sm:text-sm;
+    @apply px-3 sm:px-4 md:px-6 py-3 sm:py-4 border-b text-xs sm:text-sm;
+  }
+  
+  .dark .table td {
+    @apply border-dark-800/50;
+  }
+  
+  .light .table td {
+    @apply border-slate-100;
   }
 
   .table tr:hover {
+    @apply transition-colors;
+  }
+  
+  .dark .table tr:hover {
     @apply bg-dark-800/30;
+  }
+  
+  .light .table tr:hover {
+    @apply bg-slate-50;
   }
   
   /* Responsive table container */

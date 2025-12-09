@@ -16,12 +16,14 @@ import { productService } from '../../services/api';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
 import { useProductTypes } from '../../hooks/useProductTypes';
 import { useMeasurementUnits } from '../../hooks/useMeasurementUnits';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const CreateProductPage = () => {
   const navigate = useNavigate();
   const { onProductCreated } = useDataUpdate();
   const { productTypes, addProductType } = useProductTypes();
   const { measurementUnits, addMeasurementUnit } = useMeasurementUnits();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     nom: '',
@@ -191,7 +193,7 @@ const CreateProductPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-6">
+    <div className={`min-h-screen p-6 ${theme === 'light' ? 'bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100' : 'bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900'}`}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
@@ -203,16 +205,16 @@ const CreateProductPage = () => {
             <Button
               variant="ghost"
               onClick={() => navigate('/products')}
-              className="text-gray-300 hover:text-white"
+              className={theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-gray-300 hover:text-white'}
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex items-center gap-3">
               {getProductIcon()}
-              <h1 className="text-3xl font-bold text-white">Nouveau Produit</h1>
+              <h1 className={`text-3xl font-bold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Nouveau Produit</h1>
             </div>
           </div>
-          <p className="text-gray-300">Créer un nouveau produit dans l'inventaire</p>
+          <p className={theme === 'light' ? 'text-slate-500' : 'text-gray-300'}>Créer un nouveau produit dans l'inventaire</p>
         </motion.div>
 
         {/* Form */}
@@ -220,13 +222,13 @@ const CreateProductPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700 p-8"
+          className={`backdrop-blur-sm rounded-xl p-8 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-lg' : 'bg-slate-800/50 border border-slate-700'}`}
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Informations de base */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Nom du produit *
                 </label>
                 <input
@@ -234,9 +236,7 @@ const CreateProductPage = () => {
                   name="nom"
                   value={formData.nom}
                   onChange={handleInputChange}
-                  className={`w-full px-4 py-3 bg-slate-700/50 border ${
-                    errors.nom ? 'border-red-500' : 'border-slate-600'
-                  } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.nom ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                   placeholder="Ex: Eau potable premium 20L"
                 />
                 {errors.nom && (
@@ -248,7 +248,7 @@ const CreateProductPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Type de produit *
                 </label>
                 {!showNewTypeInput ? (
@@ -257,7 +257,7 @@ const CreateProductPage = () => {
                       name="type_produit"
                       value={formData.type_produit}
                       onChange={handleInputChange}
-                      className="flex-1 px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-slate-700/50 border border-slate-600 text-white'}`}
                     >
                       {productTypes.map(type => (
                         <option key={type} value={type}>
@@ -281,7 +281,7 @@ const CreateProductPage = () => {
                       value={newTypeValue}
                       onChange={(e) => setNewTypeValue(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleAddNewType()}
-                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                       placeholder="Ex: Boisson gazeuse, Jus de fruits..."
                       autoFocus
                     />
@@ -308,7 +308,7 @@ const CreateProductPage = () => {
 
             {/* Description */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                 Description
               </label>
               <textarea
@@ -316,7 +316,7 @@ const CreateProductPage = () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={3}
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                 placeholder="Description détaillée du produit..."
               />
             </div>
@@ -324,7 +324,7 @@ const CreateProductPage = () => {
             {/* Prix et unité */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Prix unitaire (HTG) *
                 </label>
                 <input
@@ -334,9 +334,7 @@ const CreateProductPage = () => {
                   onChange={handleInputChange}
                   step="0.01"
                   min="0"
-                  className={`w-full px-4 py-3 bg-slate-700/50 border ${
-                    errors.prix_unitaire ? 'border-red-500' : 'border-slate-600'
-                  } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.prix_unitaire ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                   placeholder="0.00"
                 />
                 {errors.prix_unitaire && (
@@ -348,7 +346,7 @@ const CreateProductPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Unité de mesure *
                 </label>
                 {!showNewUnitInput ? (
@@ -357,7 +355,7 @@ const CreateProductPage = () => {
                       name="unite_mesure"
                       value={formData.unite_mesure}
                       onChange={handleInputChange}
-                      className="flex-1 px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-slate-700/50 border border-slate-600 text-white'}`}
                     >
                       {measurementUnits.map(unit => (
                         <option key={unit} value={unit}>
@@ -381,7 +379,7 @@ const CreateProductPage = () => {
                       value={newUnitValue}
                       onChange={(e) => setNewUnitValue(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleAddNewUnit()}
-                      className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                       placeholder="Ex: carton, sac, gramme..."
                       autoFocus
                     />
@@ -409,7 +407,7 @@ const CreateProductPage = () => {
             {/* Stock */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Stock actuel *
                 </label>
                 <input
@@ -418,9 +416,7 @@ const CreateProductPage = () => {
                   value={formData.stock_actuel}
                   onChange={handleInputChange}
                   min="0"
-                  className={`w-full px-4 py-3 bg-slate-700/50 border ${
-                    errors.stock_actuel ? 'border-red-500' : 'border-slate-600'
-                  } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.stock_actuel ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                   placeholder="0"
                 />
                 {errors.stock_actuel && (
@@ -432,7 +428,7 @@ const CreateProductPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   Stock minimal *
                 </label>
                 <input
@@ -441,9 +437,7 @@ const CreateProductPage = () => {
                   value={formData.stock_minimal}
                   onChange={handleInputChange}
                   min="1"
-                  className={`w-full px-4 py-3 bg-slate-700/50 border ${
-                    errors.stock_minimal ? 'border-red-500' : 'border-slate-600'
-                  } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  className={`w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.stock_minimal ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-slate-700/50 border border-slate-600 text-white placeholder-gray-400'}`}
                   placeholder="10"
                 />
                 {errors.stock_minimal && (
@@ -456,13 +450,13 @@ const CreateProductPage = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end gap-4 pt-6 border-t border-slate-700">
+            <div className={`flex justify-end gap-4 pt-6 border-t ${theme === 'light' ? 'border-slate-200' : 'border-slate-700'}`}>
               <Button
                 type="button"
                 variant="ghost"
                 onClick={() => navigate('/products')}
                 disabled={loading}
-                className="text-gray-300 hover:text-white"
+                className={theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-gray-300 hover:text-white'}
               >
                 Annuler
               </Button>

@@ -5,11 +5,13 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
 import { Eye, EyeOff, Mail, Lock, Droplets, Zap } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../contexts/ThemeContext';
 import Button from '../../components/ui/Button';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 
 const LoginPage = () => {
   const { login, user, loading, error, clearError } = useAuth();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
@@ -112,9 +114,9 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-dark-900 flex items-center justify-center relative overflow-hidden">
+    <div className={`min-h-screen flex items-center justify-center relative overflow-hidden ${theme === 'light' ? 'bg-gradient-to-br from-slate-100 via-blue-50 to-cyan-50' : 'bg-dark-900'}`}>
       {/* Fond animé avec grille cyber */}
-      <div className="absolute inset-0 bg-cyber-grid opacity-10" />
+      <div className={`absolute inset-0 bg-cyber-grid ${theme === 'light' ? 'opacity-5' : 'opacity-10'}`} />
       
       {/* Éléments flottants */}
       {floatingIcons.map((item, index) => (
@@ -166,24 +168,24 @@ const LoginPage = () => {
           <h1 className="text-4xl font-bold text-gradient mb-2">
             SYGLA-H2O
           </h1>
-          <p className="text-dark-400 text-lg">
+          <p className={`text-lg ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
             Système de Gestion d'Eau Potable & Glace
           </p>
         </motion.div>
 
         {/* Formulaire de connexion */}
         <motion.div
-          className="card p-8 backdrop-blur-md"
+          className={`card p-8 backdrop-blur-md ${theme === 'light' ? 'bg-white shadow-xl border border-slate-200' : ''}`}
           variants={itemVariants}
         >
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Champ email */}
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-medium text-dark-200 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+                <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                 <input
                   type="email"
                   {...register('email', {
@@ -193,7 +195,7 @@ const LoginPage = () => {
                       message: 'Adresse email invalide'
                     }
                   })}
-                  className={`input pl-10 ${
+                  className={`input pl-10 ${theme === 'light' ? 'bg-slate-50 border-slate-300 text-slate-800 placeholder-slate-400' : ''} ${
                     errors.email ? 'input-error' : ''
                   }`}
                   placeholder="admin@sygla-h2o.com"
@@ -208,17 +210,17 @@ const LoginPage = () => {
 
             {/* Champ mot de passe */}
             <motion.div variants={itemVariants}>
-              <label className="block text-sm font-medium text-dark-200 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
                 Mot de passe
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-dark-400" />
+                <Lock className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   {...register('password', {
                     required: 'Le mot de passe est requis',
                   })}
-                  className={`input pl-10 pr-10 ${
+                  className={`input pl-10 pr-10 ${theme === 'light' ? 'bg-slate-50 border-slate-300 text-slate-800 placeholder-slate-400' : ''} ${
                     errors.password ? 'input-error' : ''
                   }`}
                   placeholder="Entrez votre mot de passe"
@@ -226,7 +228,7 @@ const LoginPage = () => {
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-dark-400 hover:text-white transition-colors"
+                  className={`absolute right-3 top-1/2 transform -translate-y-1/2 transition-colors ${theme === 'light' ? 'text-slate-400 hover:text-slate-700' : 'text-dark-400 hover:text-white'}`}
                 >
                   {showPassword ? (
                     <EyeOff className="w-5 h-5" />
@@ -276,7 +278,7 @@ const LoginPage = () => {
             className="mt-6 text-center"
             variants={itemVariants}
           >
-            <p className="text-sm text-dark-400">
+            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
               Besoin d'aide ? Contactez l'administrateur
             </p>
           </motion.div>
@@ -287,7 +289,7 @@ const LoginPage = () => {
           className="text-center mt-8"
           variants={itemVariants}
         >
-          <p className="text-xs text-dark-500">
+          <p className={`text-xs ${theme === 'light' ? 'text-slate-400' : 'text-dark-500'}`}>
             SYGLA-H2O v1.1.0 - © 2025
           </p>
         </motion.div>

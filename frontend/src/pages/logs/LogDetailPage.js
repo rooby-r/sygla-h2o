@@ -19,10 +19,12 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { logService } from '../../services/api';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const LogDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [log, setLog] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -325,8 +327,8 @@ const LogDetailPage = () => {
             Retour
           </motion.button>
           <div>
-            <h2 className="text-3xl font-bold text-white mb-2">Détails du Log</h2>
-            <p className="text-dark-300">Log ID: #{log.id}</p>
+            <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Détails du Log</h2>
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Log ID: #{log.id}</p>
           </div>
         </div>
         <span className={`px-4 py-2 rounded-lg ${config.bg} ${config.color} flex items-center font-medium`}>
@@ -342,59 +344,59 @@ const LogDetailPage = () => {
             <Icon className={`w-8 h-8 ${config.color}`} />
           </div>
           <div className="flex-1">
-            <h3 className="text-2xl font-bold text-white mb-2">{log.message}</h3>
-            <p className="text-dark-300 text-lg">{log.details}</p>
+            <h3 className={`text-2xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{log.message}</h3>
+            <p className={`text-lg ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>{log.details}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-dark-700">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
           {/* Timestamp */}
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-dark-800">
+            <div className={`p-2 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800'}`}>
               <Clock className="w-5 h-5 text-primary-400" />
             </div>
             <div>
-              <p className="text-sm text-dark-400 mb-1">Date et heure</p>
-              <p className="text-white font-medium">{formatTimestamp(log.timestamp)}</p>
+              <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Date et heure</p>
+              <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatTimestamp(log.timestamp)}</p>
             </div>
           </div>
 
           {/* User */}
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-dark-800">
+            <div className={`p-2 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800'}`}>
               <User className="w-5 h-5 text-blue-400" />
             </div>
             <div>
-              <p className="text-sm text-dark-400 mb-1">Utilisateur</p>
-              <p className="text-white font-medium">{log.user}</p>
+              <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Utilisateur</p>
+              <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{log.user}</p>
             </div>
           </div>
 
           {/* Module */}
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-dark-800">
+            <div className={`p-2 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800'}`}>
               <PackageIcon className="w-5 h-5 text-green-400" />
             </div>
             <div>
-              <p className="text-sm text-dark-400 mb-1">Module</p>
-              <p className="text-white font-medium">{log.module}</p>
+              <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Module</p>
+              <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{log.module}</p>
             </div>
           </div>
 
           {/* IP Address */}
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-dark-800">
+            <div className={`p-2 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800'}`}>
               <Globe className="w-5 h-5 text-purple-400" />
             </div>
             <div>
-              <p className="text-sm text-dark-400 mb-1">Adresse IP</p>
+              <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Adresse IP</p>
               <div className="flex items-center gap-2">
-                <p className="text-white font-medium">{log.ipAddress}</p>
+                <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{log.ipAddress}</p>
                 <button
                   onClick={() => copyToClipboard(log.ipAddress)}
-                  className="p-1 hover:bg-dark-700 rounded transition-colors"
+                  className={`p-1 rounded transition-colors ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-dark-700'}`}
                 >
-                  <Copy className="w-4 h-4 text-dark-400" />
+                  <Copy className={`w-4 h-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                 </button>
               </div>
             </div>
@@ -404,15 +406,15 @@ const LogDetailPage = () => {
 
       {/* Détails techniques */}
       <div className="card p-6">
-        <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+        <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
           <Server className="w-5 h-5 mr-2 text-cyan-400" />
           Détails Techniques
         </h3>
         
         <div className="space-y-4">
           {/* Request */}
-          <div className="p-4 bg-dark-800/50 rounded-lg">
-            <p className="text-sm text-dark-400 mb-2">Requête</p>
+          <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800/50'}`}>
+            <p className={`text-sm mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Requête</p>
             <div className="flex items-center gap-2 font-mono text-sm">
               <span className={`px-2 py-1 rounded ${
                 log.requestMethod === 'GET' ? 'bg-blue-500/20 text-blue-400' :
@@ -424,14 +426,14 @@ const LogDetailPage = () => {
               }`}>
                 {log.requestMethod}
               </span>
-              <span className="text-white">{log.endpoint}</span>
+              <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{log.endpoint}</span>
             </div>
           </div>
 
           {/* Response */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="p-4 bg-dark-800/50 rounded-lg">
-              <p className="text-sm text-dark-400 mb-2">Code de statut</p>
+            <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800/50'}`}>
+              <p className={`text-sm mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Code de statut</p>
               <p className={`text-2xl font-bold ${
                 log.statusCode >= 200 && log.statusCode < 300 ? 'text-green-400' :
                 log.statusCode >= 400 && log.statusCode < 500 ? 'text-yellow-400' :
@@ -440,16 +442,16 @@ const LogDetailPage = () => {
                 {log.statusCode}
               </p>
             </div>
-            <div className="p-4 bg-dark-800/50 rounded-lg">
-              <p className="text-sm text-dark-400 mb-2">Temps de réponse</p>
+            <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800/50'}`}>
+              <p className={`text-sm mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Temps de réponse</p>
               <p className="text-2xl font-bold text-cyan-400">{log.responseTime}</p>
             </div>
           </div>
 
           {/* User Agent */}
-          <div className="p-4 bg-dark-800/50 rounded-lg">
-            <p className="text-sm text-dark-400 mb-2">User Agent</p>
-            <p className="text-white font-mono text-sm break-all">{log.userAgent}</p>
+          <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800/50'}`}>
+            <p className={`text-sm mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>User Agent</p>
+            <p className={`font-mono text-sm break-all ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{log.userAgent}</p>
           </div>
         </div>
       </div>
@@ -457,8 +459,8 @@ const LogDetailPage = () => {
       {/* Métadonnées */}
       {log.metadata && (
         <div className="card p-6">
-          <h3 className="text-xl font-semibold text-white mb-4">Métadonnées</h3>
-          <div className="bg-dark-800/50 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+          <h3 className={`text-xl font-semibold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Métadonnées</h3>
+          <div className={`rounded-lg p-4 font-mono text-sm overflow-x-auto ${theme === 'light' ? 'bg-slate-100' : 'bg-dark-800/50'}`}>
             <pre className="text-green-400">
               {JSON.stringify(log.metadata, null, 2)}
             </pre>

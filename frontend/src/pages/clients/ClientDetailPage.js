@@ -22,10 +22,12 @@ import { toast } from 'react-hot-toast';
 import Button from '../../components/ui/Button.js';
 import { clientService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const ClientDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { theme } = useTheme();
   const [client, setClient] = useState(null);
   const [orderHistory, setOrderHistory] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -140,7 +142,7 @@ const ClientDetailPage = () => {
   if (!client) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-white mb-4">Client non trouvé</h2>
+        <h2 className={`text-2xl font-bold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Client non trouvé</h2>
         <Button onClick={handleBack}>Retourner à la liste</Button>
       </div>
     );
@@ -165,11 +167,11 @@ const ClientDetailPage = () => {
             <span>Retour</span>
           </Button>
           <div>
-            <h2 className="text-3xl font-bold text-white mb-2 flex items-center">
+            <h2 className={`text-3xl font-bold mb-2 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Building className="w-8 h-8 mr-3 text-primary-400" />
               Détails du Client
             </h2>
-            <p className="text-dark-300">
+            <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
               Informations complètes du client
             </p>
           </div>
@@ -200,67 +202,67 @@ const ClientDetailPage = () => {
         {/* Colonne principale - Informations */}
         <div className="lg:col-span-2 space-y-6">
           {/* Informations de base */}
-          <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+            <h3 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Building className="w-6 h-6 mr-3 text-primary-400" />
               Informations de l'entreprise
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                   Raison sociale
                 </label>
-                <p className="text-white text-lg font-medium">{client.nom_commercial}</p>
+                <p className={`text-lg font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{client.nom_commercial}</p>
               </div>
               
               {client.nom_commercial && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                     Nom commercial
                   </label>
-                  <p className="text-white text-lg">{client.nom_commercial}</p>
+                  <p className={`text-lg ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{client.nom_commercial}</p>
                 </div>
               )}
             </div>
           </div>
 
           {/* Informations de contact */}
-          <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+            <h3 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Mail className="w-6 h-6 mr-3 text-secondary-400" />
               Contact
             </h3>
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <User className="w-5 h-5 text-gray-400" />
+                <User className={`w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-gray-400'}`} />
                 <div>
-                  <label className="block text-sm font-medium text-gray-300">
+                  <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                     Personne de contact
                   </label>
-                  <p className="text-white">{client.contact}</p>
+                  <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{client.contact}</p>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-gray-400" />
+                <Phone className={`w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-gray-400'}`} />
                 <div>
-                  <label className="block text-sm font-medium text-gray-300">
+                  <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                     Téléphone
                   </label>
-                  <p className="text-white">{client.telephone}</p>
+                  <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{client.telephone}</p>
                 </div>
               </div>
               
               {client.email && (
                 <div className="flex items-center space-x-3">
-                  <Mail className="w-5 h-5 text-gray-400" />
+                  <Mail className={`w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-gray-400'}`} />
                   <div>
-                    <label className="block text-sm font-medium text-gray-300">
+                    <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                       Email
                     </label>
-                    <p className="text-white">{client.email}</p>
+                    <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{client.email}</p>
                   </div>
                 </div>
               )}
@@ -268,24 +270,24 @@ const ClientDetailPage = () => {
           </div>
 
           {/* Adresse */}
-          <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-            <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
+          <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+            <h3 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <MapPin className="w-6 h-6 mr-3 text-accent-400" />
               Adresse
             </h3>
             
-            <p className="text-white leading-relaxed">{client.adresse}</p>
+            <p className={`leading-relaxed ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{client.adresse}</p>
           </div>
 
           {/* Notes */}
           {client.notes && (
-            <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-6 flex items-center">
+            <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+              <h3 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <FileText className="w-6 h-6 mr-3 text-yellow-400" />
                 Notes
               </h3>
               
-              <p className="text-white leading-relaxed">{client.notes}</p>
+              <p className={`leading-relaxed ${theme === 'light' ? 'text-slate-700' : 'text-white'}`}>{client.notes}</p>
             </div>
           )}
         </div>
@@ -293,8 +295,8 @@ const ClientDetailPage = () => {
         {/* Colonne latérale - Statistiques et infos */}
         <div className="space-y-6">
           {/* Statut */}
-          <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Statut</h3>
+          <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+            <h3 className={`text-lg font-semibold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Statut</h3>
             
             <div className="flex items-center space-x-2">
               {client.is_active ? (
@@ -312,8 +314,8 @@ const ClientDetailPage = () => {
           </div>
 
           {/* Historique des dépenses */}
-          <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+          <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+            <h3 className={`text-lg font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <ShoppingCart className="w-5 h-5 mr-2 text-green-400" />
               Historique des dépenses
             </h3>
@@ -324,19 +326,19 @@ const ClientDetailPage = () => {
               </div>
             ) : !Array.isArray(orderHistory) || orderHistory.length === 0 ? (
               <div className="text-center py-8">
-                <ShoppingCart className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                <p className="text-gray-400">Aucune commande trouvée</p>
+                <ShoppingCart className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-slate-300' : 'text-gray-600'}`} />
+                <p className={theme === 'light' ? 'text-slate-500' : 'text-gray-400'}>Aucune commande trouvée</p>
               </div>
             ) : (
               <div className="space-y-3 max-h-80 overflow-y-auto">
                 {orderHistory.map((order) => (
                   <div 
                     key={order.id}
-                    className="bg-dark-700/50 border border-dark-600 rounded-lg p-4 hover:bg-dark-700/70 transition-colors"
+                    className={`rounded-lg p-4 transition-colors ${theme === 'light' ? 'bg-slate-50 border border-slate-200 hover:bg-slate-100' : 'bg-dark-700/50 border border-dark-600 hover:bg-dark-700/70'}`}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <span className="text-white font-medium">{order.numero_commande}</span>
+                        <span className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{order.numero_commande}</span>
                         <span className={`px-2 py-1 rounded-full text-xs border flex items-center space-x-1 ${getStatusColor(order.statut)}`}>
                           {getStatusIcon(order.statut)}
                           <span>{order.statut_display}</span>
@@ -347,7 +349,7 @@ const ClientDetailPage = () => {
                       </span>
                     </div>
                     
-                    <div className="flex items-center justify-between text-sm text-gray-400">
+                    <div className={`flex items-center justify-between text-sm ${theme === 'light' ? 'text-slate-500' : 'text-gray-400'}`}>
                       <div className="flex items-center space-x-1">
                         <Calendar className="w-4 h-4" />
                         <span>
@@ -372,16 +374,16 @@ const ClientDetailPage = () => {
                 ))}
                 
                 {/* Résumé financier */}
-                <div className="mt-4 pt-4 border-t border-dark-600">
+                <div className={`mt-4 pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div className="text-center">
-                      <p className="text-gray-400">Total des achats</p>
+                      <p className={theme === 'light' ? 'text-slate-500' : 'text-gray-400'}>Total des achats</p>
                       <p className="text-green-400 font-bold text-lg">
                         {formatHTG(Array.isArray(orderHistory) ? orderHistory.reduce((sum, order) => sum + parseFloat(order.montant_total), 0) : 0)}
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-gray-400">Commandes livrées</p>
+                      <p className={theme === 'light' ? 'text-slate-500' : 'text-gray-400'}>Commandes livrées</p>
                       <p className="text-blue-400 font-bold text-lg">
                         {Array.isArray(orderHistory) ? orderHistory.filter(order => order.statut === 'livree').length : 0}
                       </p>
@@ -393,18 +395,18 @@ const ClientDetailPage = () => {
           </div>
 
           {/* Dates */}
-          <div className="bg-dark-800/80 backdrop-blur-sm border border-dark-600 rounded-xl p-6">
-            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+          <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
+            <h3 className={`text-lg font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
               <Calendar className="w-5 h-5 mr-2 text-purple-400" />
               Informations temporelles
             </h3>
             
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-300">
+                <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                   Date de création
                 </label>
-                <p className="text-white">
+                <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                   {new Date(client.date_creation).toLocaleDateString('fr-FR', {
                     year: 'numeric',
                     month: 'long',
@@ -414,10 +416,10 @@ const ClientDetailPage = () => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-300">
+                <label className={`block text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
                   Dernière modification
                 </label>
-                <p className="text-white">
+                <p className={theme === 'light' ? 'text-slate-800' : 'text-white'}>
                   {new Date(client.date_modification).toLocaleDateString('fr-FR', {
                     year: 'numeric',
                     month: 'long',

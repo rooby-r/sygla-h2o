@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Clock, Save, AlertCircle } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const BusinessHoursPage = () => {
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [configs, setConfigs] = useState([]);
@@ -101,13 +103,13 @@ const BusinessHoursPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Horaires d'Accès</h2>
-        <p className="text-dark-300">
+        <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Horaires d'Accès</h2>
+        <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
           Configurez les heures de connexion autorisées pour chaque rôle
         </p>
-        <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-start gap-3">
+        <div className={`mt-4 p-4 rounded-lg flex items-start gap-3 ${theme === 'light' ? 'bg-blue-50 border border-blue-200' : 'bg-blue-500/10 border border-blue-500/20'}`}>
           <AlertCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-300">
+          <div className={`text-sm ${theme === 'light' ? 'text-blue-600' : 'text-blue-300'}`}>
             <p className="font-medium mb-1">Note importante :</p>
             <p>Les administrateurs ont toujours un accès 24h/24, 7j/7 sans restriction.</p>
           </div>
@@ -122,7 +124,7 @@ const BusinessHoursPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="card p-6"
+            className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -130,11 +132,11 @@ const BusinessHoursPage = () => {
                   <Clock className="w-6 h-6 text-primary-400" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">
+                  <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {roleLabels[config.role]}
                   </h3>
                   {config.time_range && (
-                    <p className="text-sm text-dark-400">
+                    <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                       {config.time_range} • {config.allowed_days_display}
                     </p>
                   )}
@@ -143,7 +145,7 @@ const BusinessHoursPage = () => {
 
               {/* Toggle Restriction */}
               <label className="flex items-center gap-2 cursor-pointer">
-                <span className="text-sm text-dark-300">Restriction activée</span>
+                <span className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Restriction activée</span>
                 <div className="relative">
                   <input
                     type="checkbox"
@@ -151,12 +153,8 @@ const BusinessHoursPage = () => {
                     onChange={() => handleToggleEnabled(index)}
                     className="sr-only"
                   />
-                  <div className={`block w-12 h-6 rounded-full transition ${
-                    config.enabled ? 'bg-primary-500' : 'bg-dark-700'
-                  }`}></div>
-                  <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${
-                    config.enabled ? 'transform translate-x-6' : ''
-                  }`}></div>
+                  <div className={`block w-12 h-6 rounded-full transition ${config.enabled ? 'bg-primary-500' : theme === 'light' ? 'bg-slate-300' : 'bg-dark-700'}`}></div>
+                  <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${config.enabled ? 'transform translate-x-6' : ''}`}></div>
                 </div>
               </label>
             </div>
@@ -166,14 +164,14 @@ const BusinessHoursPage = () => {
                 {/* Heures */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       Heure de début
                     </label>
                     <div className="flex gap-2">
                       <select
                         value={config.start_hour}
                         onChange={(e) => handleTimeChange(index, 'start_hour', e.target.value)}
-                        className="input flex-1"
+                        className={`flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                       >
                         {Array.from({ length: 24 }, (_, i) => (
                           <option key={i} value={i}>{i.toString().padStart(2, '0')}h</option>
@@ -182,7 +180,7 @@ const BusinessHoursPage = () => {
                       <select
                         value={config.start_minute}
                         onChange={(e) => handleTimeChange(index, 'start_minute', e.target.value)}
-                        className="input w-20"
+                        className={`w-20 px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                       >
                         {[0, 15, 30, 45].map(m => (
                           <option key={m} value={m}>{m.toString().padStart(2, '0')}</option>
@@ -192,14 +190,14 @@ const BusinessHoursPage = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       Heure de fin
                     </label>
                     <div className="flex gap-2">
                       <select
                         value={config.end_hour}
                         onChange={(e) => handleTimeChange(index, 'end_hour', e.target.value)}
-                        className="input flex-1"
+                        className={`flex-1 px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                       >
                         {Array.from({ length: 24 }, (_, i) => (
                           <option key={i} value={i}>{i.toString().padStart(2, '0')}h</option>
@@ -208,7 +206,7 @@ const BusinessHoursPage = () => {
                       <select
                         value={config.end_minute}
                         onChange={(e) => handleTimeChange(index, 'end_minute', e.target.value)}
-                        className="input w-20"
+                        className={`w-20 px-4 py-3 border rounded-lg focus:outline-none focus:border-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                       >
                         {[0, 15, 30, 45].map(m => (
                           <option key={m} value={m}>{m.toString().padStart(2, '0')}</option>
@@ -220,7 +218,7 @@ const BusinessHoursPage = () => {
 
                 {/* Jours de la semaine */}
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-3">
+                  <label className={`block text-sm font-medium mb-3 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Jours autorisés
                   </label>
                   <div className="flex flex-wrap gap-2">
@@ -231,7 +229,9 @@ const BusinessHoursPage = () => {
                         className={`px-4 py-2 rounded-lg font-medium transition ${
                           (config.allowed_days || []).includes(day.value)
                             ? 'bg-primary-500 text-white'
-                            : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
+                            : theme === 'light' 
+                              ? 'bg-slate-200 text-slate-600 hover:bg-slate-300' 
+                              : 'bg-dark-800 text-dark-300 hover:bg-dark-700'
                         }`}
                       >
                         {day.label}
@@ -241,7 +241,7 @@ const BusinessHoursPage = () => {
                 </div>
 
                 {/* Bouton Sauvegarder */}
-                <div className="flex justify-end pt-4 border-t border-dark-700">
+                <div className={`flex justify-end pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}

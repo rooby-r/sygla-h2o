@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { Bell, Save, Mail, Globe, Package, ShoppingCart, Truck, AlertTriangle, FileText } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const NotificationsPage = () => {
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [preferences, setPreferences] = useState({
@@ -124,8 +126,8 @@ const NotificationsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-3xl font-bold text-white mb-2">Notifications</h2>
-        <p className="text-dark-300">
+        <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Notifications</h2>
+        <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
           Configurez vos préférences de notifications et d'alertes
         </p>
       </div>
@@ -134,25 +136,25 @@ const NotificationsPage = () => {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card p-6"
+        className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
       >
         <div className="flex items-center gap-3 mb-6">
           <div className="p-2 bg-primary-500/10 rounded-lg">
             <Bell className="w-6 h-6 text-primary-400" />
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-white">Canaux de Notification</h3>
-            <p className="text-sm text-dark-400">Comment recevoir vos notifications</p>
+            <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Canaux de Notification</h3>
+            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Comment recevoir vos notifications</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label className="flex items-center justify-between p-4 bg-dark-800 rounded-lg cursor-pointer hover:bg-dark-700 transition">
+          <label className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition ${theme === 'light' ? 'bg-slate-100 hover:bg-slate-200' : 'bg-dark-800 hover:bg-dark-700'}`}>
             <div className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-blue-400" />
               <div>
-                <p className="font-medium text-white">Notifications Email</p>
-                <p className="text-sm text-dark-400">Recevoir par email</p>
+                <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Notifications Email</p>
+                <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Recevoir par email</p>
               </div>
             </div>
             <div className="relative">
@@ -162,21 +164,17 @@ const NotificationsPage = () => {
                 onChange={() => handleToggle('enable_email_notifications')}
                 className="sr-only"
               />
-              <div className={`block w-12 h-6 rounded-full transition ${
-                preferences.enable_email_notifications ? 'bg-primary-500' : 'bg-dark-600'
-              }`}></div>
-              <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${
-                preferences.enable_email_notifications ? 'transform translate-x-6' : ''
-              }`}></div>
+              <div className={`block w-12 h-6 rounded-full transition ${preferences.enable_email_notifications ? 'bg-primary-500' : theme === 'light' ? 'bg-slate-300' : 'bg-dark-600'}`}></div>
+              <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${preferences.enable_email_notifications ? 'transform translate-x-6' : ''}`}></div>
             </div>
           </label>
 
-          <label className="flex items-center justify-between p-4 bg-dark-800 rounded-lg cursor-pointer hover:bg-dark-700 transition">
+          <label className={`flex items-center justify-between p-4 rounded-lg cursor-pointer transition ${theme === 'light' ? 'bg-slate-100 hover:bg-slate-200' : 'bg-dark-800 hover:bg-dark-700'}`}>
             <div className="flex items-center gap-3">
               <Globe className="w-5 h-5 text-green-400" />
               <div>
-                <p className="font-medium text-white">Notifications Navigateur</p>
-                <p className="text-sm text-dark-400">Notifications push</p>
+                <p className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Notifications Navigateur</p>
+                <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Notifications push</p>
               </div>
             </div>
             <div className="relative">
@@ -186,12 +184,8 @@ const NotificationsPage = () => {
                 onChange={() => handleToggle('enable_browser_notifications')}
                 className="sr-only"
               />
-              <div className={`block w-12 h-6 rounded-full transition ${
-                preferences.enable_browser_notifications ? 'bg-primary-500' : 'bg-dark-600'
-              }`}></div>
-              <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${
-                preferences.enable_browser_notifications ? 'transform translate-x-6' : ''
-              }`}></div>
+              <div className={`block w-12 h-6 rounded-full transition ${preferences.enable_browser_notifications ? 'bg-primary-500' : theme === 'light' ? 'bg-slate-300' : 'bg-dark-600'}`}></div>
+              <div className={`absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition ${preferences.enable_browser_notifications ? 'transform translate-x-6' : ''}`}></div>
             </div>
           </label>
         </div>
@@ -215,13 +209,13 @@ const NotificationsPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: (index + 1) * 0.1 }}
-              className="card p-6"
+              className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className={`p-2 ${colorClasses[section.color]} rounded-lg`}>
                   <SectionIcon className="w-5 h-5" />
                 </div>
-                <h3 className="text-lg font-semibold text-white">{section.title}</h3>
+                <h3 className={`text-lg font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{section.title}</h3>
               </div>
 
               <div className="space-y-3">
@@ -230,11 +224,11 @@ const NotificationsPage = () => {
                   return (
                     <label
                       key={item.key}
-                      className="flex items-center justify-between p-3 bg-dark-800 rounded-lg cursor-pointer hover:bg-dark-700 transition"
+                      className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition ${theme === 'light' ? 'bg-slate-100 hover:bg-slate-200' : 'bg-dark-800 hover:bg-dark-700'}`}
                     >
                       <div className="flex items-center gap-3">
-                        <ItemIcon className="w-4 h-4 text-dark-400" />
-                        <span className="text-dark-200">{item.label}</span>
+                        <ItemIcon className={`w-4 h-4 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
+                        <span className={theme === 'light' ? 'text-slate-700' : 'text-dark-200'}>{item.label}</span>
                       </div>
                       <div className="relative">
                         <input
@@ -243,12 +237,8 @@ const NotificationsPage = () => {
                           onChange={() => handleToggle(item.key)}
                           className="sr-only"
                         />
-                        <div className={`block w-10 h-5 rounded-full transition ${
-                          preferences[item.key] ? 'bg-primary-500' : 'bg-dark-600'
-                        }`}></div>
-                        <div className={`absolute left-1 top-0.5 bg-white w-4 h-4 rounded-full transition ${
-                          preferences[item.key] ? 'transform translate-x-5' : ''
-                        }`}></div>
+                        <div className={`block w-10 h-5 rounded-full transition ${preferences[item.key] ? 'bg-primary-500' : theme === 'light' ? 'bg-slate-300' : 'bg-dark-600'}`}></div>
+                        <div className={`absolute left-1 top-0.5 bg-white w-4 h-4 rounded-full transition ${preferences[item.key] ? 'transform translate-x-5' : ''}`}></div>
                       </div>
                     </label>
                   );

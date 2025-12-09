@@ -4,10 +4,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ShoppingCart, DollarSign, Users, Package, MapPin, Calendar, Clock, FileText, CheckCircle, Truck, Loader } from 'lucide-react';
 import { formatHTG } from '../../utils/currency';
 import notificationService from '../../services/notificationService';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const NotificationDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -94,7 +96,7 @@ const NotificationDetailPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
@@ -131,7 +133,7 @@ const NotificationDetailPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center space-x-2 mb-4">
             <Users className="w-5 h-5 text-purple-400" />
@@ -156,7 +158,7 @@ const NotificationDetailPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center space-x-2 mb-4">
             <Package className="w-5 h-5 text-orange-400" />
@@ -194,7 +196,7 @@ const NotificationDetailPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center space-x-2 mb-4">
             <DollarSign className="w-5 h-5 text-green-400" />
@@ -234,7 +236,7 @@ const NotificationDetailPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+            className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
           >
             <div className="flex items-center space-x-2 mb-4">
               <Truck className="w-5 h-5 text-blue-400" />
@@ -260,7 +262,7 @@ const NotificationDetailPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+            className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
           >
             <div className="flex items-center space-x-2 mb-4">
               <FileText className="w-5 h-5 text-yellow-400" />
@@ -284,7 +286,7 @@ const NotificationDetailPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
@@ -323,7 +325,7 @@ const NotificationDetailPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center space-x-2 mb-4">
             <Users className="w-5 h-5 text-purple-400" />
@@ -348,7 +350,7 @@ const NotificationDetailPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center space-x-2 mb-4">
             <Package className="w-5 h-5 text-orange-400" />
@@ -386,7 +388,7 @@ const NotificationDetailPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+          className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
         >
           <div className="flex items-center space-x-2 mb-4">
             <DollarSign className="w-5 h-5 text-green-400" />
@@ -420,7 +422,7 @@ const NotificationDetailPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+            className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
           >
             <div className="flex items-center space-x-2 mb-4">
               <Truck className="w-5 h-5 text-blue-400" />
@@ -446,7 +448,7 @@ const NotificationDetailPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+            className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
           >
             <div className="flex items-center space-x-2 mb-4">
               <DollarSign className="w-5 h-5 text-yellow-400" />
@@ -502,7 +504,7 @@ const NotificationDetailPage = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-dark-800 rounded-xl p-12 border border-dark-700 text-center"
+            className={`rounded-xl p-12 border text-center ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
           >
             <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <ArrowLeft className="w-8 h-8 text-red-400" />

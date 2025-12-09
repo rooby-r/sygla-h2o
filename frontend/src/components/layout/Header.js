@@ -8,12 +8,14 @@ import venteService from '../../services/venteService';
 import notificationService from '../../services/notificationService';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const { notificationUpdateTrigger } = useDataUpdate();
+  const { theme } = useTheme();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -456,31 +458,37 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-dark-900/95 backdrop-blur-xl border-b border-dark-700 px-3 sm:px-4 md:px-6 py-3 sm:py-4 sticky top-0 z-30"
+      className={`backdrop-blur-xl px-3 sm:px-4 md:px-6 py-3 sm:py-4 sticky top-0 z-30 ${
+        theme === 'light' 
+          ? 'bg-white/95 border-b border-gray-200' 
+          : 'bg-dark-900/95 border-b border-dark-700'
+      }`}
     >
       <div className="flex items-center justify-between">
         {/* Left section - Responsive */}
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
           <button
             onClick={onMenuToggle}
-            className="p-2 hover:bg-dark-700 rounded-lg transition-colors lg:hidden flex-shrink-0"
+            className={`p-2 rounded-lg transition-colors lg:hidden flex-shrink-0 ${
+              theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-dark-700'
+            }`}
             aria-label="Menu"
           >
-            <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-dark-300" />
+            <Menu className={`w-5 h-5 sm:w-6 sm:h-6 ${theme === 'light' ? 'text-gray-500' : 'text-dark-300'}`} />
           </button>
           
           <div className="hidden sm:block min-w-0">
-            <h2 className="text-lg sm:text-xl font-semibold text-white truncate">
+            <h2 className={`text-lg sm:text-xl font-semibold truncate ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
               {pageInfo.title}
             </h2>
-            <p className="text-dark-400 text-xs sm:text-sm truncate">
+            <p className={`text-xs sm:text-sm truncate ${theme === 'light' ? 'text-gray-500' : 'text-dark-400'}`}>
               {pageInfo.subtitle}
             </p>
           </div>
           
           {/* Titre mobile - version courte */}
           <div className="block sm:hidden min-w-0 flex-1">
-            <h2 className="text-base font-semibold text-white truncate">
+            <h2 className={`text-base font-semibold truncate ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
               {pageInfo.title}
             </h2>
           </div>
@@ -490,15 +498,19 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
         <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 flex-shrink-0">
           {/* Search - Hidden on mobile */}
           <div ref={searchRef} className="relative hidden md:block">
-            <div className="flex items-center space-x-2 bg-dark-800 rounded-lg px-3 py-2">
-              <Search className="w-4 h-4 text-dark-400" />
+            <div className={`flex items-center space-x-2 rounded-lg px-3 py-2 ${
+              theme === 'light' ? 'bg-gray-100' : 'bg-dark-800'
+            }`}>
+              <Search className={`w-4 h-4 ${theme === 'light' ? 'text-gray-400' : 'text-dark-400'}`} />
               <input
                 type="text"
                 placeholder="Rechercher..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => searchResults.length > 0 && setShowSearchResults(true)}
-                className="bg-transparent text-white text-sm w-32 lg:w-40 focus:outline-none focus:w-48 lg:focus:w-60 transition-all duration-200"
+                className={`bg-transparent text-sm w-32 lg:w-40 focus:outline-none focus:w-48 lg:focus:w-60 transition-all duration-200 ${
+                  theme === 'light' ? 'text-gray-900 placeholder-gray-400' : 'text-white placeholder-dark-400'
+                }`}
               />
               {searchQuery && (
                 <button
@@ -506,7 +518,7 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                     setSearchQuery('');
                     setShowSearchResults(false);
                   }}
-                  className="text-dark-400 hover:text-white"
+                  className={theme === 'light' ? 'text-gray-400 hover:text-gray-700' : 'text-dark-400 hover:text-white'}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -520,10 +532,14 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-dark-800 rounded-lg shadow-xl border border-dark-700 max-h-96 overflow-y-auto z-50"
+                  className={`absolute right-0 mt-2 w-80 sm:w-96 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50 ${
+                    theme === 'light' 
+                      ? 'bg-white border border-gray-200' 
+                      : 'bg-dark-800 border border-dark-700'
+                  }`}
                 >
-                  <div className="p-3 border-b border-dark-700">
-                    <p className="text-sm text-dark-300">
+                  <div className={`p-3 border-b ${theme === 'light' ? 'border-gray-200' : 'border-dark-700'}`}>
+                    <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-dark-300'}`}>
                       {searchLoading ? 'Recherche...' : `${searchResults.length} résultat(s)`}
                     </p>
                   </div>
@@ -533,7 +549,11 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                       <button
                         key={index}
                         onClick={() => handleSearchResultClick(result)}
-                        className="w-full p-3 hover:bg-dark-700 transition-colors text-left border-b border-dark-700/50 last:border-0"
+                        className={`w-full p-3 transition-colors text-left last:border-0 ${
+                          theme === 'light'
+                            ? 'hover:bg-gray-50 border-b border-gray-100'
+                            : 'hover:bg-dark-700 border-b border-dark-700/50'
+                        }`}
                       >
                         <div className="flex items-center space-x-3">
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
@@ -550,8 +570,8 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                             }`} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-white font-medium truncate">{result.title}</p>
-                            <p className="text-dark-400 text-sm truncate">{result.subtitle}</p>
+                            <p className={`font-medium truncate ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{result.title}</p>
+                            <p className={`text-sm truncate ${theme === 'light' ? 'text-gray-500' : 'text-dark-400'}`}>{result.subtitle}</p>
                           </div>
                           <span className="text-primary-400 text-sm font-medium">
                             {result.info}
@@ -561,7 +581,7 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                     );
                   })}
                   {searchResults.length === 0 && !searchLoading && (
-                    <div className="p-6 text-center text-dark-400">
+                    <div className={`p-6 text-center ${theme === 'light' ? 'text-gray-400' : 'text-dark-400'}`}>
                       Aucun résultat trouvé
                     </div>
                   )}
@@ -584,7 +604,9 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                   loadNotifications();
                 }
               }}
-              className="relative p-2 hover:bg-dark-700 rounded-lg transition-colors"
+              className={`relative p-2 rounded-lg transition-colors ${
+                theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-dark-700'
+              }`}
               animate={hasNewNotifications && unreadCount > 0 ? {
                 rotate: [0, -15, 15, -15, 15, 0],
                 scale: [1, 1.1, 1.1, 1.1, 1.1, 1],
@@ -595,7 +617,7 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                 repeatDelay: 2
               }}
             >
-              <Bell className="w-5 h-5 text-dark-300" />
+              <Bell className={`w-5 h-5 ${theme === 'light' ? 'text-gray-500' : 'text-dark-300'}`} />
               {unreadCount > 0 && (
                 <motion.span 
                   className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-[10px] sm:text-xs font-bold"
@@ -620,12 +642,18 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="absolute right-0 mt-2 w-80 sm:w-96 bg-dark-800 rounded-lg shadow-xl border border-dark-700 max-h-96 overflow-y-auto z-50"
+                  className={`absolute right-0 mt-2 w-80 sm:w-96 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50 ${
+                    theme === 'light' 
+                      ? 'bg-white border border-gray-200' 
+                      : 'bg-dark-800 border border-dark-700'
+                  }`}
                 >
-                  <div className="p-4 border-b border-dark-700 flex items-center justify-between">
-                    <h3 className="text-white font-semibold">Notifications</h3>
+                  <div className={`p-4 border-b flex items-center justify-between ${
+                    theme === 'light' ? 'border-gray-200' : 'border-dark-700'
+                  }`}>
+                    <h3 className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Notifications</h3>
                     <div className="flex items-center space-x-3">
-                      <span className="text-xs text-dark-400">{unreadCount} non lue(s)</span>
+                      <span className={`text-xs ${theme === 'light' ? 'text-gray-400' : 'text-dark-400'}`}>{unreadCount} non lue(s)</span>
                       {unreadCount > 0 && (
                         <button
                           onClick={markAllAsRead}
@@ -643,8 +671,10 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                         <button
                           key={notif.id}
                           onClick={() => handleNotificationClick(notif)}
-                          className={`w-full p-4 hover:bg-dark-700 transition-colors text-left border-b border-dark-700/50 last:border-0 ${
-                            !notif.isRead ? 'bg-dark-750' : ''
+                          className={`w-full p-4 transition-colors text-left last:border-0 ${
+                            theme === 'light'
+                              ? `hover:bg-gray-50 border-b border-gray-100 ${!notif.isRead ? 'bg-blue-50/50' : ''}`
+                              : `hover:bg-dark-700 border-b border-dark-700/50 ${!notif.isRead ? 'bg-dark-750' : ''}`
                           }`}
                         >
                           <div className="flex items-start space-x-3">
@@ -665,13 +695,13 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                             </div>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center space-x-2">
-                                <p className="text-white font-medium text-sm">{notif.title}</p>
+                                <p className={`font-medium text-sm ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{notif.title}</p>
                                 {!notif.isRead && (
                                   <span className="w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>
                                 )}
                               </div>
-                              <p className="text-dark-300 text-sm mt-1">{notif.message}</p>
-                              <p className="text-dark-500 text-xs mt-1">{notif.timeAgo || getTimeAgo(notif.time)}</p>
+                              <p className={`text-sm mt-1 ${theme === 'light' ? 'text-gray-600' : 'text-dark-300'}`}>{notif.message}</p>
+                              <p className={`text-xs mt-1 ${theme === 'light' ? 'text-gray-400' : 'text-dark-500'}`}>{notif.timeAgo || getTimeAgo(notif.time)}</p>
                             </div>
                           </div>
                         </button>
@@ -679,8 +709,8 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                     })
                   ) : (
                     <div className="p-6 text-center">
-                      <Bell className="w-12 h-12 text-dark-600 mx-auto mb-3" />
-                      <p className="text-dark-400">Aucune notification</p>
+                      <Bell className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-gray-300' : 'text-dark-600'}`} />
+                      <p className={theme === 'light' ? 'text-gray-400' : 'text-dark-400'}>Aucune notification</p>
                     </div>
                   )}
                 </motion.div>
@@ -704,10 +734,10 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
               </div>
             )}
             <div className="hidden sm:block">
-              <p className="text-white text-sm font-medium">
+              <p className={`text-sm font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                 {user?.email?.split('@')[0] || 'Admin'}
               </p>
-              <p className="text-dark-400 text-xs capitalize">
+              <p className={`text-xs capitalize ${theme === 'light' ? 'text-gray-500' : 'text-dark-400'}`}>
                 {user?.role || 'Administrateur'}
               </p>
             </div>

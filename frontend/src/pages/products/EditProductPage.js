@@ -7,6 +7,7 @@ import Button from '../../components/ui/Button';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
 import { useProductTypes } from '../../hooks/useProductTypes';
 import { useMeasurementUnits } from '../../hooks/useMeasurementUnits';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const EditProductPage = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const EditProductPage = () => {
   const { triggerDashboardUpdate } = useDataUpdate();
   const { productTypes, addProductType } = useProductTypes();
   const { measurementUnits, addMeasurementUnit } = useMeasurementUnits();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showNewTypeInput, setShowNewTypeInput] = useState(false);
@@ -150,30 +152,30 @@ const EditProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-dark-950 p-6">
+    <div className={`min-h-screen p-6 ${theme === 'light' ? 'bg-slate-50' : 'bg-dark-950'}`}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-6">
           <button
             onClick={() => navigate('/products')}
-            className="flex items-center text-dark-300 hover:text-white mb-4 transition-colors"
+            className={`flex items-center mb-4 transition-colors ${theme === 'light' ? 'text-slate-500 hover:text-slate-800' : 'text-dark-300 hover:text-white'}`}
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Retour à la liste des produits
           </button>
-          <h1 className="text-3xl font-bold text-white flex items-center">
+          <h1 className={`text-3xl font-bold flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
             <Package className="w-8 h-8 mr-3 text-primary-400" />
             Modifier le Produit
           </h1>
         </div>
 
         {/* Form */}
-        <div className="bg-dark-900 border border-dark-800 rounded-xl p-8">
+        <div className={`rounded-xl p-8 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-900 border-dark-800'}`}>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Informations de base */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-dark-200 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                   Nom du produit *
                 </label>
                 <input
@@ -186,7 +188,7 @@ const EditProductPage = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-dark-200 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                   Type *
                 </label>
                 {!showNewTypeInput ? (
@@ -246,7 +248,7 @@ const EditProductPage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-dark-200 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                 Description
               </label>
               <textarea
@@ -261,7 +263,7 @@ const EditProductPage = () => {
             {/* Prix et mesures */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-dark-200 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                   Prix unitaire (HTG) *
                 </label>
                 <input
@@ -275,7 +277,7 @@ const EditProductPage = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-dark-200 mb-2">
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                   Unité de mesure
                 </label>
                 {!showNewUnitInput ? (
@@ -334,11 +336,11 @@ const EditProductPage = () => {
             </div>
 
             {/* Gestion du stock */}
-            <div className="border-t border-dark-800 pt-6">
-              <h3 className="text-lg font-semibold text-white mb-4">Gestion du Stock</h3>
+            <div className={`border-t pt-6 ${theme === 'light' ? 'border-slate-200' : 'border-dark-800'}`}>
+              <h3 className={`text-lg font-semibold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Gestion du Stock</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                     Stock actuel *
                   </label>
                   <input
@@ -351,7 +353,7 @@ const EditProductPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                     Stock minimum
                   </label>
                   <input
@@ -367,7 +369,7 @@ const EditProductPage = () => {
 
             {/* Date de péremption */}
             <div>
-              <label className="block text-sm font-medium text-dark-200 mb-2">
+              <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                 Date de péremption
               </label>
               <input
@@ -380,7 +382,7 @@ const EditProductPage = () => {
             </div>
 
             {/* Actions */}
-            <div className="border-t border-dark-800 pt-6 flex justify-end space-x-4">
+            <div className={`border-t pt-6 flex justify-end space-x-4 ${theme === 'light' ? 'border-slate-200' : 'border-dark-800'}`}>
               <Button
                 type="button"
                 variant="secondary"

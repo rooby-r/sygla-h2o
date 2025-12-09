@@ -26,6 +26,7 @@ import { orderService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const OrderDetailPage = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const OrderDetailPage = () => {
   const location = useLocation();
   const { triggerDashboardUpdate, updateTrigger } = useDataUpdate();
   const { user } = useAuth();
+  const { theme } = useTheme();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -775,10 +777,10 @@ SYGLA-H2O`;
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-900 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-slate-50' : 'bg-dark-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-400 mx-auto mb-4"></div>
-          <p className="text-white text-lg">Chargement...</p>
+          <p className={`text-lg ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Chargement...</p>
         </div>
       </div>
     );
@@ -786,11 +788,11 @@ SYGLA-H2O`;
 
   if (error || !order) {
     return (
-      <div className="min-h-screen bg-dark-900 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-slate-50' : 'bg-dark-900'}`}>
         <div className="text-center">
           <XCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Commande introuvable</h2>
-          <p className="text-dark-400 mb-6">{error || 'Cette commande n\'existe pas ou a été supprimée.'}</p>
+          <h2 className={`text-2xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Commande introuvable</h2>
+          <p className={`mb-6 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>{error || 'Cette commande n\'existe pas ou a été supprimée.'}</p>
           <Button onClick={() => navigate('/orders')} variant="primary">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Retour aux commandes
@@ -806,7 +808,7 @@ SYGLA-H2O`;
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-dark-900 p-6"
+      className={`min-h-screen p-6 ${theme === 'light' ? 'bg-slate-50' : 'bg-dark-900'}`}
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -814,13 +816,13 @@ SYGLA-H2O`;
           <div className="flex items-center space-x-4">
             <button
               onClick={() => navigate('/orders')}
-              className="p-2 text-dark-400 hover:text-white hover:bg-dark-800 rounded-lg transition-colors"
+              className={`p-2 rounded-lg transition-colors ${theme === 'light' ? 'text-slate-500 hover:text-slate-800 hover:bg-slate-200' : 'text-dark-400 hover:text-white hover:bg-dark-800'}`}
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Détails de la commande</h1>
-              <p className="text-dark-400">{order.numero_commande}</p>
+              <h1 className={`text-3xl font-bold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Détails de la commande</h1>
+              <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>{order.numero_commande}</p>
             </div>
           </div>
           
@@ -929,42 +931,42 @@ SYGLA-H2O`;
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+              className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
             >
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <User className="w-5 h-5 mr-3 text-primary-400" />
                 Informations Client
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="text-dark-300 text-sm font-medium">Nom/Raison Sociale</label>
-                  <p className="text-white text-lg font-medium mt-1">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Nom/Raison Sociale</label>
+                  <p className={`text-lg font-medium mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {order.client?.raison_sociale || order.client?.nom || 'N/A'}
                   </p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm font-medium">Contact</label>
-                  <p className="text-white text-lg mt-1">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Contact</label>
+                  <p className={`text-lg mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {order.client?.contact || 'N/A'}
                   </p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm font-medium">Téléphone</label>
-                  <p className="text-white text-lg mt-1 flex items-center">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Téléphone</label>
+                  <p className={`text-lg mt-1 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     <Phone className="w-4 h-4 mr-2 text-secondary-400" />
                     {order.client?.telephone || 'N/A'}
                   </p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm font-medium">Email</label>
-                  <p className="text-white text-lg mt-1 flex items-center">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Email</label>
+                  <p className={`text-lg mt-1 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     <Mail className="w-4 h-4 mr-2 text-secondary-400" />
                     {order.client?.email || 'N/A'}
                   </p>
                 </div>
                 <div className="md:col-span-2">
-                  <label className="text-dark-300 text-sm font-medium">Adresse</label>
-                  <p className="text-white text-lg mt-1 flex items-center">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Adresse</label>
+                  <p className={`text-lg mt-1 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     <MapPin className="w-4 h-4 mr-2 text-secondary-400" />
                     {order.client?.adresse || 'N/A'}
                   </p>
@@ -977,9 +979,9 @@ SYGLA-H2O`;
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+              className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
             >
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <Package className="w-5 h-5 mr-3 text-accent-400" />
                 Articles Commandés ({order.items?.length || 0})
               </h3>
@@ -987,22 +989,22 @@ SYGLA-H2O`;
                 {order.items?.map((item, index) => (
                   <div
                     key={index}
-                    className="bg-dark-700 rounded-lg p-4 border border-dark-600"
+                    className={`rounded-lg p-4 border ${theme === 'light' ? 'bg-slate-50 border-slate-200' : 'bg-dark-700 border-dark-600'}`}
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <h4 className="text-white font-medium text-lg">{item.produit_nom}</h4>
+                        <h4 className={`font-medium text-lg ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{item.produit_nom}</h4>
                         <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                           <div>
-                            <span className="text-dark-300">Quantité:</span>
-                            <span className="text-white font-medium ml-2">{item.quantite}</span>
+                            <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Quantité:</span>
+                            <span className={`font-medium ml-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{item.quantite}</span>
                           </div>
                           <div>
-                            <span className="text-dark-300">Prix unitaire:</span>
-                            <span className="text-white font-medium ml-2">{formatHTG(item.prix_unitaire)}</span>
+                            <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Prix unitaire:</span>
+                            <span className={`font-medium ml-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatHTG(item.prix_unitaire)}</span>
                           </div>
                           <div>
-                            <span className="text-dark-300">Sous-total:</span>
+                            <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Sous-total:</span>
                             <span className="text-green-400 font-bold ml-2">{formatHTG(item.sous_total)}</span>
                           </div>
                         </div>
@@ -1013,37 +1015,37 @@ SYGLA-H2O`;
               </div>
               
               {/* Total avec détails */}
-              <div className="mt-6 pt-4 border-t border-dark-600">
+              <div className={`mt-6 pt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
                 {/* Montant des produits */}
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-dark-300">Montant des produits:</span>
-                  <span className="text-white">{formatHTG(order.montant_produits || 0)}</span>
+                  <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Montant des produits:</span>
+                  <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{formatHTG(order.montant_produits || 0)}</span>
                 </div>
                 
                 {/* Frais de livraison */}
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-dark-300">
+                  <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
                     Frais de livraison
                     {order.type_livraison === 'retrait_magasin' ? ' (Gratuit)' : ''}:
                   </span>
-                  <span className="text-white">{formatHTG(order.frais_livraison || 0)}</span>
+                  <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{formatHTG(order.frais_livraison || 0)}</span>
                 </div>
                 
                 {/* Total final */}
-                <div className="flex justify-between items-center pt-2 border-t border-dark-600">
-                  <span className="text-xl font-semibold text-white">Total de la commande:</span>
+                <div className={`flex justify-between items-center pt-2 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
+                  <span className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Total de la commande:</span>
                   <span className="text-2xl font-bold text-green-400">{formatHTG(order.montant_total)}</span>
                 </div>
                 
                 {/* Montants payé et restant */}
                 {order.montant_paye > 0 && (
                   <>
-                    <div className="flex justify-between items-center pt-4 mt-4 border-t border-dark-700">
-                      <span className="text-base font-medium text-dark-300">Montant payé:</span>
+                    <div className={`flex justify-between items-center pt-4 mt-4 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
+                      <span className={`text-base font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Montant payé:</span>
                       <span className="text-xl font-semibold text-green-400">{formatHTG(order.montant_paye)}</span>
                     </div>
                     <div className="flex justify-between items-center pt-2">
-                      <span className="text-base font-medium text-dark-300">Montant restant:</span>
+                      <span className={`text-base font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Montant restant:</span>
                       <span className={`text-xl font-semibold ${order.montant_restant > 0 ? 'text-warning-400' : 'text-green-400'}`}>
                         {formatHTG(order.montant_restant)}
                       </span>
@@ -1073,18 +1075,18 @@ SYGLA-H2O`;
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+                className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
               >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <DollarSign className="w-5 h-5 mr-3 text-green-400" />
                   Historique des paiements
                 </h3>
                 <div className="space-y-3">
                   {order.paiements_commande.map((paiement, index) => (
-                    <div key={paiement.id || index} className="p-3 bg-dark-700/50 rounded-lg border border-dark-600">
+                    <div key={paiement.id || index} className={`p-3 rounded-lg border ${theme === 'light' ? 'bg-slate-50 border-slate-200' : 'bg-dark-700/50 border-dark-600'}`}>
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <span className="text-sm text-dark-300">
+                          <span className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>
                             {new Date(paiement.date_paiement).toLocaleString('fr-FR')}
                           </span>
                           <div className="mt-1">
@@ -1103,10 +1105,10 @@ SYGLA-H2O`;
                         </span>
                       </div>
                       {paiement.notes && (
-                        <p className="text-xs text-dark-400 mt-2">{paiement.notes}</p>
+                        <p className={`text-xs mt-2 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>{paiement.notes}</p>
                       )}
                       {paiement.reference && (
-                        <p className="text-xs text-dark-400 mt-1">Réf: {paiement.reference}</p>
+                        <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>Réf: {paiement.reference}</p>
                       )}
                     </div>
                   ))}
@@ -1119,15 +1121,15 @@ SYGLA-H2O`;
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
-              className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+              className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
             >
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <FileText className="w-5 h-5 mr-3 text-secondary-400" />
                 Notes
               </h3>
               <div className="space-y-2">
                 {/* Statut de paiement actuel */}
-                <p className="text-dark-300 leading-relaxed">
+                <p className={theme === 'light' ? 'text-slate-600 leading-relaxed' : 'text-dark-300 leading-relaxed'}>
                   {order.statut_paiement === 'paye_complet' ? (
                     <span className="text-green-400 font-semibold">✓ Paiement complet (100%)</span>
                   ) : order.statut_paiement === 'paye_partiel' ? (
@@ -1142,7 +1144,7 @@ SYGLA-H2O`;
                 
                 {/* Notes additionnelles de la commande si elles existent */}
                 {order.notes && order.notes.trim() !== '' && !order.notes.includes('Paiement') && (
-                  <p className="text-dark-400 text-sm mt-2 pt-2 border-t border-dark-700">
+                  <p className={`text-sm mt-2 pt-2 border-t ${theme === 'light' ? 'text-slate-400 border-slate-200' : 'text-dark-400 border-dark-700'}`}>
                     {order.notes}
                   </p>
                 )}
@@ -1156,22 +1158,22 @@ SYGLA-H2O`;
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+              className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
             >
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+              <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <Calendar className="w-5 h-5 mr-3 text-primary-400" />
                 Chronologie
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="text-dark-300 text-sm font-medium">Date de création</label>
-                  <p className="text-white text-lg mt-1">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Date de création</label>
+                  <p className={`text-lg mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {order.date_creation ? new Date(order.date_creation).toLocaleString('fr-FR') : 'N/A'}
                   </p>
                 </div>
                 <div>
-                  <label className="text-dark-300 text-sm font-medium">Livraison prévue</label>
-                  <p className="text-white text-lg mt-1">
+                  <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livraison prévue</label>
+                  <p className={`text-lg mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     {(() => {
                       // Pour livraison à domicile, utiliser date_livraison_prevue, sinon utiliser date_creation
                       const dateToShow = order.date_livraison_prevue || order.date_creation;
@@ -1203,15 +1205,15 @@ SYGLA-H2O`;
                     </p>
                     <div className="text-sm space-y-1">
                       <div className="flex justify-between">
-                        <span className="text-dark-300">Montant restant:</span>
-                        <span className="text-white">{formatHTG(order.montant_restant)}</span>
+                        <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Montant restant:</span>
+                        <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{formatHTG(order.montant_restant)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-dark-300">Pénalité (1.5%):</span>
+                        <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Pénalité (1.5%):</span>
                         <span className="text-red-400">+{formatHTG(order.penalite_applicable || 0)}</span>
                       </div>
                       <div className="flex justify-between border-t border-red-500/30 pt-1 mt-1">
-                        <span className="text-dark-300 font-bold">Total à payer:</span>
+                        <span className={`font-bold ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Total à payer:</span>
                         <span className="text-red-400 font-bold">{formatHTG(order.montant_total_a_payer || order.montant_restant)}</span>
                       </div>
                     </div>
@@ -1219,16 +1221,16 @@ SYGLA-H2O`;
                 )}
                 {order.date_validation && (
                   <div>
-                    <label className="text-dark-300 text-sm font-medium">Date de validation</label>
-                    <p className="text-white text-lg mt-1">
+                    <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Date de validation</label>
+                    <p className={`text-lg mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                       {new Date(order.date_validation).toLocaleString('fr-FR')}
                     </p>
                   </div>
                 )}
                 {order.date_livraison_effective && (
                   <div>
-                    <label className="text-dark-300 text-sm font-medium">Livraison effective</label>
-                    <p className="text-white text-lg mt-1">
+                    <label className={`text-sm font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livraison effective</label>
+                    <p className={`text-lg mt-1 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                       {new Date(order.date_livraison_effective).toLocaleString('fr-FR')}
                     </p>
                   </div>
@@ -1241,9 +1243,9 @@ SYGLA-H2O`;
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+              className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
             >
-              <h3 className="text-xl font-semibold text-white mb-4">Actions</h3>
+              <h3 className={`text-xl font-semibold mb-4 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Actions</h3>
               <div className="space-y-3">
                 {order.statut === 'en_attente' && (
                   <Button 
@@ -1294,26 +1296,26 @@ SYGLA-H2O`;
         {showPaiementModal && (
           <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
             <motion.div
-              className="bg-dark-800 p-6 rounded-xl max-w-md w-full border border-dark-700"
+              className={`p-6 rounded-xl max-w-md w-full border ${theme === 'light' ? 'bg-white border-slate-200 shadow-xl' : 'bg-dark-800 border-dark-700'}`}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
             >
-              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
+              <h2 className={`text-2xl font-bold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                 <DollarSign className="w-6 h-6 mr-2 text-green-400" />
                 Ajouter un Paiement
               </h2>
               
-              <div className="mb-4 p-4 bg-dark-700 rounded-lg">
+              <div className={`mb-4 p-4 rounded-lg ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-700'}`}>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-dark-300">Montant total:</span>
-                  <span className="text-white font-semibold">{formatHTG(order.montant_total)}</span>
+                  <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Montant total:</span>
+                  <span className={`font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatHTG(order.montant_total)}</span>
                 </div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-dark-300">Déjà payé:</span>
+                  <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Déjà payé:</span>
                   <span className="text-green-400 font-semibold">{formatHTG(order.montant_paye)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-dark-300">Montant restant:</span>
+                  <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Montant restant:</span>
                   <span className="text-warning-400 font-bold text-lg">{formatHTG(order.montant_restant)}</span>
                 </div>
                 
@@ -1337,11 +1339,11 @@ SYGLA-H2O`;
                     </p>
                     <div className="text-sm space-y-1 mt-2">
                       <div className="flex justify-between">
-                        <span className="text-dark-300">Pénalité (1.5%):</span>
+                        <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Pénalité (1.5%):</span>
                         <span className="text-red-400">+{formatHTG(order.penalite_applicable || 0)}</span>
                       </div>
                       <div className="flex justify-between border-t border-red-500/30 pt-1">
-                        <span className="text-dark-300 font-bold">Total à payer:</span>
+                        <span className={`font-bold ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>Total à payer:</span>
                         <span className="text-red-400 font-bold">{formatHTG(order.montant_total_a_payer || order.montant_restant)}</span>
                       </div>
                     </div>
@@ -1351,7 +1353,7 @@ SYGLA-H2O`;
               
               <form onSubmit={handleAddPaiement} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                     Montant *
                   </label>
                   <input
@@ -1361,7 +1363,7 @@ SYGLA-H2O`;
                     max={order.est_apres_echeance ? order.montant_total_a_payer : order.montant_restant}
                     value={paiementData.montant}
                     onChange={(e) => setPaiementData({ ...paiementData, montant: e.target.value })}
-                    className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                    className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
                     placeholder={order.est_apres_echeance ? `Total avec pénalité: ${formatHTG(order.montant_total_a_payer)}` : `Max: ${formatHTG(order.montant_restant)}`}
                     required
                   />
@@ -1373,13 +1375,13 @@ SYGLA-H2O`;
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                     Méthode de paiement *
                   </label>
                   <select
                     value={paiementData.methode}
                     onChange={(e) => setPaiementData({ ...paiementData, methode: e.target.value })}
-                    className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                    className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
                     required
                   >
                     <option value="especes">Espèces</option>
@@ -1391,26 +1393,26 @@ SYGLA-H2O`;
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                     Référence
                   </label>
                   <input
                     type="text"
                     value={paiementData.reference}
                     onChange={(e) => setPaiementData({ ...paiementData, reference: e.target.value })}
-                    className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                    className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white'}`}
                     placeholder="Numéro de transaction, chèque..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
                     Notes
                   </label>
                   <textarea
                     value={paiementData.notes}
                     onChange={(e) => setPaiementData({ ...paiementData, notes: e.target.value })}
-                    className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                    className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white'}`}
                     rows="3"
                     placeholder="Notes additionnelles..."
                   />

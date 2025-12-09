@@ -18,11 +18,13 @@ import Button from '../../components/ui/Button.js';
 import { orderService, clientService, productService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
+import { useTheme } from '../../contexts/ThemeContext';
 
 const EditOrderPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { triggerDashboardUpdate } = useDataUpdate();
+  const { theme } = useTheme();
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [clients, setClients] = useState([]);
@@ -359,7 +361,7 @@ const EditOrderPage = () => {
 
   if (loadingData) {
     return (
-      <div className="min-h-screen bg-dark-900 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-slate-50' : 'bg-dark-900'}`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-400 mx-auto mb-4"></div>
           <p className="text-white text-lg">Chargement de la commande...</p>
@@ -372,7 +374,7 @@ const EditOrderPage = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="min-h-screen bg-dark-900 p-6"
+      className={`min-h-screen p-6 ${theme === 'light' ? 'bg-slate-50' : 'bg-dark-900'}`}
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -380,13 +382,13 @@ const EditOrderPage = () => {
           <div className="flex items-center space-x-4">
             <button
               onClick={handleCancel}
-              className="p-2 text-dark-400 hover:text-white hover:bg-dark-800 rounded-lg transition-colors"
+              className={`p-2 rounded-lg transition-colors ${theme === 'light' ? 'text-slate-500 hover:text-slate-800 hover:bg-slate-200' : 'text-dark-400 hover:text-white hover:bg-dark-800'}`}
             >
               <ArrowLeft className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-white">Modifier la commande</h1>
-              <p className="text-dark-400">Modifiez les détails de la commande existante</p>
+              <h1 className={`text-3xl font-bold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Modifier la commande</h1>
+              <p className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Modifiez les détails de la commande existante</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
@@ -412,9 +414,9 @@ const EditOrderPage = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+                className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
               >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <User className="w-5 h-5 mr-3 text-primary-400" />
                   Informations Client
                 </h3>
@@ -422,7 +424,7 @@ const EditOrderPage = () => {
                 <div className="space-y-4">
                   {/* Recherche client */}
                   <div className="relative">
-                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       Client *
                     </label>
                     <div className="relative">
@@ -436,25 +438,25 @@ const EditOrderPage = () => {
                         }}
                         onFocus={() => setShowClientList(true)}
                         placeholder="Rechercher un client..."
-                        className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border-dark-600 text-white placeholder-dark-400'}`}
                         required
                       />
-                      <Search className="absolute right-3 top-3 w-5 h-5 text-dark-400" />
+                      <Search className={`absolute right-3 top-3 w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                     </div>
                     
                     {/* Liste des clients */}
                     {showClientList && filteredClients.length > 0 && (
-                      <div className="absolute z-10 w-full mt-1 bg-dark-800 border border-dark-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                      <div className={`absolute z-10 w-full mt-1 border rounded-lg shadow-lg max-h-60 overflow-y-auto ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-dark-800 border-dark-600'}`}>
                         {filteredClients.map(client => (
                           <div
                             key={client.id}
                             onClick={() => handleClientSelect(client)}
-                            className="px-4 py-3 hover:bg-dark-700 cursor-pointer border-b border-dark-600 last:border-b-0"
+                            className={`px-4 py-3 cursor-pointer border-b last:border-b-0 ${theme === 'light' ? 'hover:bg-slate-50 border-slate-100' : 'hover:bg-dark-700 border-dark-600'}`}
                           >
-                            <div className="font-medium text-white">
+                            <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                               {client.nom_commercial || client.raison_sociale}
                             </div>
-                            <div className="text-sm text-dark-400">
+                            <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                               {client.contact} • {client.telephone}
                             </div>
                           </div>
@@ -470,16 +472,16 @@ const EditOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+                className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
               >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <FileText className="w-5 h-5 mr-3 text-accent-400" />
                   Détails de la Commande
                 </h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       Date de livraison prévue
                       {formData.type_livraison === 'livraison_domicile' && (
                         <span className="text-red-400 ml-1">*</span>
@@ -490,11 +492,7 @@ const EditOrderPage = () => {
                       value={formData.date_livraison_prevue}
                       onChange={(e) => setFormData(prev => ({ ...prev, date_livraison_prevue: e.target.value }))}
                       required={formData.type_livraison === 'livraison_domicile'}
-                      className={`w-full px-4 py-3 bg-dark-700 border rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
-                        formData.type_livraison === 'livraison_domicile' && !formData.date_livraison_prevue 
-                          ? 'border-red-500' 
-                          : 'border-dark-600'
-                      }`}
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${theme === 'light' ? 'bg-white text-slate-800' : 'bg-dark-700 text-white'} ${formData.type_livraison === 'livraison_domicile' && !formData.date_livraison_prevue ? 'border-red-500' : theme === 'light' ? 'border-slate-300' : 'border-dark-600'}`}
                     />
                     {formData.type_livraison === 'livraison_domicile' && !formData.date_livraison_prevue && (
                       <p className="text-red-400 text-sm mt-1">
@@ -504,7 +502,7 @@ const EditOrderPage = () => {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       Type de livraison
                     </label>
                     <select
@@ -529,7 +527,7 @@ const EditOrderPage = () => {
                           return newData;
                         });
                       }}
-                      className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-700 border-dark-600 text-white'}`}
                     >
                       <option value="retrait_magasin">Retrait en magasin (Gratuit)</option>
                       <option value="livraison_domicile">Livraison à domicile</option>
@@ -540,7 +538,7 @@ const EditOrderPage = () => {
                 {/* Frais de livraison - visible seulement pour livraison à domicile */}
                 {formData.type_livraison === 'livraison_domicile' && (
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-dark-300 mb-2">
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                       Frais de livraison (HTG)
                     </label>
                     <input
@@ -549,14 +547,14 @@ const EditOrderPage = () => {
                       step="0.01"
                       value={formData.frais_livraison}
                       onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
-                      className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border-dark-600 text-white placeholder-dark-400'}`}
                       placeholder="0.00"
                     />
                   </div>
                 )}
 
                 <div className="mt-6">
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                     Notes
                   </label>
                   <textarea
@@ -564,7 +562,7 @@ const EditOrderPage = () => {
                     onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                     rows={3}
                     placeholder="Notes supplémentaires..."
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border-dark-600 text-white placeholder-dark-400'}`}
                   />
                 </div>
               </motion.div>
@@ -574,10 +572,10 @@ const EditOrderPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-dark-800 rounded-xl p-6 border border-dark-700"
+                className={`rounded-xl p-6 border ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-semibold text-white flex items-center">
+                  <h3 className={`text-xl font-semibold flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                     <Package className="w-5 h-5 mr-3 text-accent-400" />
                     Articles de la Commande ({formData.items.length})
                   </h3>
@@ -595,35 +593,35 @@ const EditOrderPage = () => {
                 {/* Liste des articles */}
                 <div className="space-y-4">
                   {formData.items.map((item, index) => (
-                    <div key={index} className="bg-dark-700 rounded-lg p-4 border border-dark-600">
+                    <div key={index} className={`rounded-lg p-4 border ${theme === 'light' ? 'bg-slate-50 border-slate-200' : 'bg-dark-700 border-dark-600'}`}>
                       <div className="flex items-center justify-between">
                         <div className="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
                           <div>
-                            <label className="block text-xs text-dark-400 mb-1">Produit</label>
-                            <span className="text-white font-medium">{item.produit_nom}</span>
+                            <label className={`block text-xs mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Produit</label>
+                            <span className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{item.produit_nom}</span>
                           </div>
                           <div>
-                            <label className="block text-xs text-dark-400 mb-1">Quantité</label>
+                            <label className={`block text-xs mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Quantité</label>
                             <input
                               type="number"
                               min="1"
                               value={item.quantite}
                               onChange={(e) => handleItemChange(index, 'quantite', parseInt(e.target.value))}
-                              className="w-full px-3 py-2 bg-dark-600 border border-dark-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-600 border-dark-500 text-white'}`}
                             />
                           </div>
                           <div>
-                            <label className="block text-xs text-dark-400 mb-1">Prix unitaire (HTG)</label>
+                            <label className={`block text-xs mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Prix unitaire (HTG)</label>
                             <input
                               type="number"
                               step="0.01"
                               value={item.prix_unitaire}
                               onChange={(e) => handleItemChange(index, 'prix_unitaire', parseFloat(e.target.value))}
-                              className="w-full px-3 py-2 bg-dark-600 border border-dark-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-primary-500"
+                              className={`w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800' : 'bg-dark-600 border-dark-500 text-white'}`}
                             />
                           </div>
                           <div>
-                            <label className="block text-xs text-dark-400 mb-1">Sous-total (HTG)</label>
+                            <label className={`block text-xs mb-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Sous-total (HTG)</label>
                             <span className="text-green-400 font-bold text-lg">
                               {formatHTG(item.sous_total)}
                             </span>
@@ -641,7 +639,7 @@ const EditOrderPage = () => {
                   ))}
                   
                   {formData.items.length === 0 && (
-                    <div className="text-center py-8 text-dark-400">
+                    <div className={`text-center py-8 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`}>
                       <Package className="w-12 h-12 mx-auto mb-3 opacity-50" />
                       <p>Aucun article dans la commande</p>
                       <p className="text-sm">Cliquez sur "Ajouter un produit" pour commencer</p>
@@ -657,35 +655,35 @@ const EditOrderPage = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
-                className="bg-dark-800 rounded-xl p-6 border border-dark-700 sticky top-6"
+                className={`rounded-xl p-6 border sticky top-6 ${theme === 'light' ? 'bg-white border-slate-200 shadow-md' : 'bg-dark-800 border-dark-700'}`}
               >
-                <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
+                <h3 className={`text-xl font-semibold mb-4 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
                   <Calculator className="w-5 h-5 mr-3 text-primary-400" />
                   Résumé de la Commande
                 </h3>
                 
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-dark-300">Nombre d'articles:</span>
-                    <span className="text-white font-medium">{formData.items.length}</span>
+                    <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Nombre d'articles:</span>
+                    <span className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formData.items.length}</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-dark-300">Montant des produits:</span>
-                    <span className="text-white font-medium">{formatHTG(totals.montantProduits)}</span>
+                    <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>Montant des produits:</span>
+                    <span className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatHTG(totals.montantProduits)}</span>
                   </div>
                   
                   <div className="flex justify-between items-center">
-                    <span className="text-dark-300">
+                    <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-300'}>
                       Frais de livraison
                       {formData.type_livraison === 'retrait_magasin' ? ' (Gratuit)' : ''}:
                     </span>
-                    <span className="text-white font-medium">{formatHTG(totals.fraisLivraison)}</span>
+                    <span className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{formatHTG(totals.fraisLivraison)}</span>
                   </div>
                   
-                  <div className="border-t border-dark-600 pt-4">
+                  <div className={`border-t pt-4 ${theme === 'light' ? 'border-slate-200' : 'border-dark-600'}`}>
                     <div className="flex justify-between items-center">
-                      <span className="text-xl font-semibold text-white">Total:</span>
+                      <span className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Total:</span>
                       <span className="text-2xl font-bold text-green-400">{formatHTG(totals.total)}</span>
                     </div>
                   </div>
@@ -711,16 +709,16 @@ const EditOrderPage = () => {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-dark-800 rounded-xl p-6 w-full max-w-4xl max-h-[80vh] overflow-hidden"
+              className={`rounded-xl p-6 w-full max-w-4xl max-h-[80vh] overflow-hidden ${theme === 'light' ? 'bg-white shadow-xl' : 'bg-dark-800'}`}
             >
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-white">Sélectionner un produit</h3>
+                <h3 className={`text-xl font-semibold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Sélectionner un produit</h3>
                 <button
                   onClick={() => {
                     setShowProductSelector(false);
                     setProductSearch('');
                   }}
-                  className="text-dark-400 hover:text-white"
+                  className={theme === 'light' ? 'text-slate-400 hover:text-slate-800' : 'text-dark-400 hover:text-white'}
                 >
                   ✕
                 </button>
@@ -733,9 +731,9 @@ const EditOrderPage = () => {
                     value={productSearch}
                     onChange={(e) => setProductSearch(e.target.value)}
                     placeholder="Rechercher un produit..."
-                    className="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${theme === 'light' ? 'bg-white border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border-dark-600 text-white placeholder-dark-400'}`}
                   />
-                  <Search className="absolute right-3 top-3 w-5 h-5 text-dark-400" />
+                  <Search className={`absolute right-3 top-3 w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                 </div>
               </div>
               
@@ -745,13 +743,13 @@ const EditOrderPage = () => {
                     <div
                       key={product.id}
                       onClick={() => handleAddProduct(product)}
-                      className="bg-dark-700 rounded-lg p-4 border border-dark-600 hover:border-primary-500 cursor-pointer transition-colors"
+                      className={`rounded-lg p-4 border hover:border-primary-500 cursor-pointer transition-colors ${theme === 'light' ? 'bg-slate-50 border-slate-200' : 'bg-dark-700 border-dark-600'}`}
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-white">{product.nom}</h4>
+                        <h4 className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{product.nom}</h4>
                         <span className="text-green-400 font-bold">{formatHTG(product.prix_unitaire)}</span>
                       </div>
-                      <div className="text-sm text-dark-400 space-y-1">
+                      <div className={`text-sm space-y-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
                         <p>Code: {product.code_produit || 'N/A'}</p>
                         <p>Stock: {product.quantite_stock} {product.unite_mesure}</p>
                         {product.description && (
