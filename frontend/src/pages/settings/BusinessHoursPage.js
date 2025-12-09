@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, Save, AlertCircle } from 'lucide-react';
+import { Clock, Save, AlertCircle, ArrowLeft } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const BusinessHoursPage = () => {
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -101,6 +103,15 @@ const BusinessHoursPage = () => {
 
   return (
     <div className="space-y-6">
+      {/* Bouton Retour */}
+      <button
+        onClick={() => navigate('/settings')}
+        className={`flex items-center gap-2 transition-colors ${theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-dark-400 hover:text-white'}`}
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>Retour aux paramètres</span>
+      </button>
+
       {/* Header */}
       <div>
         <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Horaires d'Accès</h2>

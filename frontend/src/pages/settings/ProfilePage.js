@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, Camera, X } from 'lucide-react';
+import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, Camera, X, ArrowLeft } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { user, updateUser } = useAuth();
   const { theme } = useTheme();
   const [savingProfile, setSavingProfile] = useState(false);
@@ -222,6 +224,15 @@ const ProfilePage = () => {
 
   return (
     <div className="space-y-6">
+      {/* Bouton Retour */}
+      <button
+        onClick={() => navigate('/settings')}
+        className={`flex items-center gap-2 transition-colors ${theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-dark-400 hover:text-white'}`}
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>Retour aux paramètres</span>
+      </button>
+
       {/* Header */}
       <div>
         <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Mon Profil</h2>

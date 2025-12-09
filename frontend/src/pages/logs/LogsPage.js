@@ -10,7 +10,8 @@ import {
   Info,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  ArrowLeft
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -233,6 +234,15 @@ const LogsPage = () => {
 
   return (
     <div className="space-y-6">
+      {/* Bouton Retour */}
+      <button
+        onClick={() => navigate('/settings')}
+        className={`flex items-center gap-2 transition-colors ${theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-dark-400 hover:text-white'}`}
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>Retour aux paramètres</span>
+      </button>
+
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>

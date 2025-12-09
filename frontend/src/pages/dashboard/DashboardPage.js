@@ -342,69 +342,87 @@ const DashboardPage = () => {
               ) : salesChartData.length > 0 ? (
                 <div className="space-y-4">
                   {/* Chart Header */}
-                  <div className="flex justify-between items-center text-sm">
+                  <div className="flex justify-between items-center text-sm mb-4">
                     <span className={theme === 'light' ? 'text-slate-500' : 'text-dark-400'}>Ventes des 7 derniers jours</span>
                     <span className="text-green-400 font-medium">
                       Total: {formatHTG(salesChartData.reduce((sum, day) => sum + day.revenue, 0))}
                     </span>
                   </div>
                   
-                  {/* Chart with Grid */}
-                  <div className="relative h-40">
+                  {/* Chart with Grid - pt-16 for tooltip space */}
+                  <div className="relative h-56 pt-14">
                     {/* Horizontal grid lines */}
-                    <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                    <div className="absolute inset-x-0 top-14 bottom-6 flex flex-col justify-between pointer-events-none">
                       {[0, 1, 2, 3, 4].map((i) => (
                         <div key={i} className={`border-t w-full ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}></div>
                       ))}
                     </div>
                     
-                    {/* Bars */}
-                    <div className="relative flex items-end justify-between h-full gap-3 pt-2">
+                    {/* Bars Container */}
+                    <div className="absolute inset-x-0 top-14 bottom-6 flex items-end justify-between gap-3 px-2">
                       {salesChartData.map((day, index) => {
                         const maxRevenue = Math.max(...salesChartData.map(d => d.revenue), 1);
-                        const height = day.revenue > 0 ? (day.revenue / maxRevenue) * 100 : 3;
+                        const heightPercent = day.revenue > 0 ? (day.revenue / maxRevenue) * 100 : 8;
                         const isToday = index === salesChartData.length - 1;
                         
                         return (
-                          <div key={index} className="flex-1 flex flex-col items-center justify-end group relative">
-                            {/* Tooltip */}
-                            <div className={`absolute -top-16 left-1/2 transform -translate-x-1/2 px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none z-10 shadow-xl ${
-                              theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-900 border border-dark-600'
+                          <div key={index} className="flex-1 flex flex-col items-center group relative h-full justify-end">
+                            {/* Tooltip - visible on hover */}
+                            <div className={`absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 px-4 py-3 rounded-xl 
+                              opacity-0 invisible group-hover:opacity-100 group-hover:visible 
+                              transition-all duration-200 ease-out
+                              pointer-events-none z-50 shadow-2xl min-w-[130px] text-center ${
+                              theme === 'light' 
+                                ? 'bg-white border-2 border-green-200 shadow-lg' 
+                                : 'bg-dark-900 border-2 border-green-500/30 shadow-lg shadow-green-500/10'
                             }`}>
-                              <div className={`text-xs font-medium whitespace-nowrap ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
-                                {day.day}
+                              {/* Arrow */}
+                              <div className={`absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 
+                                border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent ${
+                                theme === 'light' ? 'border-t-white' : 'border-t-dark-900'
+                              }`}></div>
+                              
+                              <div className={`text-xs font-semibold uppercase tracking-wide mb-1 ${
+                                theme === 'light' ? 'text-slate-500' : 'text-dark-400'
+                              }`}>
+                                {isToday ? "Aujourd'hui" : day.day}
                               </div>
-                              <div className="text-sm font-bold text-green-400 mt-1">
+                              <div className={`text-lg font-bold ${isToday ? 'text-blue-500' : 'text-green-500'}`}>
                                 {formatHTG(day.revenue)}
                               </div>
+                              {day.revenue > 0 && (
+                                <div className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-400' : 'text-dark-500'}`}>
+                                  Chiffre d'affaires
+                                </div>
+                              )}
                             </div>
                             
                             {/* Bar */}
-                            <div className="relative w-full">
-                              <div 
-                                className={`w-full rounded-t transition-all duration-300 ${
-                                  isToday 
-                                    ? 'bg-gradient-to-t from-blue-500 to-blue-400 hover:from-blue-400 hover:to-blue-300' 
-                                    : 'bg-gradient-to-t from-green-500 to-green-400 hover:from-green-400 hover:to-green-300'
-                                }`}
-                                style={{ height: `${Math.max(height, 5)}%` }}
-                              >
-                                {day.revenue > 0 && (
-                                  <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 text-xs font-medium text-green-300 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    {Math.round(day.revenue)}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            
-                            {/* Day label */}
-                            <div className="mt-2 text-center">
-                              <span className={`text-xs font-medium ${
-                                isToday ? 'text-blue-400' : theme === 'light' ? 'text-slate-500' : 'text-dark-400'
-                              }`}>
-                                {day.day}
-                              </span>
-                            </div>
+                            <div 
+                              className={`w-full max-w-[45px] rounded-t-md transition-all duration-300 cursor-pointer shadow-lg 
+                                hover:shadow-xl hover:scale-105 ${
+                                isToday 
+                                  ? 'bg-gradient-to-t from-blue-600 to-blue-400 hover:from-blue-500 hover:to-blue-300' 
+                                  : 'bg-gradient-to-t from-green-600 to-green-400 hover:from-green-500 hover:to-green-300'
+                              }`}
+                              style={{ height: `${Math.max(heightPercent, 5)}%`, minHeight: '6px' }}
+                            />
+                          </div>
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Day labels - Fixed at bottom */}
+                    <div className="absolute bottom-0 left-0 right-0 flex justify-between gap-3 px-2">
+                      {salesChartData.map((day, index) => {
+                        const isToday = index === salesChartData.length - 1;
+                        return (
+                          <div key={index} className="flex-1 text-center">
+                            <span className={`text-xs font-medium ${
+                              isToday ? 'text-blue-400' : theme === 'light' ? 'text-slate-500' : 'text-dark-400'
+                            }`}>
+                              {day.day}
+                            </span>
                           </div>
                         );
                       })}
@@ -619,11 +637,11 @@ const DashboardPage = () => {
               <span>Nouveau Client</span>
             </button>
             <button 
-              onClick={() => navigate('/orders/create')}
+              onClick={() => navigate('/sales/create')}
               className="btn btn-secondary flex items-center justify-center space-x-2 py-4"
             >
               <ShoppingCart className="w-5 h-5" />
-              <span>Nouvelle Commande</span>
+              <span>Nouvelles Ventes</span>
             </button>
             <button 
               onClick={() => navigate('/products')}
@@ -637,7 +655,7 @@ const DashboardPage = () => {
               className="btn bg-purple-600 hover:bg-purple-700 text-white flex items-center justify-center space-x-2 py-4"
             >
               <Truck className="w-5 h-5" />
-              <span>Planifier Livraison</span>
+              <span>Livraisons</span>
             </button>
           </div>
         </motion.div>

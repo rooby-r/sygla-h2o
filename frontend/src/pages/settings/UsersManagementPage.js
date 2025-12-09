@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Users, 
@@ -13,7 +14,8 @@ import {
   User,
   Mail,
   Phone,
-  Lock
+  Lock,
+  ArrowLeft
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { userService } from '../../services/api';
@@ -21,6 +23,7 @@ import Button from '../../components/ui/Button';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const UsersManagementPage = () => {
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -244,6 +247,15 @@ const UsersManagementPage = () => {
 
   return (
     <div className="space-y-6">
+      {/* Bouton Retour */}
+      <button
+        onClick={() => navigate('/settings')}
+        className={`flex items-center gap-2 transition-colors ${theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-dark-400 hover:text-white'}`}
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>Retour aux paramètres</span>
+      </button>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

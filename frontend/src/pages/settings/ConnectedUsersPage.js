@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Users,
@@ -11,13 +12,15 @@ import {
   RefreshCw,
   Activity,
   LogOut,
-  AlertCircle
+  AlertCircle,
+  ArrowLeft
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const ConnectedUsersPage = () => {
+  const navigate = useNavigate();
   const { theme } = useTheme();
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -135,6 +138,15 @@ const ConnectedUsersPage = () => {
 
   return (
     <div className="p-6 space-y-6">
+      {/* Bouton Retour */}
+      <button
+        onClick={() => navigate('/settings')}
+        className={`flex items-center gap-2 transition-colors ${theme === 'light' ? 'text-slate-600 hover:text-slate-800' : 'text-dark-400 hover:text-white'}`}
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>Retour aux paramètres</span>
+      </button>
+
       {/* En-tête */}
       <div className="flex items-center justify-between">
         <div>

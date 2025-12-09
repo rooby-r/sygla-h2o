@@ -89,6 +89,30 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
       case '/settings':
         return { title: 'Paramètres', subtitle: 'Configuration du système' };
       
+      case '/settings/users':
+        return { title: 'Gestion des Utilisateurs', subtitle: 'Gérer les comptes utilisateurs du système' };
+      
+      case '/settings/business-hours':
+        return { title: 'Heures d\'Ouverture', subtitle: 'Configurer les horaires de l\'entreprise' };
+      
+      case '/settings/security':
+        return { title: 'Paramètres de Sécurité', subtitle: 'Règles de sécurité et d\'authentification' };
+      
+      case '/settings/connected-users':
+        return { title: 'Utilisateurs Connectés', subtitle: 'Sessions actives en temps réel' };
+      
+      case '/settings/notifications':
+        return { title: 'Notifications', subtitle: 'Configuration des alertes et notifications' };
+      
+      case '/settings/profile':
+        return { title: 'Mon Profil', subtitle: 'Gérer vos informations personnelles' };
+      
+      case '/settings/database':
+        return { title: 'Base de Données', subtitle: 'Gestion et maintenance de la base de données' };
+      
+      case '/logs':
+        return { title: 'Journal des Logs', subtitle: 'Historique des activités du système' };
+      
       default:
         return { title: 'Tableau de Bord', subtitle: 'Bienvenue dans votre système de gestion' };
     }
