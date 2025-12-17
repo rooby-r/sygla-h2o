@@ -1,0 +1,16 @@
+# Netlify configuration for SYGLA-H2O Frontend
+
+[build]
+  base = "frontend"
+  publish = "build"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
+  REACT_APP_API_URL = "https://syglaa.onrender.com"
+
+# Redirects for React Router (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
