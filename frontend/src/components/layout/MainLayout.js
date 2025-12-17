@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
@@ -11,6 +12,14 @@ const MainLayout = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const { theme } = useTheme();
+  const location = useLocation();
+  // Fermer la sidebar à chaque navigation sur mobile/tablette
+  useEffect(() => {
+    if (isMobile || isTablet) {
+      setIsSidebarOpen(false);
+    }
+    // eslint-disable-next-line
+  }, [location.pathname, isMobile, isTablet]);
 
   // Gérer le state responsive avec breakpoints
   useEffect(() => {
@@ -19,11 +28,17 @@ const MainLayout = () => {
       const mobile = width < 768; // < 768px = mobile
       const tablet = width >= 768 && width < 1024; // 768px-1023px = tablet
       const desktop = width >= 1024; // >= 1024px = desktop
-      
+
       setIsMobile(mobile);
       setIsTablet(tablet);
       setIsDesktop(desktop);
-      setIsSidebarOpen(desktop); // Sidebar ouverte par défaut sur desktop
+
+      // Sidebar ouverte par défaut uniquement sur desktop, sinon toujours fermée
+      setIsSidebarOpen(prev => {
+        if (desktop) return true;
+        if (mobile || tablet) return false;
+        return prev;
+      });
     };
 
     handleResize();
