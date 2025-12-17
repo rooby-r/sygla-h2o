@@ -276,7 +276,7 @@ const DashboardPage = () => {
       </motion.div>
 
       {/* Stats Grid - Filtré par rôle */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mobile-stack">
         {hasPermission(user, 'clients') && (
           <StatCard
             title="Clients Actifs"
@@ -318,9 +318,9 @@ const DashboardPage = () => {
       </div>
 
       {/* Revenue and Alerts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mobile-stack">
         <motion.div variants={itemVariants} className="lg:col-span-2">
-          <div className="card p-6">
+          <div className="card p-4 sm:p-6 mobile-spacing">
             <div className="flex items-center justify-between mb-6">
               <h3 className={`text-xl font-semibold flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                 <DollarSign className="w-6 h-6 mr-2 text-green-400" />
@@ -344,7 +344,7 @@ const DashboardPage = () => {
             </p>
             
             {/* Enhanced Bar Chart */}
-            <div className={`mt-6 rounded-lg p-6 ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800'}`}>
+            <div className={`mt-4 rounded-lg p-3 sm:p-6 ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800'}`}> 
               {loading ? (
                 <div className="flex items-center justify-center h-40">
                   <Activity className={`w-8 h-8 animate-pulse ${theme === 'light' ? 'text-slate-300' : 'text-dark-600'}`} />
@@ -496,9 +496,9 @@ const DashboardPage = () => {
       {/* Recent Orders ou Recent Deliveries selon le rôle */}
       {isLivreur ? (
         /* Livraisons Récentes pour les livreurs */
-        <motion.div variants={itemVariants} className="card p-6">
+        <motion.div variants={itemVariants} className="card p-4 sm:p-6 mobile-spacing">
           <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Mes Livraisons Récentes</h3>
-          <div className="overflow-x-auto">
+          <div className="table-container overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
@@ -564,9 +564,9 @@ const DashboardPage = () => {
         </motion.div>
       ) : (
         /* Commandes Récentes pour les autres rôles */
-        <motion.div variants={itemVariants} className="card p-6">
+        <motion.div variants={itemVariants} className="card p-4 sm:p-6 mobile-spacing">
           <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Commandes Récentes</h3>
-          <div className="overflow-x-auto">
+          <div className="table-container overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className={`border-b ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}>
@@ -638,7 +638,7 @@ const DashboardPage = () => {
       {user?.role !== 'livreur' && user?.role !== 'stock' && (
         <motion.div variants={itemVariants} className="card p-6">
           <h3 className={`text-xl font-semibold mb-6 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>Actions Rapides</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mobile-stack">
             <button 
               onClick={() => navigate('/clients/create')}
               className="btn btn-primary flex items-center justify-center space-x-2 py-4"
