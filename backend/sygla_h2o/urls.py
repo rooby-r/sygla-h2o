@@ -17,8 +17,27 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
+
+def api_root(request):
+    return JsonResponse({
+        'status': 'online',
+        'message': 'SYGLA-H2O API Backend',
+        'version': '1.1.0',
+        'endpoints': {
+            'admin': '/admin/',
+            'auth': '/api/auth/',
+            'clients': '/api/clients/',
+            'products': '/api/products/',
+            'orders': '/api/orders/',
+            'sales': '/api/sales/',
+            'deliveries': '/api/deliveries/',
+            'reports': '/api/reports/',
+        }
+    })
 
 urlpatterns = [
+    path('', api_root, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/auth/', include('apps.authentication.urls')),
     path('api/clients/', include('apps.clients.urls')),
