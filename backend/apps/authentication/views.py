@@ -299,12 +299,14 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         
         # Mettre à jour les autres champs (sans photo)
         data = request.data.copy()
-        data.pop('photo', None)  # Retirer photo des données si présent
-        
+        # Ne pas toucher à la photo si elle n'est pas explicitement supprimée ou uploadée
+        if 'photo' in data and not data['photo']:
+            data.pop('photo')
+
         serializer = self.get_serializer(instance, data=data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        
+
         return Response(serializer.data)
 
 
