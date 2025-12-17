@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
-import { authService } from '../services/api';
+import api, { authService } from '../services/api';
 
 // État initial
 const initialState = {
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }) => {
         // Ne vérifier que pour les rôles concernés (pas admin)
         if (user.role === 'admin') return;
         
-        const response = await fetch('http://localhost:8000/api/auth/check-access/', {
+        const response = await fetch(`${api.defaults.baseURL}/auth/check-access/`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

@@ -16,7 +16,7 @@ import {
   ArrowLeft
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import axios from 'axios';
+import api from '../../services/api';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const ConnectedUsersPage = () => {
@@ -37,13 +37,7 @@ const ConnectedUsersPage = () => {
     try {
       if (showToast) setRefreshing(true);
       
-      const token = localStorage.getItem('access_token');
-      const response = await axios.get(
-        'http://localhost:8000/api/auth/sessions/connected_users/',
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+      const response = await api.get('/auth/sessions/connected_users/');
 
       setConnectedUsers(response.data.users || []);
       

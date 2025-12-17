@@ -327,7 +327,7 @@ export const orderService = {
       
       // Test avec une instance Axios fraîche pour diagnostiquer
       const token = localStorage.getItem('access_token');
-      const testResponse = await fetch(`http://localhost:8000/api/orders/${id}/validate/`, {
+      const testResponse = await fetch(`${api.defaults.baseURL}/orders/${id}/validate/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
