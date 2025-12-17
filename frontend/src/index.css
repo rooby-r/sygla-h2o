@@ -445,3 +445,66 @@
     transform: translate3d(0, 0, 0);
   }
 }
+
+/* ====== MOBILE PORTRAIT OPTIMIZATIONS ====== */
+@media (max-width: 640px) {
+  /* Touch-friendly targets */
+  .btn, button, a, input[type="submit"] {
+    min-height: 44px;
+  }
+  
+  /* Better readability on small screens */
+  .card {
+    padding: 1rem;
+  }
+  
+  /* Full-width inputs on mobile */
+  input, select, textarea {
+    width: 100%;
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+  
+  /* Table responsiveness */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Stack elements vertically */
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  /* Smaller headings on mobile */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Better spacing */
+  .mobile-spacing {
+    padding: 0.75rem !important;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Prevent text selection on interactive elements */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
