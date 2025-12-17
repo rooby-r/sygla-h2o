@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -29,6 +30,13 @@ import { getMenuForRole } from '../../config/permissions';
 
 const Sidebar = ({ isOpen, setIsOpen, isDesktop, isMobile, isTablet }) => {
   const location = useLocation();
+    // Fermer la sidebar à chaque navigation sur mobile/tablette
+    useEffect(() => {
+      if ((isMobile || isTablet) && isOpen) {
+        setIsOpen(false);
+      }
+      // eslint-disable-next-line
+    }, [location.pathname, isMobile, isTablet]);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
   const { dashboardUpdateTrigger } = useDataUpdate();
