@@ -96,6 +96,12 @@ const OrderDetailPage = () => {
   };
 
   const handleDelete = async () => {
+    // Vérification côté frontend : seules les commandes en attente peuvent être supprimées
+    if (order && order.statut !== 'en_attente') {
+      toast.error(`Impossible de supprimer une commande ${order.statut_display || order.statut}`);
+      return;
+    }
+    
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) {
       try {
         await orderService.delete(id);
@@ -103,7 +109,11 @@ const OrderDetailPage = () => {
         toast.success('Commande supprimée avec succès');
         navigate('/orders');
       } catch (error) {
-        toast.error('Erreur lors de la suppression de la commande');
+        console.error('Erreur suppression:', error.response?.data);
+        const errorMessage = error.response?.data?.error || 
+                            error.response?.data?.detail || 
+                            'Erreur lors de la suppression de la commande';
+        toast.error(errorMessage);
       }
     }
   };

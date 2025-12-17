@@ -252,6 +252,14 @@ def dashboard_stats(request):
         elif clients_current > 0:
             clients_trend = 100
         
+        # CLIENTS DU JOUR - Pour les non-admins
+        today_start_clients = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        today_end_clients = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+        clients_today = Client.objects.filter(
+            date_creation__gte=today_start_clients,
+            date_creation__lte=today_end_clients
+        ).count()
+        
         # COMMANDES - Tendance
         orders_current = Commande.objects.filter(date_creation__gte=current_month_start).count()
         orders_previous = Commande.objects.filter(
@@ -265,21 +273,39 @@ def dashboard_stats(request):
         elif orders_current > 0:
             orders_trend = 100
         
+        # COMMANDES DU JOUR - Pour les non-admins
+        today_start_temp = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        today_end_temp = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+        orders_today = Commande.objects.filter(
+            date_creation__gte=today_start_temp,
+            date_creation__lte=today_end_temp
+        ).count()
+        
         # PRODUITS - Stock total et produits en stock faible
         total_products = Produit.objects.count()
         low_stock_products = Produit.objects.filter(stock_actuel__lte=F('stock_minimal')).count()
         
-        # LIVRAISONS en cours
-        deliveries_pending = Commande.objects.filter(
-            statut__in=['en_preparation', 'validee', 'en_livraison']
-        ).count()
+        # LIVRAISONS - Compter comme le module livraisons (en_livraison + livree)
+        deliveries_en_cours = Commande.objects.filter(statut='en_livraison').count()
+        deliveries_livrees = Commande.objects.filter(statut='livree').count()
+        deliveries_total = deliveries_en_cours + deliveries_livrees
         
         # CHIFFRE D'AFFAIRES - Montant réellement encaissé (ventes + paiements commandes)
         # Exclure les commandes converties en ventes et les commandes annulées pour éviter le double comptage
         from apps.sales.models import Vente
         
-        # Ventes (100% payées)
+        # Dates pour le CA journalier
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+        today_end = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+        
+        # Ventes (100% payées) - Total
         ventes_total = Vente.objects.aggregate(total=Sum('montant_paye'))['total'] or 0
+        
+        # Ventes du jour
+        ventes_today = Vente.objects.filter(
+            date_vente__gte=today_start,
+            date_vente__lte=today_end
+        ).aggregate(total=Sum('montant_paye'))['total'] or 0
         
         # Paiements sur commandes NON converties en ventes et NON annulées
         commandes_paye = Commande.objects.filter(
@@ -288,8 +314,20 @@ def dashboard_stats(request):
             statut='annulee'
         ).aggregate(total=Sum('montant_paye'))['total'] or 0
         
+        # Paiements sur commandes du jour
+        commandes_paye_today = Commande.objects.filter(
+            convertie_en_vente=False,
+            date_creation__gte=today_start,
+            date_creation__lte=today_end
+        ).exclude(
+            statut='annulee'
+        ).aggregate(total=Sum('montant_paye'))['total'] or 0
+        
         # CA Total = Ventes + Paiements commandes non converties
         revenue_current = float(ventes_total) + float(commandes_paye)
+        
+        # CA du jour
+        revenue_today = float(ventes_today) + float(commandes_paye_today)
         
         # Pour la tendance, calculer le CA du mois dernier
         ventes_previous = Vente.objects.filter(
@@ -313,14 +351,45 @@ def dashboard_stats(request):
         elif revenue_current > 0:
             revenue_trend = 100
         
+        # Calculer les revenus des 7 derniers jours pour le graphique
+        last_7_days_revenue = []
+        for i in range(6, -1, -1):
+            day_date = now.date() - timedelta(days=i)
+            day_start = timezone.make_aware(datetime.combine(day_date, datetime.min.time()))
+            day_end = timezone.make_aware(datetime.combine(day_date, datetime.max.time()))
+            
+            # Ventes du jour
+            day_ventes = Vente.objects.filter(
+                date_vente__gte=day_start,
+                date_vente__lte=day_end
+            ).aggregate(total=Sum('montant_paye'))['total'] or 0
+            
+            # Paiements sur commandes du jour (non converties, non annulées)
+            day_commandes = Commande.objects.filter(
+                convertie_en_vente=False,
+                date_creation__gte=day_start,
+                date_creation__lte=day_end
+            ).exclude(
+                statut='annulee'
+            ).aggregate(total=Sum('montant_paye'))['total'] or 0
+            
+            day_total = float(day_ventes) + float(day_commandes)
+            
+            last_7_days_revenue.append({
+                'date': day_date.isoformat(),
+                'revenue': day_total
+            })
+        
         return Response({
             'clients': {
                 'total': Client.objects.count(),
+                'today': clients_today,
                 'trend': clients_trend
             },
             'orders': {
                 'total': Commande.objects.count(),
                 'current_month': orders_current,
+                'today': orders_today,
                 'trend': orders_trend
             },
             'products': {
@@ -328,11 +397,15 @@ def dashboard_stats(request):
                 'low_stock': low_stock_products
             },
             'deliveries': {
-                'pending': deliveries_pending
+                'total': deliveries_total,
+                'en_cours': deliveries_en_cours,
+                'livrees': deliveries_livrees
             },
             'revenue': {
                 'current_month': float(revenue_current),
-                'trend': revenue_trend
+                'today': float(revenue_today),
+                'trend': revenue_trend,
+                'last_7_days': last_7_days_revenue
             }
         })
     

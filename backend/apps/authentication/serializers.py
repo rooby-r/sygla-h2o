@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import User, Notification, UserSession
+from .models import User, Notification, UserSession, PasswordResetToken
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -139,6 +139,64 @@ class ChangePasswordSerializer(serializers.Serializer):
         return value
 
 
+class PasswordResetRequestSerializer(serializers.Serializer):
+    """
+    Sérialiseur pour demander une réinitialisation de mot de passe
+    """
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        try:
+            user = User.objects.get(email=value)
+            if not user.is_active:
+                raise serializers.ValidationError("Ce compte a été désactivé.")
+            return value
+        except User.DoesNotExist:
+            # On ne révèle pas si l'email existe ou non pour des raisons de sécurité
+            return value
+
+
+class PasswordResetConfirmSerializer(serializers.Serializer):
+    """
+    Sérialiseur pour confirmer la réinitialisation de mot de passe
+    """
+    token = serializers.CharField()
+    new_password = serializers.CharField(min_length=8)
+    confirm_password = serializers.CharField()
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({
+                'confirm_password': "Les mots de passe ne correspondent pas."
+            })
+        
+        # Valider la complexité du mot de passe
+        password = attrs['new_password']
+        if not any(c.isupper() for c in password):
+            raise serializers.ValidationError({
+                'new_password': "Le mot de passe doit contenir au moins une majuscule."
+            })
+        if not any(c.islower() for c in password):
+            raise serializers.ValidationError({
+                'new_password': "Le mot de passe doit contenir au moins une minuscule."
+            })
+        if not any(c.isdigit() for c in password):
+            raise serializers.ValidationError({
+                'new_password': "Le mot de passe doit contenir au moins un chiffre."
+            })
+        
+        return attrs
+
+    def validate_token(self, value):
+        try:
+            token_obj = PasswordResetToken.objects.get(token=value)
+            if not token_obj.is_valid():
+                raise serializers.ValidationError("Ce lien a expiré ou a déjà été utilisé.")
+            return value
+        except PasswordResetToken.DoesNotExist:
+            raise serializers.ValidationError("Lien de réinitialisation invalide.")
+
+
 class NotificationSerializer(serializers.ModelSerializer):
     """
     Sérialiseur pour les notifications
@@ -150,7 +208,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = [
             'id', 'type', 'type_display', 'title', 'message',
-            'related_order_id', 'related_product_id',
+            'related_order_id', 'related_product_id', 'related_client_id', 'related_sale_id',
             'is_read', 'read_at', 'created_at', 'time_ago'
         ]
         read_only_fields = ['id', 'created_at']

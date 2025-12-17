@@ -24,7 +24,10 @@ const ReportsPage = () => {
   const { user, isAuthenticated } = useAuth();
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const [selectedPeriod, setSelectedPeriod] = useState('month');
+  
+  // Les non-admins voient uniquement les stats du jour
+  const isAdmin = user?.role === 'admin';
+  const [selectedPeriod, setSelectedPeriod] = useState(isAdmin ? 'month' : 'day');
   const [selectedReport, setSelectedReport] = useState('sales');
   const [stats, setStats] = useState({
     totalRevenue: 0,
@@ -56,14 +59,27 @@ const ReportsPage = () => {
         console.log('📈 Rapport de ventes reçu:', salesReport);
 
         // Mettre à jour les statistiques
-        setStats({
-          totalRevenue: dashboardStats.revenue?.current_month || 0,
-          totalOrders: dashboardStats.orders?.total || 0,
-          totalClients: dashboardStats.clients?.total || 0,
-          totalProducts: dashboardStats.products?.total || 0,
-          averageOrderValue: salesReport.summary?.average_order_value || 0,
-          growthRate: dashboardStats.revenue?.trend || 0
-        });
+        // Pour les non-admins, utiliser les données du jour
+        if (isAdmin) {
+          setStats({
+            totalRevenue: dashboardStats.revenue?.current_month || 0,
+            totalOrders: dashboardStats.orders?.total || 0,
+            totalClients: dashboardStats.clients?.total || 0,
+            totalProducts: dashboardStats.products?.total || 0,
+            averageOrderValue: salesReport.summary?.average_order_value || 0,
+            growthRate: dashboardStats.revenue?.trend || 0
+          });
+        } else {
+          // Données journalières pour les non-admins (vendeur, stock, livreur)
+          setStats({
+            totalRevenue: dashboardStats.revenue?.today || 0,
+            totalOrders: dashboardStats.orders?.today || 0,
+            totalClients: dashboardStats.clients?.today || 0,
+            totalProducts: dashboardStats.products?.total || 0,
+            averageOrderValue: salesReport.summary?.average_order_value || 0,
+            growthRate: 0 // Pas de tendance pour les données journalières
+          });
+        }
 
         // Utiliser les données réelles du rapport de ventes
         if (salesReport.daily_sales && salesReport.daily_sales.length > 0) {
@@ -266,16 +282,22 @@ const ReportsPage = () => {
           </p>
         </div>
         <div className="flex items-center space-x-4">
-          <select
-            value={selectedPeriod}
-            onChange={(e) => setSelectedPeriod(e.target.value)}
-            className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
-          >
-            <option value="week">Cette semaine</option>
-            <option value="month">Ce mois</option>
-            <option value="quarter">Ce trimestre</option>
-            <option value="year">Cette année</option>
-          </select>
+          {isAdmin ? (
+            <select
+              value={selectedPeriod}
+              onChange={(e) => setSelectedPeriod(e.target.value)}
+              className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
+            >
+              <option value="week">Cette semaine</option>
+              <option value="month">Ce mois</option>
+              <option value="quarter">Ce trimestre</option>
+              <option value="year">Cette année</option>
+            </select>
+          ) : (
+            <div className={`px-4 py-2 rounded-lg font-medium ${theme === 'light' ? 'bg-slate-100 text-slate-700' : 'bg-dark-700 text-dark-200'}`}>
+              Aujourd'hui
+            </div>
+          )}
           <Button onClick={handleExportPDF} className="flex items-center space-x-2">
             <Download className="w-5 h-5" />
             <span>Exporter</span>
@@ -299,14 +321,23 @@ const ReportsPage = () => {
           <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-gradient-to-br from-white to-green-50/30 border border-green-100 shadow-lg hover:shadow-xl transition-shadow' : ''}`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Chiffre d'Affaires</h3>
+                <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                  {isAdmin ? "Chiffre d'Affaires" : "CA du Jour"}
+                </h3>
                 <p className={`text-3xl font-bold ${theme === 'light' ? 'text-green-600' : 'text-green-400'}`}>
                   {formatHTG(stats.totalRevenue)}
                 </p>
-                <p className={`text-sm flex items-center mt-1 ${theme === 'light' ? 'text-green-600' : 'text-green-400'}`}>
-                  <TrendingUp className="w-4 h-4 mr-1" />
-                  +{stats.growthRate}% ce mois
-                </p>
+                {isAdmin && stats.growthRate !== 0 && (
+                  <p className={`text-sm flex items-center mt-1 ${theme === 'light' ? 'text-green-600' : 'text-green-400'}`}>
+                    <TrendingUp className="w-4 h-4 mr-1" />
+                    +{stats.growthRate}% ce mois
+                  </p>
+                )}
+                {!isAdmin && (
+                  <p className={`text-sm mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
+                    Aujourd'hui
+                  </p>
+                )}
               </div>
               <div className={`p-3 rounded-xl ${theme === 'light' ? 'bg-green-100' : 'bg-green-400/10'}`}>
                 <DollarSign className={`w-8 h-8 ${theme === 'light' ? 'text-green-600' : 'text-green-400/50'}`} />
@@ -317,10 +348,12 @@ const ReportsPage = () => {
           <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-gradient-to-br from-white to-blue-50/30 border border-blue-100 shadow-lg hover:shadow-xl transition-shadow' : ''}`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Commandes</h3>
+                <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                  {isAdmin ? 'Commandes' : 'Commandes du Jour'}
+                </h3>
                 <p className={`text-3xl font-bold ${theme === 'light' ? 'text-blue-600' : 'text-blue-400'}`}>{stats.totalOrders}</p>
                 <p className={`text-sm ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>
-                  Valeur moyenne: {formatHTG(stats.averageOrderValue)}
+                  {isAdmin ? `Valeur moyenne: ${formatHTG(stats.averageOrderValue)}` : "Aujourd'hui"}
                 </p>
               </div>
               <div className={`p-3 rounded-xl ${theme === 'light' ? 'bg-blue-100' : 'bg-blue-400/10'}`}>
@@ -332,9 +365,15 @@ const ReportsPage = () => {
           <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-gradient-to-br from-white to-purple-50/30 border border-purple-100 shadow-lg hover:shadow-xl transition-shadow' : ''}`}>
             <div className="flex items-center justify-between">
               <div>
-                <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Clients Actifs</h3>
+                <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                  {isAdmin ? 'Clients Actifs' : 'Clients du Jour'}
+                </h3>
                 <p className={`text-3xl font-bold ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`}>{stats.totalClients}</p>
-                <p className={`text-sm ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`}>+3 nouveaux ce mois</p>
+                {isAdmin ? (
+                  <p className={`text-sm ${theme === 'light' ? 'text-purple-600' : 'text-purple-400'}`}>+3 nouveaux ce mois</p>
+                ) : (
+                  <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>Nouveaux aujourd'hui</p>
+                )}
               </div>
               <div className={`p-3 rounded-xl ${theme === 'light' ? 'bg-purple-100' : 'bg-purple-400/10'}`}>
                 <Users className={`w-8 h-8 ${theme === 'light' ? 'text-purple-600' : 'text-purple-400/50'}`} />

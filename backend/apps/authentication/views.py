@@ -5,11 +5,13 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from django.shortcuts import get_object_or_404
-from .models import User, Notification, UserSession
+from django.core.mail import send_mail
+from django.conf import settings
+from .models import User, Notification, UserSession, PasswordResetToken
 from .serializers import (
     UserSerializer, LoginSerializer, UserProfileSerializer,
     ChangePasswordSerializer, NotificationSerializer, UserSessionSerializer,
-    ActiveUserSerializer
+    ActiveUserSerializer, PasswordResetRequestSerializer, PasswordResetConfirmSerializer
 )
 from apps.logs.utils import create_log, LogTimer
 
@@ -402,6 +404,233 @@ def force_change_password_view(request):
     return Response({
         'message': 'Mot de passe modifié avec succès. Vous pouvez maintenant utiliser le système.'
     })
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def password_reset_request(request):
+    """
+    Vue pour demander une réinitialisation de mot de passe.
+    Envoie un email avec un lien de réinitialisation.
+    """
+    serializer = PasswordResetRequestSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    
+    email = serializer.validated_data['email']
+    
+    try:
+        user = User.objects.get(email=email)
+        
+        # Créer un token de réinitialisation
+        reset_token = PasswordResetToken.create_token(user)
+        
+        # Construire le lien de réinitialisation
+        # Le frontend sera sur le port 3000 en développement
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'http://localhost:3000')
+        reset_link = f"{frontend_url}/reset-password?token={reset_token.token}"
+        
+        # Envoyer l'email
+        subject = 'SYGLA-H2O - Réinitialisation de votre mot de passe'
+        message = f"""
+Bonjour {user.first_name or user.username},
+
+Vous avez demandé la réinitialisation de votre mot de passe sur SYGLA-H2O.
+
+Cliquez sur le lien ci-dessous pour créer un nouveau mot de passe :
+{reset_link}
+
+Ce lien expire dans 1 heure.
+
+Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.
+
+Cordialement,
+L'équipe SYGLA-H2O
+        """
+        
+        html_message = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: white; border-radius: 10px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #0ea5e9; margin: 0;">SYGLA-H2O</h1>
+            <p style="color: #64748b; margin: 5px 0 0 0;">Système de Gestion d'Eau Potable & Glace</p>
+        </div>
+        
+        <h2 style="color: #334155;">Réinitialisation de mot de passe</h2>
+        
+        <p style="color: #475569;">Bonjour <strong>{user.first_name or user.username}</strong>,</p>
+        
+        <p style="color: #475569;">Vous avez demandé la réinitialisation de votre mot de passe.</p>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{reset_link}" 
+               style="display: inline-block; background: linear-gradient(135deg, #0ea5e9, #06b6d4); color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; font-weight: bold;">
+                Réinitialiser mon mot de passe
+            </a>
+        </div>
+        
+        <p style="color: #94a3b8; font-size: 14px;">
+            Ce lien expire dans <strong>1 heure</strong>.
+        </p>
+        
+        <p style="color: #94a3b8; font-size: 14px;">
+            Si vous n'avez pas demandé cette réinitialisation, ignorez simplement cet email.
+        </p>
+        
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 30px 0;">
+        
+        <p style="color: #94a3b8; font-size: 12px; text-align: center;">
+            © 2025 SYGLA-H2O - Tous droits réservés
+        </p>
+    </div>
+</body>
+</html>
+        """
+        
+        # Toujours afficher le lien en mode DEBUG
+        if settings.DEBUG:
+            print("=" * 60)
+            print("🔗 LIEN DE RÉINITIALISATION DE MOT DE PASSE")
+            print("=" * 60)
+            print(f"Email: {email}")
+            print(f"Lien: {reset_link}")
+            print("=" * 60)
+        
+        try:
+            send_mail(
+                subject=subject,
+                message=message,
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@sygla-h2o.com'),
+                recipient_list=[email],
+                html_message=html_message,
+                fail_silently=False,
+            )
+            print("✅ Email envoyé avec succès!")
+        except Exception as mail_error:
+            print(f"⚠️ Erreur d'envoi d'email: {mail_error}")
+            print("📋 Utilisez le lien ci-dessus pour réinitialiser le mot de passe.")
+        
+        # Log de la demande
+        try:
+            create_log(
+                log_type='info',
+                message=f"Demande de réinitialisation de mot de passe: {email}",
+                details=f"Un lien de réinitialisation a été envoyé à {email}",
+                user=user,
+                module='authentication',
+                request=request,
+                metadata={
+                    'email': email,
+                    'token_expires': reset_token.expires_at.isoformat()
+                },
+                status_code=200
+            )
+        except Exception:
+            pass
+        
+    except User.DoesNotExist:
+        # On ne révèle pas si l'email existe ou non
+        pass
+    
+    # Toujours retourner un succès pour ne pas révéler l'existence des comptes
+    return Response({
+        'message': 'Si un compte existe avec cet email, vous recevrez un lien de réinitialisation.'
+    })
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def password_reset_validate(request):
+    """
+    Vue pour valider un token de réinitialisation
+    """
+    token = request.query_params.get('token')
+    
+    if not token:
+        return Response({
+            'valid': False,
+            'error': 'Token manquant'
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        token_obj = PasswordResetToken.objects.get(token=token)
+        if token_obj.is_valid():
+            return Response({
+                'valid': True,
+                'email': token_obj.user.email
+            })
+        else:
+            return Response({
+                'valid': False,
+                'error': 'Ce lien a expiré ou a déjà été utilisé.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+    except PasswordResetToken.DoesNotExist:
+        return Response({
+            'valid': False,
+            'error': 'Lien de réinitialisation invalide.'
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def password_reset_confirm(request):
+    """
+    Vue pour confirmer la réinitialisation et définir le nouveau mot de passe
+    """
+    serializer = PasswordResetConfirmSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    
+    token = serializer.validated_data['token']
+    new_password = serializer.validated_data['new_password']
+    
+    try:
+        token_obj = PasswordResetToken.objects.get(token=token)
+        
+        if not token_obj.is_valid():
+            return Response({
+                'error': 'Ce lien a expiré ou a déjà été utilisé.'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Mettre à jour le mot de passe
+        user = token_obj.user
+        user.set_password(new_password)
+        user.must_change_password = False
+        user.save()
+        
+        # Marquer le token comme utilisé
+        token_obj.mark_as_used()
+        
+        # Log de la réinitialisation
+        try:
+            from django.utils import timezone
+            create_log(
+                log_type='success',
+                message=f"Mot de passe réinitialisé: {user.email}",
+                details=f"L'utilisateur a réinitialisé son mot de passe avec succès",
+                user=user,
+                module='authentication',
+                request=request,
+                metadata={
+                    'email': user.email,
+                    'timestamp': timezone.now().isoformat()
+                },
+                status_code=200
+            )
+        except Exception:
+            pass
+        
+        return Response({
+            'message': 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.'
+        })
+        
+    except PasswordResetToken.DoesNotExist:
+        return Response({
+            'error': 'Lien de réinitialisation invalide.'
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserListView(generics.ListCreateAPIView):

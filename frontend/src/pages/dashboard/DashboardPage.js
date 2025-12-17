@@ -29,6 +29,7 @@ const DashboardPage = () => {
     products: 0,
     deliveries: 0,
     revenue: 0,
+    revenueToday: 0,
     lowStock: 0,
     clientsTrend: 0,
     ordersTrend: 0,
@@ -69,18 +70,21 @@ const DashboardPage = () => {
           clients = { total: 0, trend: 0 },
           orders: ordersStats = { total: 0, trend: 0 },
           products = { total: 0, low_stock: 0 },
-          deliveries = { pending: 0 },
-          revenue = { current_month: 0, trend: 0 }
+          deliveries = { total: 0, en_cours: 0, livrees: 0 },
+          revenue = { current_month: 0, today: 0, trend: 0, last_7_days: [] }
         } = statsData;
 
         console.log('💰 Revenue current_month:', revenue.current_month);
+        console.log('💰 Revenue today:', revenue.today);
+        console.log('📊 Revenue last_7_days:', revenue.last_7_days);
 
         setStats({
           clients: clients.total || 0,
-          orders: ordersStats.total || 0,
+          orders: ordersStats.current_month || ordersStats.total || 0,
           products: products.total || 0,
-          deliveries: deliveries.pending || 0,
+          deliveries: deliveries.en_cours || 0,
           revenue: revenue.current_month || 0,
+          revenueToday: revenue.today || 0,
           lowStock: products.low_stock || 0,
           clientsTrend: clients.trend || 0,
           ordersTrend: ordersStats.trend || 0,
@@ -109,29 +113,32 @@ const DashboardPage = () => {
             numeroCommande: order.numero_commande || `CMD-${order.id}`
           }));
 
-        // Créer des données de graphique basées sur les commandes des 7 derniers jours
-        const last7Days = [];
-        const today = new Date();
-        for (let i = 6; i >= 0; i--) {
-          const date = new Date(today);
-          date.setDate(date.getDate() - i);
-          last7Days.push({
-            date: date.toISOString().split('T')[0],
-            day: date.toLocaleDateString('fr-FR', { weekday: 'short' }),
-            revenue: 0
+        // Créer des données de graphique basées sur les données du backend (7 derniers jours)
+        let last7Days = [];
+        
+        // Utiliser les données du backend si disponibles
+        if (revenue.last_7_days && revenue.last_7_days.length > 0) {
+          last7Days = revenue.last_7_days.map(dayData => {
+            const date = new Date(dayData.date);
+            return {
+              date: dayData.date,
+              day: date.toLocaleDateString('fr-FR', { weekday: 'short' }),
+              revenue: dayData.revenue || 0
+            };
           });
-        }
-
-        // Calculer les revenus par jour
-        orders.forEach(order => {
-          if (order.date_creation && ['validee', 'confirmee', 'en_preparation', 'en_livraison', 'livree'].includes(order.statut)) {
-            const orderDate = new Date(order.date_creation).toISOString().split('T')[0];
-            const dayData = last7Days.find(d => d.date === orderDate);
-            if (dayData) {
-              dayData.revenue += parseFloat(order.montant_total || 0);
-            }
+        } else {
+          // Fallback: créer des données vides si le backend ne retourne rien
+          const today = new Date();
+          for (let i = 6; i >= 0; i--) {
+            const date = new Date(today);
+            date.setDate(date.getDate() - i);
+            last7Days.push({
+              date: date.toISOString().split('T')[0],
+              day: date.toLocaleDateString('fr-FR', { weekday: 'short' }),
+              revenue: 0
+            });
           }
-        });
+        }
 
         setSalesChartData(last7Days);
 
@@ -177,6 +184,7 @@ const DashboardPage = () => {
           products: 0,
           deliveries: 0,
           revenue: 0,
+          revenueToday: 0,
           lowStock: 0,
           clientsTrend: 0,
           ordersTrend: 0,
@@ -316,9 +324,9 @@ const DashboardPage = () => {
             <div className="flex items-center justify-between mb-6">
               <h3 className={`text-xl font-semibold flex items-center ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                 <DollarSign className="w-6 h-6 mr-2 text-green-400" />
-                Chiffre d'Affaires
+                {user?.role === 'admin' ? "Chiffre d'Affaires" : "Chiffre d'Affaires du Jour"}
               </h3>
-              {stats.revenueTrend !== 0 && (
+              {user?.role === 'admin' && stats.revenueTrend !== 0 && (
                 <span className={`px-3 py-1 rounded-full text-sm ${
                   stats.revenueTrend > 0 
                     ? 'bg-green-400/20 text-green-400' 
@@ -329,9 +337,11 @@ const DashboardPage = () => {
               )}
             </div>
             <div className="text-4xl font-bold text-green-400 mb-2">
-              {loading ? '--' : formatHTG(stats.revenue)}
+              {loading ? '--' : formatHTG(user?.role === 'admin' ? stats.revenue : stats.revenueToday)}
             </div>
-            <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>Revenus générés (30 derniers jours)</p>
+            <p className={theme === 'light' ? 'text-slate-600' : 'text-dark-300'}>
+              {user?.role === 'admin' ? 'Revenus générés (30 derniers jours)' : "Revenus générés aujourd'hui"}
+            </p>
             
             {/* Enhanced Bar Chart */}
             <div className={`mt-6 rounded-lg p-6 ${theme === 'light' ? 'bg-slate-50 border border-slate-200' : 'bg-dark-800'}`}>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { Eye, EyeOff, Mail, Lock, Droplets, Zap } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Droplets, Zap, HelpCircle } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../contexts/ThemeContext';
 import Button from '../../components/ui/Button';
@@ -21,7 +21,13 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    watch,
+  } = useForm({
+    mode: 'onChange', // Validation en temps réel
+  });
+
+  // Observer la valeur de l'email pour validation en temps réel
+  const emailValue = watch('email', '');
 
   // Rediriger si l'utilisateur est déjà connecté (sauf si on force le logout)
   useEffect(() => {
@@ -187,7 +193,7 @@ const LoginPage = () => {
               <div className="relative">
                 <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${theme === 'light' ? 'text-slate-400' : 'text-dark-400'}`} />
                 <input
-                  type="email"
+                  type="text"
                   {...register('email', {
                     required: 'L\'email est requis',
                     pattern: {
@@ -196,13 +202,14 @@ const LoginPage = () => {
                     }
                   })}
                   className={`input pl-10 ${theme === 'light' ? 'bg-slate-50 border-slate-300 text-slate-800 placeholder-slate-400' : ''} ${
-                    errors.email ? 'input-error' : ''
+                    errors.email ? 'input-error border-red-500' : ''
                   }`}
                   placeholder="admin@sygla-h2o.com"
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-400">
+                <p className="mt-1 text-sm text-red-400 flex items-center">
+                  <span className="inline-block w-1 h-1 bg-red-400 rounded-full mr-2"></span>
                   {errors.email.message}
                 </p>
               )}
@@ -278,9 +285,13 @@ const LoginPage = () => {
             className="mt-6 text-center"
             variants={itemVariants}
           >
-            <p className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
-              Besoin d'aide ? Contactez l'administrateur
-            </p>
+            <Link 
+              to="/forgot-password" 
+              className={`inline-flex items-center text-sm hover:underline transition-colors ${theme === 'light' ? 'text-primary-600 hover:text-primary-700' : 'text-primary-400 hover:text-primary-300'}`}
+            >
+              <HelpCircle className="w-4 h-4 mr-1" />
+              Mot de passe oublié ?
+            </Link>
           </motion.div>
         </motion.div>
 

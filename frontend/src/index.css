@@ -117,7 +117,7 @@
 @layer components {
   /* Boutons futuristes - Responsive */
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 px-4 py-2.5;
   }
   
   .dark .btn {
@@ -129,15 +129,15 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white shadow-lg hover:shadow-xl focus:ring-primary-500;
+    @apply bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-700 hover:to-primary-600 text-white shadow-lg hover:shadow-xl focus:ring-primary-500 rounded-xl;
   }
 
   .btn-secondary {
-    @apply bg-gradient-to-r from-secondary-600 to-secondary-500 hover:from-secondary-700 hover:to-secondary-600 text-white shadow-lg hover:shadow-xl focus:ring-secondary-500;
+    @apply bg-gradient-to-r from-secondary-600 to-secondary-500 hover:from-secondary-700 hover:to-secondary-600 text-white shadow-lg hover:shadow-xl focus:ring-secondary-500 rounded-xl;
   }
 
   .btn-outline {
-    @apply border focus:ring-dark-500;
+    @apply border focus:ring-dark-500 rounded-xl;
   }
   
   .dark .btn-outline {
@@ -149,7 +149,7 @@
   }
 
   .btn-ghost {
-    @apply focus:ring-dark-500;
+    @apply focus:ring-dark-500 rounded-xl;
   }
   
   .dark .btn-ghost {
@@ -161,15 +161,15 @@
   }
 
   .btn-sm {
-    @apply px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm;
+    @apply px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-lg;
   }
 
   .btn-md {
-    @apply px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm;
+    @apply px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm rounded-xl;
   }
 
   .btn-lg {
-    @apply px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base;
+    @apply px-5 sm:px-8 py-2.5 sm:py-3 text-sm sm:text-base rounded-xl;
   }
 
   /* Cards futuristes */

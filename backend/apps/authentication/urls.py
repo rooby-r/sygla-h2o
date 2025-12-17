@@ -21,6 +21,11 @@ urlpatterns = [
     path('force-change-password/', views.force_change_password_view, name='force-change-password'),
     path('check-access/', views.check_access_allowed, name='check-access'),  # Vérification horaires d'accès
     
+    # Réinitialisation de mot de passe
+    path('password-reset/', views.password_reset_request, name='password-reset-request'),
+    path('password-reset/validate/', views.password_reset_validate, name='password-reset-validate'),
+    path('password-reset/confirm/', views.password_reset_confirm, name='password-reset-confirm'),
+    
     # Gestion utilisateurs
     path('users/', views.UserListView.as_view(), name='user-list'),
     path('users/create/', views.create_user, name='user-create'),

@@ -32,7 +32,7 @@ export const rolePermissions = {
     canAccess: {
       dashboard: true,
       clients: { view: true, create: true, edit: true, delete: false },
-      products: { view: true, create: false, edit: false, delete: false },
+      products: { view: false, create: false, edit: false, delete: false },
       orders: { view: true, create: true, edit: true, delete: false, validate: false, changeStatus: false, cancelPending: true },
       sales: { view: true, create: true, edit: true, delete: false },
       deliveries: { view: true, create: false, edit: false, delete: false, assign: false },
@@ -46,7 +46,6 @@ export const rolePermissions = {
       { path: '/clients', label: 'Clients', icon: 'Users' },
       { path: '/sales', label: 'Ventes', icon: 'DollarSign' },
       { path: '/orders', label: 'Commandes', icon: 'ShoppingCart' },
-      { path: '/products', label: 'Produits', icon: 'Package' },
       { path: '/reports', label: 'Rapports', icon: 'BarChart3' }
     ]
   },

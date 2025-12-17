@@ -27,6 +27,7 @@ const EditClientPage = () => {
   const [saving, setSaving] = useState(false);
   const [client, setClient] = useState(null);
   const [formData, setFormData] = useState({
+    type_client: 'entreprise',
     nom_commercial: '',
     email: '',
     telephone: '',
@@ -46,6 +47,7 @@ const EditClientPage = () => {
       const clientData = await clientService.getById(id);
       setClient(clientData);
       setFormData({
+        type_client: clientData.type_client || 'entreprise',
         nom_commercial: clientData.nom_commercial || '',
         email: clientData.email || '',
         telephone: clientData.telephone || '',
@@ -114,7 +116,8 @@ const EditClientPage = () => {
       // Envoyer nom_commercial comme raison_sociale également pour satisfaire le backend
       const dataToSend = {
         ...formData,
-        raison_sociale: formData.nom_commercial
+        raison_sociale: formData.nom_commercial,
+        type_client: formData.type_client
       };
       
       await clientService.update(id, dataToSend);
@@ -192,12 +195,52 @@ const EditClientPage = () => {
       >
         <div className="p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Informations principales */}
+            {/* Type de client */}
+            <div className="mb-6">
+              <label className={`block text-sm font-medium mb-3 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
+                Type de client
+              </label>
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, type_client: 'entreprise' })}
+                  className={`flex-1 flex items-center justify-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 ${
+                    formData.type_client === 'entreprise'
+                      ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30'
+                      : theme === 'light'
+                        ? 'bg-white border-2 border-slate-300 text-slate-600 hover:border-primary-400 hover:text-primary-600'
+                        : 'bg-dark-700 border-2 border-dark-500 text-gray-300 hover:border-primary-400 hover:text-primary-400'
+                  }`}
+                >
+                  <Building className="w-5 h-5" />
+                  <span className="font-semibold">Entreprise</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, type_client: 'particulier' })}
+                  className={`flex-1 flex items-center justify-center space-x-3 px-6 py-4 rounded-xl transition-all duration-300 ${
+                    formData.type_client === 'particulier'
+                      ? 'bg-gradient-to-r from-secondary-500 to-secondary-600 text-white shadow-lg shadow-secondary-500/30'
+                      : theme === 'light'
+                        ? 'bg-white border-2 border-slate-300 text-slate-600 hover:border-secondary-400 hover:text-secondary-600'
+                        : 'bg-dark-700 border-2 border-dark-500 text-gray-300 hover:border-secondary-400 hover:text-secondary-400'
+                  }`}
+                >
+                  <User className="w-5 h-5" />
+                  <span className="font-semibold">Particulier</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Informations principales */}}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
-                  <Building className="w-4 h-4 inline mr-2" />
-                  Nom commercial
+                  {formData.type_client === 'entreprise' ? (
+                    <><Building className="w-4 h-4 inline mr-2" />Nom commercial</>
+                  ) : (
+                    <><User className="w-4 h-4 inline mr-2" />Nom complet</>
+                  )}
                 </label>
                 <input
                   type="text"
@@ -205,7 +248,7 @@ const EditClientPage = () => {
                   value={formData.nom_commercial}
                   onChange={handleInputChange}
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
-                  placeholder="Nom sous lequel l'entreprise est connue"
+                  placeholder={formData.type_client === 'entreprise' ? "Nom sous lequel l'entreprise est connue" : "Nom et prénom du client"}
                 />
               </div>
 
@@ -220,7 +263,7 @@ const EditClientPage = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${errors.email ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
-                  placeholder="email@entreprise.com"
+                  placeholder={formData.type_client === 'entreprise' ? "email@entreprise.com" : "email@exemple.com"}
                 />
                 {errors.email && (
                   <p className="mt-1 text-sm text-red-400">{errors.email}</p>
@@ -248,7 +291,7 @@ const EditClientPage = () => {
               <div>
                 <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-700' : 'text-gray-300'}`}>
                   <User className="w-4 h-4 inline mr-2" />
-                  Personne de contact
+                  {formData.type_client === 'entreprise' ? 'Personne de contact' : 'Contact alternatif'}
                 </label>
                 <input
                   type="text"
@@ -260,7 +303,7 @@ const EditClientPage = () => {
                     setFormData({ ...formData, contact: value });
                   }}
                   className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
-                  placeholder="Nom du responsable"
+                  placeholder={formData.type_client === 'entreprise' ? "Nom du responsable" : "Nom d'un contact alternatif"}
                 />
               </div>
             </div>
@@ -286,7 +329,7 @@ const EditClientPage = () => {
                 }}
                 rows={3}
                 className={`w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent ${errors.adresse ? 'border-red-500' : ''} ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800 placeholder-slate-400' : 'bg-dark-700 border border-dark-600 text-white placeholder-gray-400'}`}
-                placeholder="Adresse complète de l'entreprise"
+                placeholder={formData.type_client === 'entreprise' ? "Adresse complète de l'entreprise" : "Adresse complète du client"}   
               />
               {errors.adresse && (
                 <p className="mt-1 text-sm text-red-400">{errors.adresse}</p>

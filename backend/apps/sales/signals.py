@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.db import transaction
 from .models import LigneVente
 from apps.products.models import Produit, MouvementStock
+from apps.authentication.notification_service import check_and_notify_low_stock
 import logging
 
 logger = logging.getLogger(__name__)
@@ -45,6 +46,12 @@ def deduire_stock_vente(sender, instance, created, **kwargs):
                     )
                     
                     logger.info(f"✅ Stock déduit (vente): {produit.nom} - {quantite_deduite} unités (Nouveau stock: {produit.stock_actuel})")
+                    
+                    # Vérifier et notifier si stock faible
+                    try:
+                        check_and_notify_low_stock(produit)
+                    except Exception as e:
+                        logger.error(f"Erreur notification stock: {e}")
                 else:
                     logger.warning(f"⚠️ Stock insuffisant pour {produit.nom}: demandé {quantite_deduite}, disponible {produit.stock_actuel}")
         except Produit.DoesNotExist:

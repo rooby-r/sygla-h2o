@@ -14,7 +14,7 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = [
-            'id', 'nom_commercial', 'raison_sociale', 'telephone',
+            'id', 'type_client', 'nom_commercial', 'raison_sociale', 'telephone',
             'adresse', 'contact', 'email', 'credit_limite',
             'credit_utilise', 'credit_disponible', 'peut_commander',
             'total_depenses', 'date_creation', 'date_modification', 'is_active', 'notes'
@@ -52,7 +52,7 @@ class ClientListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = [
-            'id', 'nom_commercial', 'raison_sociale', 'telephone', 'adresse',
+            'id', 'type_client', 'nom_commercial', 'raison_sociale', 'telephone', 'adresse',
             'contact', 'email', 'credit_limite', 'credit_utilise', 'credit_disponible',
             'peut_commander', 'total_depenses', 'is_active'
         ]
@@ -77,7 +77,7 @@ class ClientDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = [
-            'id', 'nom_commercial', 'raison_sociale', 'telephone',
+            'id', 'type_client', 'nom_commercial', 'raison_sociale', 'telephone',
             'adresse', 'contact', 'email', 'credit_limite',
             'credit_utilise', 'credit_disponible', 'peut_commander',
             'date_creation', 'date_modification', 'is_active', 'notes',

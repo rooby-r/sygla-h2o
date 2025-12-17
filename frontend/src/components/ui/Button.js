@@ -20,10 +20,10 @@ const Button = ({
     secondary: 'btn-secondary',
     outline: 'btn-outline',
     ghost: 'btn-ghost',
-    danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
-    success: 'bg-green-600 hover:bg-green-700 text-white focus:ring-green-500',
-    warning: 'bg-yellow-600 hover:bg-yellow-700 text-white focus:ring-yellow-500',
-    info: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
+    danger: 'bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white focus:ring-red-500 rounded-xl shadow-lg hover:shadow-xl',
+    success: 'bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white focus:ring-green-500 rounded-xl shadow-lg hover:shadow-xl',
+    warning: 'bg-gradient-to-r from-yellow-600 to-yellow-500 hover:from-yellow-700 hover:to-yellow-600 text-white focus:ring-yellow-500 rounded-xl shadow-lg hover:shadow-xl',
+    info: 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white focus:ring-blue-500 rounded-xl shadow-lg hover:shadow-xl',
   };
 
   const sizeClasses = {

@@ -1,0 +1,174 @@
+// Schéma Base de Données SYGLA-H2O
+digraph {
+	dpi=150 rankdir=TB size="20,15"
+	node [fontname=Arial fontsize=10 shape=record]
+	edge [fontname=Arial fontsize=9]
+	User [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightblue">
+            <TR><TD COLSPAN="2" BGCOLOR="darkblue"><FONT COLOR="white"><B>User</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">email</TD><TD>VARCHAR(255) UNIQUE</TD></TR>
+            <TR><TD ALIGN="LEFT">username</TD><TD>VARCHAR(150)</TD></TR>
+            <TR><TD ALIGN="LEFT">password</TD><TD>VARCHAR(128)</TD></TR>
+            <TR><TD ALIGN="LEFT">first_name</TD><TD>VARCHAR(150)</TD></TR>
+            <TR><TD ALIGN="LEFT">last_name</TD><TD>VARCHAR(150)</TD></TR>
+            <TR><TD ALIGN="LEFT">role</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">telephone</TD><TD>VARCHAR(17)</TD></TR>
+            <TR><TD ALIGN="LEFT">adresse</TD><TD>TEXT</TD></TR>
+            <TR><TD ALIGN="LEFT">photo</TD><TD>VARCHAR(100)</TD></TR>
+            <TR><TD ALIGN="LEFT">is_active</TD><TD>BOOLEAN</TD></TR>
+            <TR><TD ALIGN="LEFT">must_change_password</TD><TD>BOOLEAN</TD></TR>
+            <TR><TD ALIGN="LEFT">last_activity</TD><TD>DATETIME</TD></TR>
+            <TR><TD ALIGN="LEFT">date_creation</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	Client [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightgreen">
+            <TR><TD COLSPAN="2" BGCOLOR="darkgreen"><FONT COLOR="white"><B>Client</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">type_client</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">nom_commercial</TD><TD>VARCHAR(200)</TD></TR>
+            <TR><TD ALIGN="LEFT">raison_sociale</TD><TD>VARCHAR(200)</TD></TR>
+            <TR><TD ALIGN="LEFT">telephone</TD><TD>VARCHAR(17)</TD></TR>
+            <TR><TD ALIGN="LEFT">adresse</TD><TD>TEXT</TD></TR>
+            <TR><TD ALIGN="LEFT">contact</TD><TD>VARCHAR(200)</TD></TR>
+            <TR><TD ALIGN="LEFT">email</TD><TD>VARCHAR(254)</TD></TR>
+            <TR><TD ALIGN="LEFT">credit_limite</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">credit_utilise</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">is_active</TD><TD>BOOLEAN</TD></TR>
+            <TR><TD ALIGN="LEFT">notes</TD><TD>TEXT</TD></TR>
+            <TR><TD ALIGN="LEFT">date_creation</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	Produit [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightyellow">
+            <TR><TD COLSPAN="2" BGCOLOR="orange"><FONT COLOR="white"><B>Produit</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">nom</TD><TD>VARCHAR(200)</TD></TR>
+            <TR><TD ALIGN="LEFT">code_produit</TD><TD>VARCHAR(20) UNIQUE</TD></TR>
+            <TR><TD ALIGN="LEFT">description</TD><TD>TEXT</TD></TR>
+            <TR><TD ALIGN="LEFT">type_produit</TD><TD>VARCHAR(50)</TD></TR>
+            <TR><TD ALIGN="LEFT">unite_mesure</TD><TD>VARCHAR(50)</TD></TR>
+            <TR><TD ALIGN="LEFT">prix_unitaire</TD><TD>DECIMAL(10,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">stock_actuel</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">stock_initial</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">stock_minimal</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">is_active</TD><TD>BOOLEAN</TD></TR>
+            <TR><TD ALIGN="LEFT">date_creation</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	MouvementStock [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightyellow">
+            <TR><TD COLSPAN="2" BGCOLOR="goldenrod"><FONT COLOR="white"><B>MouvementStock</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 produit_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 utilisateur_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">type_mouvement</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">quantite</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">stock_avant</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">stock_apres</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">motif</TD><TD>VARCHAR(200)</TD></TR>
+            <TR><TD ALIGN="LEFT">numero_document</TD><TD>VARCHAR(100)</TD></TR>
+            <TR><TD ALIGN="LEFT">date_creation</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	Commande [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightpink">
+            <TR><TD COLSPAN="2" BGCOLOR="crimson"><FONT COLOR="white"><B>Commande</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">numero_commande</TD><TD>VARCHAR(20) UNIQUE</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 client_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 vendeur_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 vente_associee_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">statut</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">type_livraison</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_produits</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">frais_livraison</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_total</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_paye</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_restant</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">statut_paiement</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">date_creation</TD><TD>DATETIME</TD></TR>
+            <TR><TD ALIGN="LEFT">date_livraison_prevue</TD><TD>DATETIME</TD></TR>
+            <TR><TD ALIGN="LEFT">date_echeance</TD><TD>DATE</TD></TR>
+        </TABLE>
+    >]
+	ItemCommande [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightpink">
+            <TR><TD COLSPAN="2" BGCOLOR="indianred"><FONT COLOR="white"><B>ItemCommande</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 commande_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 produit_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">quantite</TD><TD>INTEGER</TD></TR>
+            <TR><TD ALIGN="LEFT">prix_unitaire</TD><TD>DECIMAL(10,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">sous_total</TD><TD>DECIMAL(12,2)</TD></TR>
+        </TABLE>
+    >]
+	PaiementCommande [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lightpink">
+            <TR><TD COLSPAN="2" BGCOLOR="palevioletred"><FONT COLOR="white"><B>PaiementCommande</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 commande_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 recu_par_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">methode</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">reference</TD><TD>VARCHAR(100)</TD></TR>
+            <TR><TD ALIGN="LEFT">date_paiement</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	Vente [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lavender">
+            <TR><TD COLSPAN="2" BGCOLOR="purple"><FONT COLOR="white"><B>Vente</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">numero_vente</TD><TD>VARCHAR(50) UNIQUE</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 client_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 vendeur_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_total</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_paye</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant_restant</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">statut_paiement</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">methode_paiement</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">type_livraison</TD><TD>VARCHAR(50)</TD></TR>
+            <TR><TD ALIGN="LEFT">frais_livraison</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">date_vente</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	LigneVente [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lavender">
+            <TR><TD COLSPAN="2" BGCOLOR="mediumpurple"><FONT COLOR="white"><B>LigneVente</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 vente_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 produit_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">quantite</TD><TD>DECIMAL(10,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">prix_unitaire</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant</TD><TD>DECIMAL(12,2)</TD></TR>
+        </TABLE>
+    >]
+	Paiement [label=<
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="lavender">
+            <TR><TD COLSPAN="2" BGCOLOR="darkorchid"><FONT COLOR="white"><B>Paiement</B></FONT></TD></TR>
+            <TR><TD ALIGN="LEFT">🔑 id</TD><TD>INTEGER (PK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 vente_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">🔗 recu_par_id</TD><TD>INTEGER (FK)</TD></TR>
+            <TR><TD ALIGN="LEFT">montant</TD><TD>DECIMAL(12,2)</TD></TR>
+            <TR><TD ALIGN="LEFT">methode</TD><TD>VARCHAR(20)</TD></TR>
+            <TR><TD ALIGN="LEFT">reference</TD><TD>VARCHAR(100)</TD></TR>
+            <TR><TD ALIGN="LEFT">date_paiement</TD><TD>DATETIME</TD></TR>
+        </TABLE>
+    >]
+	Commande -> Client [label=client_id color=green style=bold]
+	Vente -> Client [label=client_id color=green style=bold]
+	Commande -> User [label=vendeur_id color=blue style=bold]
+	Vente -> User [label=vendeur_id color=blue style=bold]
+	MouvementStock -> User [label=utilisateur_id color=blue]
+	PaiementCommande -> User [label=recu_par_id color=blue]
+	Paiement -> User [label=recu_par_id color=blue]
+	ItemCommande -> Produit [label=produit_id color=orange style=bold]
+	LigneVente -> Produit [label=produit_id color=orange style=bold]
+	MouvementStock -> Produit [label=produit_id color=orange style=bold]
+	ItemCommande -> Commande [label=commande_id color=red style=bold]
+	PaiementCommande -> Commande [label=commande_id color=red style=bold]
+	Commande -> Vente [label=vente_associee_id color=purple style=dashed]
+	LigneVente -> Vente [label=vente_id color=purple style=bold]
+	Paiement -> Vente [label=vente_id color=purple style=bold]
+}

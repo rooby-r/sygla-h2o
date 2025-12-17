@@ -24,16 +24,22 @@ import { orderService } from '../../services/api';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../hooks/useAuth';
 
 const OrdersPage = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { user } = useAuth();
   const { triggerDashboardUpdate, onOrderDeleted } = useDataUpdate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [showFilters, setShowFilters] = useState(false);
   const [errorShown, setErrorShown] = useState(false);
+  
+  // Les non-admins voient uniquement les stats du jour
+  const isAdmin = user?.role === 'admin';
 
   // Mock data for orders
   const mockOrders = [
@@ -181,11 +187,17 @@ const OrdersPage = () => {
   };
 
   const handleDeleteOrder = async (orderId) => {
+    // Récupérer les données de la commande
+    const orderToDelete = orders.find(o => o.id === orderId);
+    
+    // Vérification côté frontend : seules les commandes en attente peuvent être supprimées
+    if (orderToDelete && orderToDelete.statut !== 'en_attente') {
+      toast.error(`Impossible de supprimer une commande ${orderToDelete.statut_display || orderToDelete.statut}`);
+      return;
+    }
+    
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')) {
       try {
-        // Récupérer les données de la commande avant suppression
-        const orderToDelete = orders.find(o => o.id === orderId);
-        
         await orderService.delete(orderId);
         setOrders(orders.filter(o => o.id !== orderId));
         
@@ -197,7 +209,11 @@ const OrdersPage = () => {
         
         toast.success('Commande supprimée avec succès');
       } catch (error) {
-        toast.error('Erreur lors de la suppression de la commande');
+        console.error('Erreur suppression:', error.response?.data);
+        const errorMessage = error.response?.data?.error || 
+                            error.response?.data?.detail || 
+                            'Erreur lors de la suppression de la commande';
+        toast.error(errorMessage);
       }
     }
   };
@@ -271,10 +287,26 @@ const OrdersPage = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const totalOrders = orders.length;
-  const pendingOrders = orders.filter(o => o.statut === 'en_attente' || o.statut === 'attente').length;
-  const completedOrders = orders.filter(o => o.statut === 'livree').length;
-  const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.montant_total || 0), 0);
+  // Filtrer les commandes du jour pour les stats (non-admins)
+  const getTodayOrders = () => {
+    if (isAdmin) return orders;
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    return orders.filter(order => {
+      const orderDate = new Date(order.date_creation);
+      return orderDate >= today && orderDate < tomorrow;
+    });
+  };
+
+  const ordersForStats = getTodayOrders();
+  const totalOrders = ordersForStats.length;
+  const pendingOrders = ordersForStats.filter(o => o.statut === 'en_attente' || o.statut === 'attente').length;
+  const completedOrders = ordersForStats.filter(o => o.statut === 'livree').length;
+  const totalRevenue = ordersForStats.reduce((sum, o) => sum + parseFloat(o.montant_total || 0), 0);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -314,7 +346,9 @@ const OrdersPage = () => {
         <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Total Commandes</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                {isAdmin ? 'Total Commandes' : 'Commandes du Jour'}
+              </h3>
               <p className="text-3xl font-bold text-primary-400">{totalOrders}</p>
             </div>
             <ShoppingCart className="w-8 h-8 text-primary-400/50" />
@@ -324,7 +358,9 @@ const OrdersPage = () => {
         <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>En Attente</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                {isAdmin ? 'En Attente' : 'En Attente (Jour)'}
+              </h3>
               <p className="text-3xl font-bold text-yellow-400">{pendingOrders}</p>
             </div>
             <Clock className="w-8 h-8 text-yellow-400/50" />
@@ -334,7 +370,9 @@ const OrdersPage = () => {
         <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>Livrées</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                {isAdmin ? 'Livrées' : 'Livrées (Jour)'}
+              </h3>
               <p className="text-3xl font-bold text-green-400">{completedOrders}</p>
             </div>
             <CheckCircle className="w-8 h-8 text-green-400/50" />
@@ -344,7 +382,9 @@ const OrdersPage = () => {
         <motion.div variants={itemVariants} className={`stat-card ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}>
           <div className="flex items-center justify-between">
             <div>
-              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>CA Total</h3>
+              <h3 className={`text-lg font-semibold mb-1 ${theme === 'light' ? 'text-slate-700' : 'text-dark-200'}`}>
+                {isAdmin ? 'CA Total' : 'CA du Jour'}
+              </h3>
               <p className="text-3xl font-bold text-blue-400">
                 {formatHTG(totalRevenue)}
               </p>
@@ -367,19 +407,82 @@ const OrdersPage = () => {
               className={`input pl-10 w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
             />
           </div>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className={`input w-48 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
-          >
-            <option value="all">Tous les statuts</option>
-            <option value="en_attente">En attente</option>
-            <option value="confirmee">Confirmée</option>
-            <option value="en_preparation">En préparation</option>
-            <option value="en_livraison">En livraison</option>
-            <option value="livree">Livrée</option>
-            <option value="annulee">Annulée</option>
-          </select>
+          <div className="relative">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`btn btn-secondary flex items-center space-x-2 ${filterStatus !== 'all' ? 'ring-2 ring-primary-400' : ''}`}
+            >
+              <Filter className="w-5 h-5" />
+              <span>Filtres</span>
+              {filterStatus !== 'all' && (
+                <span className="bg-primary-400 text-white text-xs px-2 py-0.5 rounded-full ml-1">1</span>
+              )}
+            </button>
+            
+            {/* Dropdown Filtres */}
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`absolute right-0 top-full mt-2 w-64 rounded-lg shadow-xl z-50 border ${
+                  theme === 'light' 
+                    ? 'bg-white border-slate-200' 
+                    : 'bg-dark-800 border-dark-700'
+                }`}
+              >
+                <div className="p-4">
+                  <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    Filtrer par statut
+                  </h4>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'all', label: 'Tous les statuts', icon: '📋' },
+                      { value: 'en_attente', label: 'En attente', icon: '⏳' },
+                      { value: 'confirmee', label: 'Confirmée', icon: '✅' },
+                      { value: 'en_preparation', label: 'En préparation', icon: '📦' },
+                      { value: 'en_livraison', label: 'En livraison', icon: '🚚' },
+                      { value: 'livree', label: 'Livrée', icon: '✔️' },
+                      { value: 'annulee', label: 'Annulée', icon: '❌' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          setFilterStatus(option.value);
+                          setShowFilters(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 ${
+                          filterStatus === option.value
+                            ? 'bg-primary-500/20 text-primary-400'
+                            : theme === 'light' 
+                              ? 'hover:bg-slate-100 text-slate-700'
+                              : 'hover:bg-dark-700 text-dark-200'
+                        }`}
+                      >
+                        <span>{option.icon}</span>
+                        <span>{option.label}</span>
+                        {filterStatus === option.value && (
+                          <span className="ml-auto text-primary-400">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {filterStatus !== 'all' && (
+                    <button
+                      onClick={() => {
+                        setFilterStatus('all');
+                        setShowFilters(false);
+                      }}
+                      className={`w-full mt-3 text-center text-sm text-red-400 hover:text-red-300 py-2 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}
+                    >
+                      Réinitialiser les filtres
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
       </motion.div>
 
@@ -479,16 +582,9 @@ const OrdersPage = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          {/* Boutons Modifier/Supprimer - uniquement pour les commandes en attente */}
+                          {/* Bouton Supprimer - uniquement pour les commandes en attente */}
                           {order.statut === 'en_attente' && (
                             <>
-                              <button
-                                onClick={() => handleEditOrder(order)}
-                                className="p-2 text-yellow-400 hover:bg-yellow-400/20 rounded-lg transition-colors"
-                                title="Modifier"
-                              >
-                                <Edit3 className="w-4 h-4" />
-                              </button>
                               <button
                                 onClick={() => handleDeleteOrder(order.id)}
                                 className="p-2 text-red-400 hover:bg-red-400/20 rounded-lg transition-colors"

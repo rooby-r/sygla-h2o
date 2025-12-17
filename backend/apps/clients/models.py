@@ -4,8 +4,20 @@ from django.core.validators import RegexValidator
 
 class Client(models.Model):
     """
-    Modèle pour les clients (entreprises commerciales)
+    Modèle pour les clients (entreprises commerciales ou particuliers)
     """
+    TYPE_CLIENT_CHOICES = [
+        ('entreprise', 'Entreprise'),
+        ('particulier', 'Particulier'),
+    ]
+    
+    type_client = models.CharField(
+        max_length=20,
+        choices=TYPE_CLIENT_CHOICES,
+        default='entreprise',
+        verbose_name='Type de client',
+        help_text='Indique si le client est une entreprise ou un particulier'
+    )
     nom_commercial = models.CharField(
         max_length=200,
         blank=True,

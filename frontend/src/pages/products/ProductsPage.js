@@ -28,6 +28,9 @@ const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState('all'); // 'all', 'eau', 'glace'
+  const [filterStock, setFilterStock] = useState('all'); // 'all', 'normal', 'critique', 'rupture'
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     fetchProducts();
@@ -101,11 +104,23 @@ const ProductsPage = () => {
     return type === 'eau' ? Droplets : Snowflake;
   };
 
-  const filteredProducts = products.filter(product =>
-    product.nom?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.type_produit?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products.filter(product => {
+    const matchesSearch = product.nom?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.type_produit?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesType = filterType === 'all' || product.type_produit === filterType;
+    
+    const stockStatus = getStockStatus(product);
+    const matchesStock = filterStock === 'all' || 
+      (filterStock === 'normal' && stockStatus.color === 'green') ||
+      (filterStock === 'critique' && stockStatus.color === 'orange') ||
+      (filterStock === 'rupture' && stockStatus.color === 'red');
+    
+    return matchesSearch && matchesType && matchesStock;
+  });
+
+  const activeFiltersCount = (filterType !== 'all' ? 1 : 0) + (filterStock !== 'all' ? 1 : 0);
 
   const totalStock = products.reduce((sum, p) => sum + (p.stock_actuel || 0), 0);
   const lowStockCount = products.filter(p => (p.stock_actuel || 0) <= (p.stock_minimal || 0)).length;
@@ -283,10 +298,108 @@ const ProductsPage = () => {
               className="input pl-10 w-full"
             />
           </div>
-          <button className="btn btn-secondary flex items-center space-x-2">
-            <Filter className="w-5 h-5" />
-            <span>Filtres</span>
-          </button>
+          <div className="relative">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`btn btn-secondary flex items-center space-x-2 ${activeFiltersCount > 0 ? 'ring-2 ring-primary-400' : ''}`}
+            >
+              <Filter className="w-5 h-5" />
+              <span>Filtres</span>
+              {activeFiltersCount > 0 && (
+                <span className="bg-primary-400 text-white text-xs px-2 py-0.5 rounded-full ml-1">{activeFiltersCount}</span>
+              )}
+            </button>
+            
+            {/* Dropdown Filtres */}
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`absolute right-0 top-full mt-2 w-72 rounded-lg shadow-xl z-50 border ${
+                  theme === 'light' 
+                    ? 'bg-white border-slate-200' 
+                    : 'bg-dark-800 border-dark-700'
+                }`}
+              >
+                <div className="p-4">
+                  {/* Filtre par type */}
+                  <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    Type de produit
+                  </h4>
+                  <div className="space-y-2 mb-4">
+                    {[
+                      { value: 'all', label: 'Tous les types', icon: '📦' },
+                      { value: 'eau', label: 'Eau', icon: '💧' },
+                      { value: 'glace', label: 'Glace', icon: '❄️' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => setFilterType(option.value)}
+                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 ${
+                          filterType === option.value
+                            ? 'bg-primary-500/20 text-primary-400'
+                            : theme === 'light' 
+                              ? 'hover:bg-slate-100 text-slate-700'
+                              : 'hover:bg-dark-700 text-dark-200'
+                        }`}
+                      >
+                        <span>{option.icon}</span>
+                        <span>{option.label}</span>
+                        {filterType === option.value && (
+                          <span className="ml-auto text-primary-400">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* Filtre par statut stock */}
+                  <h4 className={`font-semibold mb-3 border-t pt-3 ${theme === 'light' ? 'text-slate-800 border-slate-200' : 'text-white border-dark-700'}`}>
+                    Statut du stock
+                  </h4>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'all', label: 'Tous les statuts', icon: '📊' },
+                      { value: 'normal', label: 'Stock normal', icon: '✅' },
+                      { value: 'critique', label: 'Stock critique', icon: '⚠️' },
+                      { value: 'rupture', label: 'Rupture de stock', icon: '🚫' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => setFilterStock(option.value)}
+                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 ${
+                          filterStock === option.value
+                            ? 'bg-primary-500/20 text-primary-400'
+                            : theme === 'light' 
+                              ? 'hover:bg-slate-100 text-slate-700'
+                              : 'hover:bg-dark-700 text-dark-200'
+                        }`}
+                      >
+                        <span>{option.icon}</span>
+                        <span>{option.label}</span>
+                        {filterStock === option.value && (
+                          <span className="ml-auto text-primary-400">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {activeFiltersCount > 0 && (
+                    <button
+                      onClick={() => {
+                        setFilterType('all');
+                        setFilterStock('all');
+                        setShowFilters(false);
+                      }}
+                      className={`w-full mt-3 text-center text-sm text-red-400 hover:text-red-300 py-2 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}
+                    >
+                      Réinitialiser les filtres
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
       </motion.div>
 

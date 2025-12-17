@@ -8,6 +8,8 @@ import { ThemeProvider } from './contexts/ThemeContext';
 
 // Pages
 import LoginPage from './pages/auth/LoginPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 import ChangePasswordRequired from './pages/auth/ChangePasswordRequired';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ClientsPage from './pages/clients/ClientsPage';
@@ -68,6 +70,10 @@ function App() {
               <Routes>
                 {/* Route de connexion */}
                 <Route path="/login" element={<LoginPage />} />
+                
+                {/* Routes de récupération de mot de passe */}
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
                 
                 {/* Route de changement de mot de passe obligatoire */}
                 <Route path="/change-password-required" element={

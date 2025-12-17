@@ -46,6 +46,8 @@ const CreateProductPage = () => {
     
     if (!formData.nom.trim()) {
       newErrors.nom = 'Le nom du produit est requis';
+    } else if (/^\d+$/.test(formData.nom.trim())) {
+      newErrors.nom = 'Le nom du produit ne peut pas contenir uniquement des chiffres';
     }
     
     if (!formData.prix_unitaire || parseFloat(formData.prix_unitaire) <= 0) {

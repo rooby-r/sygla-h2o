@@ -7,6 +7,7 @@ from .models import Commande, PaiementCommande
 from apps.clients.models import Client
 from .serializers import CommandeSerializer, PaiementCommandeSerializer
 from apps.logs.utils import create_log, LogTimer
+from apps.authentication.notification_service import NotificationService
 
 
 class CommandeHistoriqueSerializer(serializers.ModelSerializer):
@@ -96,6 +97,12 @@ class CommandeListCreateView(generics.ListCreateAPIView):
                         status_code=201,
                         response_time=timer.elapsed
                     )
+                    
+                    # Envoyer notification aux autres utilisateurs
+                    try:
+                        NotificationService.notify_order_created(instance, created_by=request.user)
+                    except Exception as e:
+                        logger.error(f"Erreur notification commande: {e}")
                 
                 return response
                 

@@ -49,7 +49,11 @@ const ClientDetailPage = () => {
       setClient(response);
     } catch (error) {
       console.error('Erreur lors du chargement du client:', error);
-      toast.error('Erreur lors du chargement du client');
+      if (error.response && error.response.status === 404) {
+        toast.error('Ce client n\'existe plus ou a été supprimé');
+      } else {
+        toast.error('Erreur lors du chargement du client');
+      }
       navigate('/clients'); // Retourner à la liste si erreur
     } finally {
       setLoading(false);
@@ -204,26 +208,38 @@ const ClientDetailPage = () => {
           {/* Informations de base */}
           <div className={`backdrop-blur-sm rounded-xl p-6 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : 'bg-dark-800/80 border border-dark-600'}`}>
             <h3 className={`text-xl font-semibold mb-6 flex items-center ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
-              <Building className="w-6 h-6 mr-3 text-primary-400" />
-              Informations de l'entreprise
+              {client.type_client === 'particulier' ? (
+                <User className="w-6 h-6 mr-3 text-secondary-400" />
+              ) : (
+                <Building className="w-6 h-6 mr-3 text-primary-400" />
+              )}
+              {client.type_client === 'particulier' ? "Informations du particulier" : "Informations de l'entreprise"}
             </h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
-                  Raison sociale
+                  Type de client
+                </label>
+                <p className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                  client.type_client === 'particulier'
+                    ? 'bg-secondary-500/20 text-secondary-400'
+                    : 'bg-primary-500/20 text-primary-400'
+                }`}>
+                  {client.type_client === 'particulier' ? (
+                    <><User className="w-4 h-4 mr-2" />Particulier</>
+                  ) : (
+                    <><Building className="w-4 h-4 mr-2" />Entreprise</>
+                  )}
+                </p>
+              </div>
+              
+              <div>
+                <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
+                  {client.type_client === 'particulier' ? 'Nom complet' : 'Nom commercial'}
                 </label>
                 <p className={`text-lg font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{client.nom_commercial}</p>
               </div>
-              
-              {client.nom_commercial && (
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-500' : 'text-gray-300'}`}>
-                    Nom commercial
-                  </label>
-                  <p className={`text-lg ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{client.nom_commercial}</p>
-                </div>
-              )}
             </div>
           </div>
 

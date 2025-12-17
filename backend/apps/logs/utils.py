@@ -26,7 +26,7 @@ def create_log(log_type, message, details='', user=None, module='system',
         'module': module,
         'metadata': metadata or {},
         'status_code': status_code,
-        'response_time': response_time,
+        'response_time': response_time or '',  # CharField ne peut pas être None
     }
     
     if request:

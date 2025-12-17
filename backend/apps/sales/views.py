@@ -223,10 +223,26 @@ class VenteViewSet(viewsets.ModelViewSet):
         """
         Obtenir des statistiques sur les ventes
         CHIFFRE D'AFFAIRES = Montant réellement encaissé (ventes + paiements partiels commandes non converties)
+        Paramètre optionnel: periode=today pour les statistiques du jour uniquement
         """
         from apps.orders.models import Commande
+        from django.utils import timezone
+        from datetime import datetime
+        
+        # Vérifier si on demande uniquement les stats du jour
+        periode = request.query_params.get('periode', None)
         
         ventes = self.filter_queryset(self.get_queryset())
+        commandes_actives = Commande.objects.filter(convertie_en_vente=False).exclude(statut='annulee')
+        
+        if periode == 'today':
+            # Filtrer pour aujourd'hui seulement
+            now = timezone.now()
+            today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+            today_end = now.replace(hour=23, minute=59, second=59, microsecond=999999)
+            
+            ventes = ventes.filter(date_vente__gte=today_start, date_vente__lte=today_end)
+            commandes_actives = commandes_actives.filter(date_creation__gte=today_start, date_creation__lte=today_end)
         
         # Statistiques des ventes (100% payées)
         ventes_stats = {
@@ -234,9 +250,6 @@ class VenteViewSet(viewsets.ModelViewSet):
             'montant_total_ventes': ventes.aggregate(Sum('montant_total'))['montant_total__sum'] or 0,
             'montant_paye_ventes': ventes.aggregate(Sum('montant_paye'))['montant_paye__sum'] or 0,
         }
-        
-        # Commandes NON CONVERTIES EN VENTES et NON ANNULÉES (pour éviter double comptage)
-        commandes_actives = Commande.objects.filter(convertie_en_vente=False).exclude(statut='annulee')
         
         # Total des commandes (pour CA total potentiel)
         commandes_total = commandes_actives.aggregate(Sum('montant_total'))['montant_total__sum'] or 0
@@ -262,6 +275,7 @@ class VenteViewSet(viewsets.ModelViewSet):
             'montant_restant_commandes': float(commandes_restant),
             'montant_total_commandes': float(commandes_total),
             'nombre_commandes_actives': commandes_actives.count(),
+            'periode': periode or 'all',  # Indiquer la période utilisée
         }
         
         return Response(stats)

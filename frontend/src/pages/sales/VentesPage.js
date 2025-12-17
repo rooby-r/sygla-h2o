@@ -20,20 +20,25 @@ import { formatCurrency } from '../../utils/currency';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../hooks/useAuth';
 
 const VentesPage = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [ventes, setVentes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatut, setFilterStatut] = useState('');
   const [stats, setStats] = useState(null);
+  
+  // Les non-admins voient uniquement les stats du jour
+  const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
     fetchVentes();
     fetchStatistiques();
-  }, [filterStatut]);
+  }, [filterStatut, isAdmin]);
 
   const fetchVentes = async () => {
     try {
@@ -53,7 +58,9 @@ const VentesPage = () => {
 
   const fetchStatistiques = async () => {
     try {
-      const data = await venteService.getVentesStatistiques();
+      // Les non-admins voient uniquement les stats du jour
+      const params = isAdmin ? {} : { periode: 'today' };
+      const data = await venteService.getVentesStatistiques(params);
       setStats(data);
     } catch (error) {
       console.error('Erreur lors du chargement des statistiques:', error);
@@ -146,7 +153,9 @@ const VentesPage = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Total Ventes</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>
+                  {isAdmin ? 'Total Ventes' : 'Ventes du Jour'}
+                </p>
                 <p className={`text-2xl font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>{stats.total_ventes}</p>
               </div>
               <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center">
@@ -163,7 +172,9 @@ const VentesPage = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Chiffre d'Affaires Total</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>
+                  {isAdmin ? "Chiffre d'Affaires Total" : "CA du Jour"}
+                </p>
                 <p className={`text-2xl font-bold ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
                   {formatCurrency(stats.chiffre_affaires_encaisse)}
                 </p>
@@ -187,7 +198,9 @@ const VentesPage = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Montant Payé</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>
+                  {isAdmin ? 'Montant Payé' : 'Payé Aujourd\'hui'}
+                </p>
                 <p className="text-2xl font-bold text-green-400">
                   {formatCurrency(stats.montant_paye_ventes)}
                 </p>
@@ -206,7 +219,9 @@ const VentesPage = () => {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>Montant Restant</p>
+                <p className={`text-sm mb-1 ${theme === 'light' ? 'text-slate-600' : 'text-dark-400'}`}>
+                  {isAdmin ? 'Montant Restant' : 'Restant du Jour'}
+                </p>
                 <p className="text-2xl font-bold text-warning-400">
                   {formatCurrency(stats.montant_restant_commandes)}
                 </p>

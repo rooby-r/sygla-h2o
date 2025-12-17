@@ -7,6 +7,7 @@ from rest_framework import filters
 from .models import Produit, MouvementStock
 from .serializers import ProduitSerializer, MouvementStockSerializer, MouvementStockCreateSerializer
 from apps.logs.utils import create_log, LogTimer
+from apps.authentication.notification_service import NotificationService, check_and_notify_low_stock
 
 
 class ProduitListCreateView(generics.ListCreateAPIView):
@@ -48,6 +49,12 @@ class ProduitListCreateView(generics.ListCreateAPIView):
                     status_code=201,
                     response_time=timer.elapsed
                 )
+                
+                # Envoyer notification aux autres utilisateurs
+                try:
+                    NotificationService.notify_product_created(produit, created_by=request.user)
+                except Exception as e:
+                    print(f"Erreur notification produit: {e}")
             
             return response
 

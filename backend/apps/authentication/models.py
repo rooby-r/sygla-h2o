@@ -472,3 +472,79 @@ class UserSession(models.Model):
         count = inactive_sessions.count()
         inactive_sessions.update(is_active=False, logout_time=timezone.now())
         return count
+
+
+class PasswordResetToken(models.Model):
+    """
+    Token pour la réinitialisation de mot de passe
+    """
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='password_reset_tokens',
+        verbose_name='Utilisateur'
+    )
+    token = models.CharField(
+        max_length=100, 
+        unique=True, 
+        verbose_name='Token'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True, 
+        verbose_name='Date de création'
+    )
+    expires_at = models.DateTimeField(
+        verbose_name='Date d\'expiration'
+    )
+    used = models.BooleanField(
+        default=False, 
+        verbose_name='Utilisé'
+    )
+    used_at = models.DateTimeField(
+        null=True, 
+        blank=True, 
+        verbose_name='Date d\'utilisation'
+    )
+
+    class Meta:
+        verbose_name = 'Token de réinitialisation'
+        verbose_name_plural = 'Tokens de réinitialisation'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Reset token pour {self.user.email}"
+
+    def is_valid(self):
+        """Vérifie si le token est encore valide"""
+        if self.used:
+            return False
+        return timezone.now() < self.expires_at
+
+    def mark_as_used(self):
+        """Marque le token comme utilisé"""
+        self.used = True
+        self.used_at = timezone.now()
+        self.save()
+
+    @classmethod
+    def create_token(cls, user, expiry_hours=1):
+        """Crée un nouveau token de réinitialisation"""
+        import secrets
+        
+        # Invalider les anciens tokens non utilisés
+        cls.objects.filter(user=user, used=False).update(used=True)
+        
+        # Créer un nouveau token
+        token = secrets.token_urlsafe(32)
+        expires_at = timezone.now() + timezone.timedelta(hours=expiry_hours)
+        
+        return cls.objects.create(
+            user=user,
+            token=token,
+            expires_at=expires_at
+        )
+
+    @classmethod
+    def cleanup_expired_tokens(cls):
+        """Supprime les tokens expirés"""
+        return cls.objects.filter(expires_at__lt=timezone.now()).delete()

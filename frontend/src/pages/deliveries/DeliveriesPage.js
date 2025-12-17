@@ -9,7 +9,8 @@ import {
   User,
   Navigation,
   Eye,
-  Search
+  Search,
+  Filter
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { deliveryService } from '../../services/api.js';
@@ -24,6 +25,7 @@ const DeliveriesPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [showFilters, setShowFilters] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     en_cours: 0,
@@ -279,16 +281,79 @@ const DeliveriesPage = () => {
               className={`input pl-10 w-full ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
             />
           </div>
-          <select
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className={`input w-48 ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
-          >
-            <option value="all">Tous les statuts</option>
-            <option value="en_cours">En cours</option>
-            <option value="livree">Livrée</option>
-            <option value="annulee">Annulée</option>
-          </select>
+          <div className="relative">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`btn btn-secondary flex items-center space-x-2 ${filterStatus !== 'all' ? 'ring-2 ring-primary-400' : ''}`}
+            >
+              <Filter className="w-5 h-5" />
+              <span>Filtres</span>
+              {filterStatus !== 'all' && (
+                <span className="bg-primary-400 text-white text-xs px-2 py-0.5 rounded-full ml-1">1</span>
+              )}
+            </button>
+            
+            {/* Dropdown Filtres */}
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`absolute right-0 top-full mt-2 w-64 rounded-lg shadow-xl z-50 border ${
+                  theme === 'light' 
+                    ? 'bg-white border-slate-200' 
+                    : 'bg-dark-800 border-dark-700'
+                }`}
+              >
+                <div className="p-4">
+                  <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    Filtrer par statut
+                  </h4>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'all', label: 'Tous les statuts', icon: '📋' },
+                      { value: 'en_cours', label: 'En cours', icon: '🚚' },
+                      { value: 'livree', label: 'Livrée', icon: '✅' },
+                      { value: 'annulee', label: 'Annulée', icon: '❌' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          setFilterStatus(option.value);
+                          setShowFilters(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 ${
+                          filterStatus === option.value
+                            ? 'bg-primary-500/20 text-primary-400'
+                            : theme === 'light' 
+                              ? 'hover:bg-slate-100 text-slate-700'
+                              : 'hover:bg-dark-700 text-dark-200'
+                        }`}
+                      >
+                        <span>{option.icon}</span>
+                        <span>{option.label}</span>
+                        {filterStatus === option.value && (
+                          <span className="ml-auto text-primary-400">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {filterStatus !== 'all' && (
+                    <button
+                      onClick={() => {
+                        setFilterStatus('all');
+                        setShowFilters(false);
+                      }}
+                      className={`w-full mt-3 text-center text-sm text-red-400 hover:text-red-300 py-2 border-t ${theme === 'light' ? 'border-slate-200' : 'border-dark-700'}`}
+                    >
+                      Réinitialiser les filtres
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
       </motion.div>
 
@@ -396,24 +461,6 @@ const DeliveriesPage = () => {
                           >
                             <Eye className="w-4 h-4" />
                           </button>
-                          {delivery.statut === 'validee' && (
-                            <button
-                              onClick={() => updateDeliveryStatus(delivery.id, 'en_livraison')}
-                              className="p-2 text-green-400 hover:bg-green-400/20 rounded-lg transition-colors"
-                              title="Démarrer la livraison"
-                            >
-                              <Truck className="w-4 h-4" />
-                            </button>
-                          )}
-                          {(delivery.statut === 'en_cours' || delivery.statut === 'en_livraison') && (
-                            <button
-                              onClick={() => updateDeliveryStatus(delivery.id, 'livree')}
-                              className="p-2 text-green-400 hover:bg-green-400/20 rounded-lg transition-colors"
-                              title="Marquer comme livrée"
-                            >
-                              <CheckCircle className="w-4 h-4" />
-                            </button>
-                          )}
                         </div>
                       </td>
                     </tr>

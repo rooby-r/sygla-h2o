@@ -29,6 +29,8 @@ const ClientsPage = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all'); // 'all', 'active', 'inactive'
+  const [showFilters, setShowFilters] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -86,11 +88,17 @@ const ClientsPage = () => {
     }
   };
 
-  const filteredClients = clients.filter(client =>
-    (client.nom_commercial && client.nom_commercial.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
-    (client.contact && client.contact.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredClients = clients.filter(client => {
+    const matchesSearch = (client.nom_commercial && client.nom_commercial.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.email && client.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (client.contact && client.contact.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesStatus = filterStatus === 'all' || 
+      (filterStatus === 'active' && client.is_active) ||
+      (filterStatus === 'inactive' && !client.is_active);
+    
+    return matchesSearch && matchesStatus;
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -167,10 +175,78 @@ const ClientsPage = () => {
               className="input pl-10 w-full"
             />
           </div>
-          <button className="btn btn-secondary flex items-center space-x-2">
-            <Filter className="w-5 h-5" />
-            <span>Filtres</span>
-          </button>
+          <div className="relative">
+            <button 
+              onClick={() => setShowFilters(!showFilters)}
+              className={`btn btn-secondary flex items-center space-x-2 ${filterStatus !== 'all' ? 'ring-2 ring-primary-400' : ''}`}
+            >
+              <Filter className="w-5 h-5" />
+              <span>Filtres</span>
+              {filterStatus !== 'all' && (
+                <span className="bg-primary-400 text-white text-xs px-2 py-0.5 rounded-full ml-1">1</span>
+              )}
+            </button>
+            
+            {/* Dropdown Filtres */}
+            {showFilters && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`absolute right-0 top-full mt-2 w-64 rounded-lg shadow-xl z-50 border ${
+                  theme === 'light' 
+                    ? 'bg-white border-slate-200' 
+                    : 'bg-dark-800 border-dark-700'
+                }`}
+              >
+                <div className="p-4">
+                  <h4 className={`font-semibold mb-3 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                    Filtrer par statut
+                  </h4>
+                  <div className="space-y-2">
+                    {[
+                      { value: 'all', label: 'Tous les clients', icon: '📋' },
+                      { value: 'active', label: 'Clients actifs', icon: '✅' },
+                      { value: 'inactive', label: 'Clients inactifs', icon: '❌' }
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          setFilterStatus(option.value);
+                          setShowFilters(false);
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors flex items-center space-x-2 ${
+                          filterStatus === option.value
+                            ? 'bg-primary-500/20 text-primary-400'
+                            : theme === 'light' 
+                              ? 'hover:bg-slate-100 text-slate-700'
+                              : 'hover:bg-dark-700 text-dark-200'
+                        }`}
+                      >
+                        <span>{option.icon}</span>
+                        <span>{option.label}</span>
+                        {filterStatus === option.value && (
+                          <span className="ml-auto text-primary-400">✓</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {filterStatus !== 'all' && (
+                    <button
+                      onClick={() => {
+                        setFilterStatus('all');
+                        setShowFilters(false);
+                      }}
+                      className="w-full mt-3 text-center text-sm text-red-400 hover:text-red-300 py-2 border-t border-dark-700"
+                    >
+                      Réinitialiser les filtres
+                    </button>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
       </motion.div>
 

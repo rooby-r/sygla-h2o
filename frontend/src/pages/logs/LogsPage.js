@@ -252,17 +252,6 @@ const LogsPage = () => {
           </p>
         </div>
         <div className="flex gap-3">
-          {hasPermission(user, 'logs', 'export') && (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleExport}
-              className="btn btn-secondary flex items-center"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Exporter
-            </motion.button>
-          )}
           {hasPermission(user, 'logs', 'clear') && (
             <motion.button
               whileHover={{ scale: 1.05 }}

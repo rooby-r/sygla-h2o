@@ -7,6 +7,7 @@ from django.db.models import Q
 from .models import Client
 from .serializers import ClientSerializer, ClientListSerializer, ClientDetailSerializer
 from apps.logs.utils import create_log, LogTimer
+from apps.authentication.notification_service import NotificationService
 
 
 class ClientListCreateView(generics.ListCreateAPIView):
@@ -66,6 +67,13 @@ class ClientListCreateView(generics.ListCreateAPIView):
                     'email': client_data.get('email')
                 }
             )
+            
+            # Envoyer notification aux autres utilisateurs
+            try:
+                client = Client.objects.get(id=client_data.get('id'))
+                NotificationService.notify_client_created(client, created_by=request.user)
+            except Exception as e:
+                print(f"Erreur notification client: {e}")
         
         return response
 

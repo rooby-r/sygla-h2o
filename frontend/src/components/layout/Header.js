@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, Bell, Search, X, ShoppingCart, Package, Users, DollarSign, Clock } from 'lucide-react';
+import { Menu, Bell, Search, X, ShoppingCart, Package, Users, DollarSign, Clock, Truck } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { orderService, clientService, productService } from '../../services/api';
+import { orderService, clientService, productService, deliveryService } from '../../services/api';
 import venteService from '../../services/venteService';
 import notificationService from '../../services/notificationService';
 import { formatHTG } from '../../utils/currency';
 import { useDataUpdate } from '../../contexts/DataUpdateContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { hasPermission } from '../../config/permissions';
 
 const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
   const { user } = useAuth();
@@ -186,89 +187,155 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
   const performSearch = async () => {
     setSearchLoading(true);
     try {
-      const [ordersRes, clientsRes, productsRes, ventesRes] = await Promise.all([
-        orderService.getAll().catch(() => ({ results: [] })),
-        clientService.getAll().catch(() => ({ results: [] })),
-        productService.getAll().catch(() => ({ results: [] })),
-        venteService.getVentes().catch(() => ({ results: [] }))
-      ]);
+      // Créer les promesses de recherche selon les permissions de l'utilisateur
+      const promises = [];
+      const promiseTypes = [];
+      const userRole = user?.role;
+
+      // Commandes - pour admin, vendeur
+      if (hasPermission(user, 'orders', 'view')) {
+        promises.push(orderService.getAll().catch(() => ({ results: [] })));
+        promiseTypes.push('orders');
+      }
+
+      // Clients - pour admin, vendeur (PAS pour stock)
+      if (hasPermission(user, 'clients', 'view') && userRole !== 'stock') {
+        promises.push(clientService.getAll().catch(() => ({ results: [] })));
+        promiseTypes.push('clients');
+      }
+
+      // Produits - pour admin, stock (PAS pour vendeur)
+      if (hasPermission(user, 'products', 'view') && userRole !== 'vendeur') {
+        promises.push(productService.getAll().catch(() => ({ results: [] })));
+        promiseTypes.push('products');
+      }
+
+      // Ventes - pour admin, vendeur
+      if (hasPermission(user, 'sales', 'view')) {
+        promises.push(venteService.getVentes().catch(() => ({ results: [] })));
+        promiseTypes.push('sales');
+      }
+
+      // Livraisons - pour admin, livreur
+      if (hasPermission(user, 'deliveries', 'view')) {
+        promises.push(deliveryService.getAll().catch(() => ({ results: [] })));
+        promiseTypes.push('deliveries');
+      }
+
+      const responses = await Promise.all(promises);
+      
+      // Mapper les réponses aux types
+      const dataByType = {};
+      promiseTypes.forEach((type, index) => {
+        dataByType[type] = responses[index];
+      });
 
       const query = searchQuery.toLowerCase();
       const results = [];
 
       // Recherche dans les commandes
-      (ordersRes.results || ordersRes || [])
-        .filter(order => 
-          order.numero_commande?.toLowerCase().includes(query) ||
-          order.client_nom?.toLowerCase().includes(query)
-        )
-        .slice(0, 3)
-        .forEach(order => {
-          results.push({
-            type: 'order',
-            icon: ShoppingCart,
-            title: order.numero_commande,
-            subtitle: `Client: ${order.client_nom || 'N/A'}`,
-            info: formatHTG(order.montant_total),
-            path: `/orders/${order.id}`
+      if (dataByType.orders) {
+        (dataByType.orders.results || dataByType.orders || [])
+          .filter(order => 
+            order.numero_commande?.toLowerCase().includes(query) ||
+            order.client_nom?.toLowerCase().includes(query)
+          )
+          .slice(0, 3)
+          .forEach(order => {
+            results.push({
+              type: 'order',
+              icon: ShoppingCart,
+              title: order.numero_commande,
+              subtitle: `Client: ${order.client_nom || 'N/A'}`,
+              info: formatHTG(order.montant_total),
+              path: `/orders/${order.id}`
+            });
           });
-        });
+      }
 
       // Recherche dans les ventes
-      (ventesRes.results || ventesRes || [])
-        .filter(vente => 
-          vente.numero_vente?.toLowerCase().includes(query) ||
-          vente.client_nom?.toLowerCase().includes(query)
-        )
-        .slice(0, 3)
-        .forEach(vente => {
-          results.push({
-            type: 'sale',
-            icon: DollarSign,
-            title: vente.numero_vente,
-            subtitle: `Client: ${vente.client_nom || 'N/A'}`,
-            info: formatHTG(vente.montant_total),
-            path: `/sales/${vente.id}`
+      if (dataByType.sales) {
+        (dataByType.sales.results || dataByType.sales || [])
+          .filter(vente => 
+            vente.numero_vente?.toLowerCase().includes(query) ||
+            vente.client_nom?.toLowerCase().includes(query)
+          )
+          .slice(0, 3)
+          .forEach(vente => {
+            results.push({
+              type: 'sale',
+              icon: DollarSign,
+              title: vente.numero_vente,
+              subtitle: `Client: ${vente.client_nom || 'N/A'}`,
+              info: formatHTG(vente.montant_total),
+              path: `/sales/${vente.id}`
+            });
           });
-        });
+      }
 
       // Recherche dans les clients
-      (clientsRes.results || clientsRes || [])
-        .filter(client => 
-          client.nom_commercial?.toLowerCase().includes(query) ||
-          client.raison_sociale?.toLowerCase().includes(query) ||
-          client.contact?.toLowerCase().includes(query) ||
-          client.telephone?.toLowerCase().includes(query)
-        )
-        .slice(0, 3)
-        .forEach(client => {
-          results.push({
-            type: 'client',
-            icon: Users,
-            title: client.nom_commercial || client.raison_sociale,
-            subtitle: client.telephone || client.email,
-            info: client.contact,
-            path: `/clients/${client.id}`
+      if (dataByType.clients) {
+        (dataByType.clients.results || dataByType.clients || [])
+          .filter(client => 
+            client.nom_commercial?.toLowerCase().includes(query) ||
+            client.raison_sociale?.toLowerCase().includes(query) ||
+            client.contact?.toLowerCase().includes(query) ||
+            client.telephone?.toLowerCase().includes(query)
+          )
+          .slice(0, 3)
+          .forEach(client => {
+            results.push({
+              type: 'client',
+              icon: Users,
+              title: client.nom_commercial || client.raison_sociale,
+              subtitle: client.telephone || client.email,
+              info: client.contact,
+              path: `/clients/${client.id}`
+            });
           });
-        });
+      }
 
       // Recherche dans les produits
-      (productsRes.results || productsRes || [])
-        .filter(product => 
-          product.nom?.toLowerCase().includes(query) ||
-          product.code_produit?.toLowerCase().includes(query)
-        )
-        .slice(0, 3)
-        .forEach(product => {
-          results.push({
-            type: 'product',
-            icon: Package,
-            title: product.nom,
-            subtitle: product.code_produit,
-            info: `Stock: ${product.stock_actuel}`,
-            path: `/products/${product.id}`
+      if (dataByType.products) {
+        (dataByType.products.results || dataByType.products || [])
+          .filter(product => 
+            product.nom?.toLowerCase().includes(query) ||
+            product.code_produit?.toLowerCase().includes(query)
+          )
+          .slice(0, 3)
+          .forEach(product => {
+            results.push({
+              type: 'product',
+              icon: Package,
+              title: product.nom,
+              subtitle: product.code_produit,
+              info: `Stock: ${product.stock_actuel}`,
+              path: `/products/${product.id}`
+            });
           });
-        });
+      }
+
+      // Recherche dans les livraisons
+      if (dataByType.deliveries) {
+        (dataByType.deliveries.results || dataByType.deliveries || [])
+          .filter(delivery => 
+            delivery.numero_commande?.toLowerCase().includes(query) ||
+            delivery.client?.nom_commercial?.toLowerCase().includes(query) ||
+            delivery.client?.raison_sociale?.toLowerCase().includes(query) ||
+            delivery.adresse_livraison?.toLowerCase().includes(query)
+          )
+          .slice(0, 5)
+          .forEach(delivery => {
+            results.push({
+              type: 'delivery',
+              icon: Truck,
+              title: `LIV-${delivery.id?.toString().padStart(4, '0')}`,
+              subtitle: delivery.client?.nom_commercial || delivery.client?.raison_sociale || 'Client',
+              info: delivery.statut === 'en_livraison' ? 'En cours' : delivery.statut === 'livree' ? 'Livrée' : delivery.statut,
+              path: `/deliveries/${delivery.id}`
+            });
+          });
+      }
 
       setSearchResults(results);
       setShowSearchResults(results.length > 0);
@@ -584,13 +651,15 @@ const Header = ({ onMenuToggle, isSidebarOpen, isMobile }) => {
                             result.type === 'order' ? 'bg-blue-500/20' :
                             result.type === 'sale' ? 'bg-green-500/20' :
                             result.type === 'client' ? 'bg-purple-500/20' :
-                            'bg-orange-500/20'
+                            result.type === 'delivery' ? 'bg-orange-500/20' :
+                            'bg-cyan-500/20'
                           }`}>
                             <Icon className={`w-5 h-5 ${
                               result.type === 'order' ? 'text-blue-400' :
                               result.type === 'sale' ? 'text-green-400' :
                               result.type === 'client' ? 'text-purple-400' :
-                              'text-orange-400'
+                              result.type === 'delivery' ? 'text-orange-400' :
+                              'text-cyan-400'
                             }`} />
                           </div>
                           <div className="flex-1 min-w-0">

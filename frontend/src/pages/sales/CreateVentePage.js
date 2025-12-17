@@ -512,227 +512,27 @@ const CreateVentePage = () => {
                       )}
                     </div>
                   )}
-
-                  {selectedClient && (
-                    <div className={`rounded-lg p-4 ${theme === 'light' ? 'bg-primary-50 border border-primary-200' : 'bg-primary-900/20 border border-primary-700'}`}>
-                      <h4 className="font-medium text-primary-300 mb-2">Client sélectionné</h4>
-                      <div className="space-y-1 text-sm">
-                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Entreprise:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.nom_commercial}</span></div>
-                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Contact:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.contact}</span></div>
-                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Téléphone:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.telephone}</span></div>
-                        <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Email:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.email}</span></div>
-                      </div>
-                    </div>
-                  )}
+                  {/* Rien ici, la fiche client sera affichée en dehors */}
                 </div>
               </motion.div>
 
-              {/* Type de livraison */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 }}
-                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
-              >
-                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
-                  <Package className="text-accent-400" size={20} />
-                  <span>Type de livraison</span>
-                </h3>
-
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'border-slate-200 hover:bg-slate-50' : 'border-dark-600 hover:bg-dark-700/50'}`}>
-                      <input
-                        type="radio"
-                        name="type_livraison"
-                        value="retrait_magasin"
-                        checked={formData.type_livraison === 'retrait_magasin'}
-                        onChange={(e) => setFormData(prev => ({ 
-                          ...prev, 
-                          type_livraison: e.target.value,
-                          date_livraison_prevue: e.target.value === 'retrait_magasin' ? '' : prev.date_livraison_prevue
-                        }))}
-                        className="mr-3 text-green-400"
-                      />
-                      <div>
-                        <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Retrait en magasin</div>
-                        <div className="text-green-400 text-sm font-medium">Gratuit</div>
-                        <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Récupérer votre commande sur place</div>
-                      </div>
-                    </label>
-
-                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'border-slate-200 hover:bg-slate-50' : 'border-dark-600 hover:bg-dark-700/50'}`}>
-                      <input
-                        type="radio"
-                        name="type_livraison"
-                        value="livraison_domicile"
-                        checked={formData.type_livraison === 'livraison_domicile'}
-                        onChange={(e) => setFormData(prev => ({ ...prev, type_livraison: e.target.value }))}
-                        className="mr-3 text-primary-400"
-                      />
-                      <div>
-                        <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Livraison à domicile</div>
-                        <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livraison directement chez vous</div>
-                      </div>
-                    </label>
+              {/* Fiche Client après la section Informations Client */}
+              {selectedClient && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.12 }}
+                  className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-primary-50 border border-primary-200' : 'bg-primary-900/20 border border-primary-700'}`}
+                >
+                  <h4 className="font-medium text-primary-300 mb-2">Client sélectionné</h4>
+                  <div className="space-y-1 text-sm">
+                    <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Entreprise:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.nom_commercial}</span></div>
+                    <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Contact:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.contact}</span></div>
+                    <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Téléphone:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.telephone}</span></div>
+                    <div><span className={`font-medium ${theme === 'light' ? 'text-slate-500' : 'text-dark-200'}`}>Email:</span> <span className={theme === 'light' ? 'text-slate-800' : 'text-white'}>{selectedClient.email}</span></div>
                   </div>
-
-                  {formData.type_livraison === 'livraison_domicile' && (
-                    <>
-                      <div>
-                        <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
-                          Frais de livraison (HTG) *
-                        </label>
-                        <input
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          value={formData.frais_livraison}
-                          onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
-                          placeholder="0.00"
-                          className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
-                          required
-                        />
-                      </div>
-
-                      <div>
-                        <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
-                          Date de livraison prévue *
-                        </label>
-                        <input
-                          type="date"
-                          value={formData.date_livraison_prevue}
-                          onChange={(e) => setFormData(prev => ({ ...prev, date_livraison_prevue: e.target.value }))}
-                          min={new Date().toISOString().split('T')[0]}
-                          className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
-                          required
-                        />
-                      </div>
-                    </>
-                  )}
-                </div>
-              </motion.div>
-
-              {/* Méthode de paiement et pourcentage */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
-              >
-                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
-                  <DollarSign className="text-accent-400" size={20} />
-                  <span>Paiement</span>
-                </h3>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
-                      Méthode de paiement *
-                    </label>
-                    <select
-                      value={formData.methode_paiement}
-                      onChange={(e) => setFormData(prev => ({ ...prev, methode_paiement: e.target.value }))}
-                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
-                      required
-                    >
-                      <option value="especes">Espèces</option>
-                      <option value="carte">Carte bancaire</option>
-                      <option value="virement">Virement</option>
-                      <option value="cheque">Chèque</option>
-                      <option value="mobile">Paiement mobile</option>
-                      <option value="credit">Crédit</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
-                      Montant versé (HTG) *
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      max={calculateTotal()}
-                      value={formData.montant_verse}
-                      onChange={(e) => setFormData(prev => ({ ...prev, montant_verse: e.target.value }))}
-                      placeholder={`Total: ${formatHTG(calculateTotal())}`}
-                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
-                    />
-                    <div className="mt-2 space-y-1">
-                      <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
-                        Pourcentage: <span className="text-primary-400 font-bold">{calculatePourcentage().toFixed(0)}%</span>
-                        {calculatePourcentage() < 100 && calculatePourcentage() > 0 && (
-                          <span className="text-warning-400 ml-2">
-                            (Minimum 60%: {formatHTG(calculateMinimum60())})
-                          </span>
-                        )}
-                      </p>
-                      <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
-                        {parseFloat(formData.montant_verse || 0) >= calculateTotal()
-                          ? <span className="text-green-400">✓ Sera créée comme vente (100% payé)</span>
-                          : parseFloat(formData.montant_verse || 0) > 0
-                            ? <span className="text-warning-400">⚠ Sera créée comme commande (paiement partiel)</span>
-                            : <span className="text-red-400">⚠ Aucun paiement - Sera créée comme commande impayée</span>
-                        }
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {parseFloat(formData.montant_verse || 0) < calculateTotal() && parseFloat(formData.montant_verse || 0) > 0 && (
-                  <div className="mt-4 p-4 bg-warning-500/10 border border-warning-500/30 rounded-lg">
-                    <div className="flex items-center space-x-2 text-warning-400">
-                      <AlertCircle size={16} />
-                      <span className="text-sm font-medium">
-                        Paiement partiel ({calculatePourcentage().toFixed(0)}%) - Cette transaction sera enregistrée comme commande
-                      </span>
-                    </div>
-                    {parseFloat(formData.montant_verse || 0) < calculateMinimum60() && (
-                      <p className="text-red-400 text-xs mt-2">
-                        ⚠ Le premier paiement doit être d'au moins 60% ({formatHTG(calculateMinimum60())})
-                      </p>
-                    )}
-                  </div>
-                )}
-
-                {parseFloat(formData.montant_verse || 0) === 0 && calculateTotal() > 0 && (
-                  <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <div className="flex items-center space-x-2 text-red-400">
-                      <AlertCircle size={16} />
-                      <span className="text-sm font-medium">
-                        Aucun paiement initial - Le client devra verser au moins 60% pour valider
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </motion.div>
-
-              {/* Date d'échéance */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 }}
-                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
-              >
-                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
-                  <Calendar className="text-primary-400" size={20} />
-                  <span>Date d'échéance</span>
-                </h3>
-
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
-                    Date d'échéance (optionnelle)
-                  </label>
-                  <input
-                    type="date"
-                    value={formData.date_echeance}
-                    onChange={(e) => setFormData(prev => ({ ...prev, date_echeance: e.target.value }))}
-                    min={new Date().toISOString().split('T')[0]}
-                    className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
-                  />
-                </div>
-              </motion.div>
+                </motion.div>
+              )}
 
               {/* Produits */}
               <motion.div
@@ -879,6 +679,213 @@ const CreateVentePage = () => {
                     ))}
                   </div>
                 )}
+              </motion.div>
+
+              {/* Méthode de paiement et pourcentage */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 }}
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
+              >
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                  <DollarSign className="text-accent-400" size={20} />
+                  <span>Paiement</span>
+                </h3>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
+                      Méthode de paiement *
+                    </label>
+                    <select
+                      value={formData.methode_paiement}
+                      onChange={(e) => setFormData(prev => ({ ...prev, methode_paiement: e.target.value }))}
+                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
+                      required
+                    >
+                      <option value="especes">Espèces</option>
+                      <option value="carte">Carte bancaire</option>
+                      <option value="virement">Virement</option>
+                      <option value="cheque">Chèque</option>
+                      <option value="mobile">Paiement mobile</option>
+                      <option value="credit">Crédit</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
+                      Montant versé (HTG) *
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      max={calculateTotal()}
+                      value={formData.montant_verse}
+                      onChange={(e) => setFormData(prev => ({ ...prev, montant_verse: e.target.value }))}
+                      placeholder={`Total: ${formatHTG(calculateTotal())}`}
+                      className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
+                    />
+                    <div className="mt-2 space-y-1">
+                      <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
+                        Pourcentage: <span className="text-primary-400 font-bold">{calculatePourcentage().toFixed(0)}%</span>
+                        {calculatePourcentage() < 100 && calculatePourcentage() > 0 && (
+                          <span className="text-warning-400 ml-2">
+                            (Minimum 60%: {formatHTG(calculateMinimum60())})
+                          </span>
+                        )}
+                      </p>
+                      <p className={`text-xs ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
+                        {parseFloat(formData.montant_verse || 0) >= calculateTotal()
+                          ? <span className="text-green-400">✓ Sera créée comme vente (100% payé)</span>
+                          : parseFloat(formData.montant_verse || 0) > 0
+                            ? <span className="text-warning-400">⚠ Sera créée comme commande (paiement partiel)</span>
+                            : <span className="text-red-400">⚠ Aucun paiement - Sera créée comme commande impayée</span>
+                        }
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {parseFloat(formData.montant_verse || 0) < calculateTotal() && parseFloat(formData.montant_verse || 0) > 0 && (
+                  <div className="mt-4 p-4 bg-warning-500/10 border border-warning-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 text-warning-400">
+                      <AlertCircle size={16} />
+                      <span className="text-sm font-medium">
+                        Paiement partiel ({calculatePourcentage().toFixed(0)}%) - Cette transaction sera enregistrée comme commande
+                      </span>
+                    </div>
+                    {parseFloat(formData.montant_verse || 0) < calculateMinimum60() && (
+                      <p className="text-red-400 text-xs mt-2">
+                        ⚠ Le premier paiement doit être d'au moins 60% ({formatHTG(calculateMinimum60())})
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {parseFloat(formData.montant_verse || 0) === 0 && calculateTotal() > 0 && (
+                  <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
+                    <div className="flex items-center space-x-2 text-red-400">
+                      <AlertCircle size={16} />
+                      <span className="text-sm font-medium">
+                        Aucun paiement initial - Le client devra verser au moins 60% pour valider
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+
+              {/* Type de livraison */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
+              >
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                  <Package className="text-accent-400" size={20} />
+                  <span>Type de livraison</span>
+                </h3>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'border-slate-200 hover:bg-slate-50' : 'border-dark-600 hover:bg-dark-700/50'}`}>
+                      <input
+                        type="radio"
+                        name="type_livraison"
+                        value="retrait_magasin"
+                        checked={formData.type_livraison === 'retrait_magasin'}
+                        onChange={(e) => setFormData(prev => ({ 
+                          ...prev, 
+                          type_livraison: e.target.value,
+                          date_livraison_prevue: e.target.value === 'retrait_magasin' ? '' : prev.date_livraison_prevue
+                        }))}
+                        className="mr-3 text-green-400"
+                      />
+                      <div>
+                        <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Retrait en magasin</div>
+                        <div className="text-green-400 text-sm font-medium">Gratuit</div>
+                        <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Récupérer votre commande sur place</div>
+                      </div>
+                    </label>
+
+                    <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${theme === 'light' ? 'border-slate-200 hover:bg-slate-50' : 'border-dark-600 hover:bg-dark-700/50'}`}>
+                      <input
+                        type="radio"
+                        name="type_livraison"
+                        value="livraison_domicile"
+                        checked={formData.type_livraison === 'livraison_domicile'}
+                        onChange={(e) => setFormData(prev => ({ ...prev, type_livraison: e.target.value }))}
+                        className="mr-3 text-primary-400"
+                      />
+                      <div>
+                        <div className={`font-medium ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>Livraison à domicile</div>
+                        <div className={`text-sm ${theme === 'light' ? 'text-slate-500' : 'text-dark-300'}`}>Livraison directement chez vous</div>
+                      </div>
+                    </label>
+                  </div>
+
+                  {formData.type_livraison === 'livraison_domicile' && (
+                    <>
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
+                          Frais de livraison (HTG) *
+                        </label>
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={formData.frais_livraison}
+                          onChange={(e) => setFormData(prev => ({ ...prev, frais_livraison: e.target.value }))}
+                          placeholder="0.00"
+                          className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
+                          Date de livraison prévue *
+                        </label>
+                        <input
+                          type="date"
+                          value={formData.date_livraison_prevue}
+                          onChange={(e) => setFormData(prev => ({ ...prev, date_livraison_prevue: e.target.value }))}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent text-white"
+                          required
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+
+              {/* Date d'échéance */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+                className={`backdrop-blur-sm rounded-xl shadow-lg p-6 ${theme === 'light' ? 'bg-white border border-slate-200' : 'bg-dark-800/50 border border-dark-700'}`}
+              >
+                <h3 className={`text-lg font-semibold mb-4 flex items-center space-x-2 ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>
+                  <Calendar className="text-primary-400" size={20} />
+                  <span>Date d'échéance</span>
+                </h3>
+
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-200'}`}>
+                    Date d'échéance (optionnelle)
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.date_echeance}
+                    onChange={(e) => setFormData(prev => ({ ...prev, date_echeance: e.target.value }))}
+                    min={new Date().toISOString().split('T')[0]}
+                    className={`w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-primary-400 focus:border-transparent ${theme === 'light' ? 'bg-white border border-slate-300 text-slate-800' : 'bg-dark-700 border border-dark-600 text-white'}`}
+                  />
+                </div>
               </motion.div>
 
               {/* Notes */}
