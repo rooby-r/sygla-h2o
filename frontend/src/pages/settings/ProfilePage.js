@@ -165,6 +165,10 @@ const ProfilePage = () => {
       setSavingProfile(true);
       // Exclure photo_url qui est en lecture seule et nettoyer le téléphone
       const { photo_url, ...dataToSend } = profileData;
+      // Ne jamais envoyer le champ photo si l'utilisateur ne change pas la photo
+      if ('photo' in dataToSend && !dataToSend.photo) {
+        delete dataToSend.photo;
+      }
       // Nettoyer le numéro de téléphone (retirer espaces, tirets, parenthèses)
       if (dataToSend.telephone) {
         dataToSend.telephone = dataToSend.telephone.replace(/[\s\-\(\)]/g, '');
