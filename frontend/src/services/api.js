@@ -12,12 +12,13 @@ const getApiBaseUrl = () => {
   return `http://${hostname}:8000/api`;
 };
 
-// Configuration de base d'Axios
+// Configuration de base d'Axios - optimisée pour rapidité
 const api = axios.create({
   baseURL: getApiBaseUrl(),
-  timeout: 10000,
+  timeout: 15000,  // 15 secondes timeout
   headers: {
     'Content-Type': 'application/json',
+    'Accept': 'application/json',
   },
 });
 
