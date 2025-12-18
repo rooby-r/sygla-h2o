@@ -172,6 +172,13 @@ const ProfilePage = () => {
       // Nettoyer le numéro de téléphone (retirer espaces, tirets, parenthèses)
       if (dataToSend.telephone) {
         dataToSend.telephone = dataToSend.telephone.replace(/[\s\-\(\)]/g, '');
+        // Valider le format haïtien (+509 suivi de 8 chiffres)
+        const haitiPhoneRegex = /^\+509\d{8}$/;
+        if (!haitiPhoneRegex.test(dataToSend.telephone)) {
+          toast.error('Le numéro de téléphone doit être au format haïtien: +509 suivi de 8 chiffres');
+          setSavingProfile(false);
+          return;
+        }
       }
       const response = await api.put('/auth/profile/', dataToSend);
       updateUser(response.data);
@@ -387,15 +394,18 @@ const ProfilePage = () => {
             <div>
               <label className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-slate-600' : 'text-dark-300'}`}>
                 <Phone className="w-4 h-4 inline mr-2" />
-                Téléphone
+                Téléphone (Haïti)
               </label>
               <input
                 type="tel"
                 value={profileData.telephone}
                 onChange={(e) => handleProfileChange('telephone', e.target.value)}
                 className={`input ${theme === 'light' ? 'bg-slate-50 border-slate-200 text-slate-900' : ''}`}
-                placeholder="+33 6 12 34 56 78"
+                placeholder="+509 3456 7890"
               />
+              <p className={`text-xs mt-1 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
+                Format: +509 suivi de 8 chiffres
+              </p>
             </div>
 
             {/* Adresse */}
