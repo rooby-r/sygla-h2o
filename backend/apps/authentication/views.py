@@ -33,7 +33,7 @@ class RegisterView(generics.CreateAPIView):
         refresh = RefreshToken.for_user(user)
         
         return Response({
-            'user': UserProfileSerializer(user).data,
+            'user': UserProfileSerializer(user, context={'request': request}).data,
             'tokens': {
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
@@ -127,7 +127,7 @@ def login_view(request):
         must_change_password = user.must_change_password and user.role != 'admin'
         
         response = Response({
-            'user': UserProfileSerializer(user).data,
+            'user': UserProfileSerializer(user, context={'request': request}).data,
             'tokens': {
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
