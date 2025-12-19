@@ -74,10 +74,19 @@ const LoginPage = () => {
       }
     } catch (err) {
       console.error('Erreur de connexion:', err);
-      const errorMessage = err.response?.data?.non_field_errors?.[0] || 
-                          err.response?.data?.error || 
-                          err.response?.data?.detail ||
-                          'Une erreur inattendue s\'est produite';
+      let errorMessage;
+      
+      // Gestion spéciale pour les erreurs de timeout (cold start Render)
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        errorMessage = 'Le serveur est en train de démarrer. Veuillez réessayer dans quelques secondes...';
+      } else if (err.code === 'ERR_NETWORK' || !err.response) {
+        errorMessage = 'Impossible de joindre le serveur. Vérifiez votre connexion ou réessayez.';
+      } else {
+        errorMessage = err.response?.data?.non_field_errors?.[0] || 
+                      err.response?.data?.error || 
+                      err.response?.data?.detail ||
+                      'Une erreur inattendue s\'est produite';
+      }
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
