@@ -22,11 +22,13 @@ import { formatHTG } from '../../utils/currency';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useAuth } from '../../hooks/useAuth';
 
 const VenteDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [vente, setVente] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPaiementModal, setShowPaiementModal] = useState(false);
@@ -324,12 +326,10 @@ const VenteDetailPage = () => {
         ${vente.type_livraison ? `
         <div class="section">
           <div class="section-title">🚚 Livraison</div>
-          ${vente.livreur ? `
           <div class="info-row">
             <span class="label">Livreur:</span>
-            <span class="value">${vente.livreur}</span>
+            <span class="value">${vente.livreur ? vente.livreur : (user?.role === 'livreur' ? (user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email) : 'Non assigné')}</span>
           </div>
-          ` : ''}
           <div class="info-row">
             <span class="label">Date prévue:</span>
             <span class="value">${vente.date_livraison_prevue ? format(new Date(vente.date_livraison_prevue), 'dd/MM/yyyy à HH:mm', { locale: fr }) : 'N/A'}</span>

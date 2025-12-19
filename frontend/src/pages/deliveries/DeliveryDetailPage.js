@@ -455,7 +455,7 @@ SYGLA-H2O`;
           <div class="section-title">🚚 Livraison</div>
           <div class="info-row">
             <span class="label">Livreur:</span>
-            <span class="value">${delivery.livreur && delivery.livreur !== 'Non assigné' ? delivery.livreur : 'Non assigné'}</span>
+            <span class="value">${delivery.livreur && delivery.livreur !== 'Non assigné' ? delivery.livreur : (user?.role === 'livreur' ? (user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email) : 'Non assigné')}</span>
           </div>
           <div class="info-row">
             <span class="label">Date prévue:</span>
