@@ -1,11 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, Camera, X, ArrowLeft } from 'lucide-react';
+import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../contexts/ThemeContext';
+
+// Fonction pour générer les initiales
+const getInitials = (firstName, lastName, email) => {
+  if (firstName && lastName) {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  }
+  if (firstName) {
+    return firstName.charAt(0).toUpperCase();
+  }
+  if (email) {
+    return email.charAt(0).toUpperCase();
+  }
+  return 'U';
+};
+
+// Fonction pour générer une couleur basée sur le nom
+const getAvatarColor = (name) => {
+  const colors = [
+    'from-blue-500 to-cyan-500',
+    'from-purple-500 to-pink-500',
+    'from-green-500 to-emerald-500',
+    'from-orange-500 to-amber-500',
+    'from-red-500 to-rose-500',
+    'from-indigo-500 to-violet-500',
+    'from-teal-500 to-cyan-500',
+    'from-fuchsia-500 to-purple-500',
+  ];
+  
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return colors[Math.abs(hash) % colors.length];
+};
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -13,9 +47,6 @@ const ProfilePage = () => {
   const { theme } = useTheme();
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const [photoPreview, setPhotoPreview] = useState(null);
-  const fileInputRef = useRef(null);
   const [showPasswords, setShowPasswords] = useState({
     old: false,
     new: false,
@@ -27,8 +58,7 @@ const ProfilePage = () => {
     last_name: '',
     email: '',
     telephone: '',
-    adresse: '',
-    photo_url: null
+    adresse: ''
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -44,12 +74,8 @@ const ProfilePage = () => {
         last_name: user.last_name || '',
         email: user.email || '',
         telephone: user.telephone || '',
-        adresse: user.adresse || '',
-        photo_url: user.photo_url || null
+        adresse: user.adresse || ''
       });
-      if (user.photo_url) {
-        setPhotoPreview(user.photo_url);
-      }
     }
   }, [user]);
 
@@ -72,92 +98,6 @@ const ProfilePage = () => {
       ...prev,
       [field]: !prev[field]
     }));
-  };
-
-  const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Vérifier le type de fichier
-      if (!file.type.startsWith('image/')) {
-        toast.error('Veuillez sélectionner un fichier image');
-        return;
-      }
-      
-      // Vérifier la taille (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('La photo ne doit pas dépasser 5MB');
-        return;
-      }
-
-      // Créer un aperçu
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-      
-      // Envoyer immédiatement la photo
-      handlePhotoUpload(file);
-    }
-  };
-
-  const handlePhotoUpload = async (file) => {
-    try {
-      setUploadingPhoto(true);
-      console.log('📸 Début upload photo:', file.name, file.type, file.size);
-      
-      const formData = new FormData();
-      formData.append('photo', file);
-      
-      console.log('📤 Envoi de la requête...');
-      // Supprimer explicitement le Content-Type pour que axios utilise multipart/form-data
-      const response = await api.put('/auth/profile/', formData, {
-        headers: {
-          'Content-Type': undefined
-        }
-      });
-      
-      console.log('✅ Réponse:', response.data);
-      updateUser(response.data);
-      toast.success('Photo de profil mise à jour avec succès');
-    } catch (error) {
-      console.error('❌ Erreur lors de l\'upload de la photo:', error);
-      console.error('❌ Response:', error.response);
-      console.error('❌ Response data:', error.response?.data);
-      console.error('❌ Response status:', error.response?.status);
-      toast.error(error.response?.data?.error || error.response?.data?.detail || 'Erreur lors de l\'upload de la photo');
-      // Revenir à l'ancienne photo en cas d'erreur
-      if (user?.photo_url) {
-        setPhotoPreview(user.photo_url);
-      } else {
-        setPhotoPreview(null);
-      }
-    } finally {
-      setUploadingPhoto(false);
-    }
-  };
-
-  const handleRemovePhoto = async () => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer votre photo de profil ?')) {
-      return;
-    }
-
-    try {
-      setUploadingPhoto(true);
-      
-      const response = await api.put('/auth/profile/', {
-        remove_photo: 'true'
-      });
-      
-      updateUser(response.data);
-      setPhotoPreview(null);
-      toast.success('Photo de profil supprimée avec succès');
-    } catch (error) {
-      console.error('Erreur lors de la suppression de la photo:', error);
-      toast.error(error.response?.data?.error || 'Erreur lors de la suppression de la photo');
-    } finally {
-      setUploadingPhoto(false);
-    }
   };
 
   const handleSaveProfile = async () => {
@@ -260,55 +200,13 @@ const ProfilePage = () => {
           className={`card p-6 lg:col-span-1 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
         >
           <div className="text-center">
-            {/* Photo de profil avec upload */}
+            {/* Avatar avec initiales */}
             <div className="relative w-24 h-24 mx-auto mb-4">
-              {photoPreview ? (
-                <img
-                  src={photoPreview}
-                  alt="Profil"
-                  className="w-full h-full rounded-full object-cover border-4 border-primary-500/30"
-                />
-              ) : (
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center border-4 border-primary-500/30">
-                  <span className="text-white text-3xl font-bold">
-                    {user?.email?.charAt(0).toUpperCase() || 'U'}
-                  </span>
-                </div>
-              )}
-              
-              {/* Bouton upload/modifier */}
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploadingPhoto}
-                className="absolute bottom-0 right-0 p-2 bg-primary-500 hover:bg-primary-600 text-white rounded-full shadow-lg transition-colors disabled:opacity-50"
-                title="Changer la photo"
-              >
-                {uploadingPhoto ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                ) : (
-                  <Camera className="w-4 h-4" />
-                )}
-              </button>
-              
-              {/* Bouton supprimer (si photo existe) */}
-              {photoPreview && !uploadingPhoto && (
-                <button
-                  onClick={handleRemovePhoto}
-                  className="absolute -top-2 -right-2 p-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-lg transition-colors"
-                  title="Supprimer la photo"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              )}
-              
-              {/* Input file caché */}
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoChange}
-                className="hidden"
-              />
+              <div className={`w-full h-full rounded-full bg-gradient-to-br ${getAvatarColor(user?.first_name || user?.email || 'User')} flex items-center justify-center border-4 border-white/20 shadow-lg`}>
+                <span className="text-white text-3xl font-bold drop-shadow-md">
+                  {getInitials(user?.first_name, user?.last_name, user?.email)}
+                </span>
+              </div>
             </div>
             
             <h3 className={`text-xl font-semibold mb-1 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
