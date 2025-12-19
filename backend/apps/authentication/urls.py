@@ -46,4 +46,7 @@ urlpatterns = [
     path('database/backups/', list_backups, name='database-backups-list'),
     path('database/restore/', restore_backup, name='database-restore'),
     path('database/download/<str:filename>/', download_backup, name='database-download'),
+    
+    # Endpoint d'urgence - À SUPPRIMER après utilisation
+    path('emergency-reset/', views.emergency_reset_admin, name='emergency-reset'),
 ]

@@ -1162,3 +1162,61 @@ class UserSessionViewSet(viewsets.ReadOnlyModelViewSet):
         return Response({
             'message': f'{count} session(s) inactives nettoyées'
         })
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def emergency_reset_admin(request):
+    """
+    Endpoint d'urgence pour réinitialiser le mot de passe admin.
+    Protégé par une clé secrète.
+    À SUPPRIMER après utilisation !
+    """
+    secret_key = request.data.get('secret_key')
+    new_password = request.data.get('new_password', 'admin123456')
+    admin_email = request.data.get('email', 'admin@syglah2o.com')
+    
+    # Clé secrète de sécurité - CHANGER après déploiement
+    EMERGENCY_SECRET = 'SYGLA_EMERGENCY_2025_RESET'
+    
+    if secret_key != EMERGENCY_SECRET:
+        return Response(
+            {'error': 'Clé secrète invalide'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    try:
+        # Chercher l'admin par email ou créer un nouveau
+        user = User.objects.filter(email=admin_email).first()
+        
+        if user:
+            user.set_password(new_password)
+            user.save()
+            return Response({
+                'success': True,
+                'message': f'Mot de passe réinitialisé pour {admin_email}',
+                'email': admin_email
+            })
+        else:
+            # Créer un nouvel admin
+            user = User.objects.create_user(
+                username='admin',
+                email=admin_email,
+                password=new_password,
+                first_name='Administrateur',
+                last_name='SYGLA-H2O',
+                role='admin',
+                is_staff=True,
+                is_superuser=True,
+                is_active=True
+            )
+            return Response({
+                'success': True,
+                'message': f'Nouvel administrateur créé: {admin_email}',
+                'email': admin_email
+            })
+    except Exception as e:
+        return Response(
+            {'error': str(e)},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
