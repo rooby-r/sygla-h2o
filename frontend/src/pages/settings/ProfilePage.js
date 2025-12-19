@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { User, Save, Mail, Phone, MapPin, Lock, Eye, EyeOff, ArrowLeft, Camera, X } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import api from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
@@ -52,6 +52,9 @@ const ProfilePage = () => {
     new: false,
     confirm: false
   });
+  const [photoPreview, setPhotoPreview] = useState(null);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const fileInputRef = useRef(null);
 
   const [profileData, setProfileData] = useState({
     first_name: '',
@@ -76,6 +79,10 @@ const ProfilePage = () => {
         telephone: user.telephone || '',
         adresse: user.adresse || ''
       });
+      // Initialiser la preview avec la photo existante
+      if (user.photo_url) {
+        setPhotoPreview(user.photo_url);
+      }
     }
   }, [user]);
 
@@ -100,28 +107,77 @@ const ProfilePage = () => {
     }));
   };
 
+  // Gestion de la photo de profil
+  const handlePhotoSelect = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Vérifier le type de fichier
+      if (!file.type.startsWith('image/')) {
+        toast.error('Veuillez sélectionner une image valide');
+        return;
+      }
+      // Vérifier la taille (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('L\'image ne doit pas dépasser 5MB');
+        return;
+      }
+      setSelectedPhoto(file);
+      // Créer une preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemovePhoto = () => {
+    setPhotoPreview(null);
+    setSelectedPhoto('remove'); // Marquer pour suppression
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleSaveProfile = async () => {
     try {
       setSavingProfile(true);
-      // Exclure photo_url qui est en lecture seule et nettoyer le téléphone
-      const { photo_url, ...dataToSend } = profileData;
-      // Ne jamais envoyer le champ photo si l'utilisateur ne change pas la photo
-      if ('photo' in dataToSend && !dataToSend.photo) {
-        delete dataToSend.photo;
-      }
-      // Nettoyer le numéro de téléphone (retirer espaces, tirets, parenthèses)
-      if (dataToSend.telephone) {
-        dataToSend.telephone = dataToSend.telephone.replace(/[\s\-\(\)]/g, '');
+      
+      // Utiliser FormData pour supporter l'upload de fichier
+      const formData = new FormData();
+      formData.append('first_name', profileData.first_name);
+      formData.append('last_name', profileData.last_name);
+      formData.append('email', profileData.email);
+      formData.append('adresse', profileData.adresse || '');
+      
+      // Nettoyer le numéro de téléphone
+      if (profileData.telephone) {
+        const cleanedPhone = profileData.telephone.replace(/[\s\-\(\)]/g, '');
         // Valider le format haïtien (+509 suivi de 8 chiffres)
         const haitiPhoneRegex = /^\+509\d{8}$/;
-        if (!haitiPhoneRegex.test(dataToSend.telephone)) {
+        if (!haitiPhoneRegex.test(cleanedPhone)) {
           toast.error('Le numéro de téléphone doit être au format haïtien: +509 suivi de 8 chiffres');
           setSavingProfile(false);
           return;
         }
+        formData.append('telephone', cleanedPhone);
       }
-      const response = await api.put('/auth/profile/', dataToSend);
+      
+      // Gérer la photo
+      if (selectedPhoto === 'remove') {
+        formData.append('photo', ''); // Supprimer la photo
+      } else if (selectedPhoto && selectedPhoto instanceof File) {
+        formData.append('photo', selectedPhoto); // Nouvelle photo
+      }
+      
+      const response = await api.put('/auth/profile/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
       updateUser(response.data);
+      setSelectedPhoto(null); // Reset après sauvegarde
       toast.success('Profil mis à jour avec succès');
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
@@ -200,14 +256,58 @@ const ProfilePage = () => {
           className={`card p-6 lg:col-span-1 ${theme === 'light' ? 'bg-white border border-slate-200 shadow-md' : ''}`}
         >
           <div className="text-center">
-            {/* Avatar avec initiales */}
-            <div className="relative w-24 h-24 mx-auto mb-4">
-              <div className={`w-full h-full rounded-full bg-gradient-to-br ${getAvatarColor(user?.first_name || user?.email || 'User')} flex items-center justify-center border-4 border-white/20 shadow-lg`}>
-                <span className="text-white text-3xl font-bold drop-shadow-md">
-                  {getInitials(user?.first_name, user?.last_name, user?.email)}
-                </span>
-              </div>
+            {/* Avatar avec photo ou initiales */}
+            <div className="relative w-32 h-32 mx-auto mb-4">
+              {/* Input caché pour sélection de fichier */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handlePhotoSelect}
+                accept="image/*"
+                className="hidden"
+              />
+              
+              {/* Photo ou Avatar avec initiales */}
+              {photoPreview ? (
+                <div className="relative w-full h-full">
+                  <img
+                    src={photoPreview}
+                    alt="Photo de profil"
+                    className="w-full h-full rounded-full object-cover border-4 border-primary-500 shadow-lg"
+                    onError={() => {
+                      setPhotoPreview(null);
+                    }}
+                  />
+                  {/* Bouton pour supprimer la photo */}
+                  <button
+                    onClick={handleRemovePhoto}
+                    className="absolute -top-1 -right-1 w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors"
+                    title="Supprimer la photo"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className={`w-full h-full rounded-full bg-gradient-to-br ${getAvatarColor(user?.first_name || user?.email || 'User')} flex items-center justify-center border-4 border-white/20 shadow-lg`}>
+                  <span className="text-white text-4xl font-bold drop-shadow-md">
+                    {getInitials(user?.first_name, user?.last_name, user?.email)}
+                  </span>
+                </div>
+              )}
+              
+              {/* Bouton pour ajouter/changer la photo */}
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute bottom-0 right-0 w-10 h-10 bg-primary-500 hover:bg-primary-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors border-2 border-white"
+                title="Changer la photo"
+              >
+                <Camera className="w-5 h-5" />
+              </button>
             </div>
+            
+            <p className={`text-xs mb-3 ${theme === 'light' ? 'text-slate-500' : 'text-dark-400'}`}>
+              Profil
+            </p>
             
             <h3 className={`text-xl font-semibold mb-1 ${theme === 'light' ? 'text-slate-900' : 'text-white'}`}>
               {user?.first_name && user?.last_name 
