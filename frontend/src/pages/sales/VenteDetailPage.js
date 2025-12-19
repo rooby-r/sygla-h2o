@@ -312,18 +312,36 @@ const VenteDetailPage = () => {
             <span class="value">${vente.client_details?.nom_commercial || vente.client_details?.raison_sociale || 'N/A'}</span>
           </div>
           <div class="info-row">
-            <span class="label">Contact:</span>
-            <span class="value">${vente.client_details?.contact || 'N/A'}</span>
-          </div>
-          <div class="info-row">
             <span class="label">Tél:</span>
             <span class="value">${vente.client_details?.telephone || 'N/A'}</span>
           </div>
           <div class="info-row">
             <span class="label">Adresse:</span>
-            <span class="value">${vente.client_details?.adresse || 'N/A'}</span>
+            <span class="value">${vente.adresse_livraison || vente.client_details?.adresse || 'N/A'}</span>
           </div>
         </div>
+
+        ${vente.type_livraison ? `
+        <div class="section">
+          <div class="section-title">🚚 Livraison</div>
+          ${vente.livreur ? `
+          <div class="info-row">
+            <span class="label">Livreur:</span>
+            <span class="value">${vente.livreur}</span>
+          </div>
+          ` : ''}
+          <div class="info-row">
+            <span class="label">Date prévue:</span>
+            <span class="value">${vente.date_livraison_prevue ? format(new Date(vente.date_livraison_prevue), 'dd/MM/yyyy à HH:mm', { locale: fr }) : 'N/A'}</span>
+          </div>
+          ${vente.date_livraison_effective ? `
+          <div class="info-row">
+            <span class="label">Date effective:</span>
+            <span class="value">${format(new Date(vente.date_livraison_effective), 'dd/MM/yyyy à HH:mm', { locale: fr })}</span>
+          </div>
+          ` : ''}
+        </div>
+        ` : ''}
 
         <div class="section">
           <div class="section-title">📋 Articles</div>

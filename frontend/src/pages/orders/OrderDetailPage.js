@@ -574,18 +574,9 @@ SYGLA-H2O`;
         <div class="section">
           <div class="section-title">📦 Commande</div>
           <div class="info-row">
-            <span class="label">Date création:</span>
-            <span class="value">${orderDate}</span>
+            <span class="label">N° Commande:</span>
+            <span class="value">${order.numero_commande}</span>
           </div>
-          <div class="info-row">
-            <span class="label">Date livraison:</span>
-            <span class="value">${deliveryDate}</span>
-          </div>
-          ${order.date_echeance ? `
-          <div class="info-row">
-            <span class="label">Échéance:</span>
-            <span class="value">${new Date(order.date_echeance).toLocaleDateString('fr-FR')}</span>
-          </div>` : ''}
           <div class="info-row">
             <span class="label">Type:</span>
             <span class="value">${order.type_livraison === 'livraison_domicile' ? 'Livraison' : 'Retrait'}</span>
@@ -593,6 +584,12 @@ SYGLA-H2O`;
           <div class="info-row">
             <span class="label">Vendeur:</span>
             <span class="value">${order.vendeur_nom_complet || order.vendeur_nom || 'Système'}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Statut paiement:</span>
+            <span class="value" style="color: ${order.statut_paiement === 'paye' ? '#155724' : order.statut_paiement === 'paye_partiel' ? '#856404' : '#721c24'};">
+              ${order.statut_paiement === 'paye' ? '✓ PAYÉ' : order.statut_paiement === 'paye_partiel' ? '⏳ PARTIEL' : '✗ IMPAYÉ'}
+            </span>
           </div>
         </div>
 
@@ -612,8 +609,28 @@ SYGLA-H2O`;
           </div>
           <div class="info-row">
             <span class="label">Adresse:</span>
-            <span class="value">${order.client?.adresse || 'N/A'}</span>
+            <span class="value">${order.adresse_livraison || order.client?.adresse || 'N/A'}</span>
           </div>
+        </div>
+
+        <div class="section">
+          <div class="section-title">🚚 Livraison</div>
+          ${order.livreur ? `
+          <div class="info-row">
+            <span class="label">Livreur:</span>
+            <span class="value">${order.livreur}</span>
+          </div>
+          ` : ''}
+          <div class="info-row">
+            <span class="label">Date prévue:</span>
+            <span class="value">${deliveryDate}</span>
+          </div>
+          ${order.date_livraison_effective ? `
+          <div class="info-row">
+            <span class="label">Date effective:</span>
+            <span class="value">${new Date(order.date_livraison_effective).toLocaleString('fr-FR')}</span>
+          </div>
+          ` : ''}
         </div>
 
         <div class="section">
